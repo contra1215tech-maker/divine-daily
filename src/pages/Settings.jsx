@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { 
   BookOpen, Bell, Award, LogOut, ChevronRight, Check, 
-  User, Flame, Camera, Heart, Info
+  User, Flame, Camera, Heart, Info, Palette
 } from 'lucide-react';
 import { StreakCounter, BadgeGrid } from '@/components/ui/StreakBadge';
 import AnimatedButton from '@/components/ui/AnimatedButton';
@@ -21,10 +21,35 @@ const bibleVersions = [
   { id: 'MSG', name: 'MSG', desc: 'The Message' },
 ];
 
+const themes = [
+  {
+    id: 'morning_dew',
+    name: 'Morning Dew',
+    description: 'Fresh & restorative',
+    icon: '🌅',
+    colors: { primary: '#E0F2F1', accent: '#A8DADC', warm: '#FAD5A5' }
+  },
+  {
+    id: 'still_waters',
+    name: 'Still Waters',
+    description: 'Serene & restful',
+    icon: '🌊',
+    colors: { primary: '#E0F7FA', accent: '#E1BEE7', warm: '#E8DAB2' }
+  },
+  {
+    id: 'eternal_hope',
+    name: 'Eternal Hope',
+    description: 'Warm & uplifting',
+    icon: '✨',
+    colors: { primary: '#FDFBF7', accent: '#FADADD', warm: '#F9E4B7' }
+  }
+];
+
 export default function Settings() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showBiblePicker, setShowBiblePicker] = useState(false);
+  const [showThemePicker, setShowThemePicker] = useState(false);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -55,6 +80,12 @@ export default function Settings() {
     await updateUserMutation.mutateAsync({ 
       notifications_enabled: !user.notifications_enabled 
     });
+  };
+
+  const handleThemeChange = async (themeId) => {
+    await updateUserMutation.mutateAsync({ theme: themeId });
+    setShowThemePicker(false);
+    window.location.reload(); // Reload to apply theme
   };
 
   const handleLogout = () => {
@@ -133,6 +164,26 @@ export default function Settings() {
 
       {/* Settings List */}
       <div className="px-6 space-y-3">
+        {/* Theme */}
+        <motion.button
+          whileTap={{ scale: 0.98 }}
+          onClick={() => setShowThemePicker(true)}
+          className="w-full p-4 rounded-2xl bg-white border border-slate-100 flex items-center justify-between"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
+              <Palette className="w-5 h-5 text-purple-500" />
+            </div>
+            <div className="text-left">
+              <p className="font-medium text-slate-800">Theme</p>
+              <p className="text-sm text-slate-500">
+                {themes.find(t => t.id === (user?.theme || 'morning_dew'))?.name}
+              </p>
+            </div>
+          </div>
+          <ChevronRight className="w-5 h-5 text-slate-400" />
+        </motion.button>
+
         {/* Bible Version */}
         <motion.button
           whileTap={{ scale: 0.98 }}
@@ -199,6 +250,55 @@ export default function Settings() {
           Spot God today. Hear His heart. Journal the journey.
         </p>
       </div>
+
+      {/* Theme Picker Modal */}
+      {showThemePicker && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/50 z-50 flex items-end justify-center"
+          onClick={() => setShowThemePicker(false)}
+        >
+          <motion.div
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-lg bg-white rounded-t-3xl p-6"
+          >
+            <div className="w-12 h-1 bg-slate-300 rounded-full mx-auto mb-4" />
+            <h3 className="text-lg font-bold text-slate-800 mb-4">Choose Theme</h3>
+            <div className="space-y-3">
+              {themes.map((theme) => (
+                <button
+                  key={theme.id}
+                  onClick={() => handleThemeChange(theme.id)}
+                  className={cn(
+                    "w-full p-4 rounded-2xl border-2 transition-all text-left",
+                    (user?.theme || 'morning_dew') === theme.id
+                      ? "border-sky-500 bg-sky-50"
+                      : "border-slate-200 hover:border-slate-300"
+                  )}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="text-3xl">{theme.icon}</div>
+                    <div className="flex-1">
+                      <h4 className="font-semibold text-slate-800">{theme.name}</h4>
+                      <p className="text-sm text-slate-500">{theme.description}</p>
+                    </div>
+                    <div className="flex gap-1">
+                      <div className="w-6 h-6 rounded-full border border-slate-200" style={{ backgroundColor: theme.colors.primary }} />
+                      <div className="w-6 h-6 rounded-full border border-slate-200" style={{ backgroundColor: theme.colors.accent }} />
+                      <div className="w-6 h-6 rounded-full border border-slate-200" style={{ backgroundColor: theme.colors.warm }} />
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
 
       {/* Bible Version Picker Modal */}
       {showBiblePicker && (
