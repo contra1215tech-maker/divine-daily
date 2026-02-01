@@ -4,8 +4,9 @@ import { BookOpen, ChevronRight } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
 export default function BookSelector({ books, onSelectBook, selectedBook }) {
-    const oldTestament = books.filter(b => b.testament === 'OT');
-    const newTestament = books.filter(b => b.testament === 'NT');
+    // Split books by order: first 39 are OT, rest are NT
+    const oldTestament = books.filter((b, idx) => idx < 39);
+    const newTestament = books.filter((b, idx) => idx >= 39);
 
     const BookItem = ({ book }) => (
         <motion.button
