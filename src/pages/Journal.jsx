@@ -187,47 +187,82 @@ export default function Journal() {
               <div key={i} className="h-32 rounded-3xl bg-slate-100 animate-pulse" />
             ))}
           </div>
+        ) : activeFilter === 'pictures' ? (
+           pictureEntries.length > 0 ? (
+             <div className="grid grid-cols-2 gap-3">
+               {pictureEntries.map((entry) => (
+                 <motion.button
+                   key={entry.id}
+                   initial={{ opacity: 0, scale: 0.9 }}
+                   animate={{ opacity: 1, scale: 1 }}
+                   onClick={() => {}}
+                   className="relative overflow-hidden rounded-2xl aspect-square group"
+                 >
+                   <img 
+                     src={entry.photo_url} 
+                     alt="Moment" 
+                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                   />
+                   <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                     <p className="text-white text-xs text-center px-2 line-clamp-2">
+                       {entry.reflection?.substring(0, 30)}...
+                     </p>
+                   </div>
+                 </motion.button>
+               ))}
+             </div>
+           ) : (
+             <motion.div
+               initial={{ opacity: 0 }}
+               animate={{ opacity: 1 }}
+               className="text-center py-16"
+             >
+               <Image className="w-16 h-16 theme-text-secondary mx-auto mb-3" />
+               <h3 className="font-semibold theme-text-primary mb-1">No pictures yet</h3>
+               <p className="text-sm theme-text-secondary">Capture a moment with a photo</p>
+             </motion.div>
+           )
         ) : activeFilter === 'favorites' ? (
-          filteredFavorites.length > 0 ? (
-            <div className="space-y-3">
-              {filteredFavorites.map((fav) => (
-                <motion.div
-                  key={fav.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="rounded-2xl p-4 theme-card"
-                >
-                  <div className="flex items-start gap-3">
-                    <Star className="w-5 h-5 theme-text-primary flex-shrink-0 mt-1" />
-                    <div className="flex-1">
-                      <h3 className="font-semibold theme-text-primary mb-2">{fav.verse_reference}</h3>
-                      <p 
-                        className="leading-relaxed font-serif theme-text-primary"
-                        style={fav.highlight_color ? { 
-                          backgroundColor: fav.highlight_color,
-                          padding: '2px 4px',
-                          borderRadius: '4px'
-                        } : {}}
-                      >
-                        {fav.verse_text}
-                      </p>
-                      <p className="text-xs theme-text-secondary mt-2">{fav.bible_version}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          ) : (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-16"
-            >
-              <Star className="w-16 h-16 theme-text-secondary mx-auto mb-3" />
-              <h3 className="font-semibold theme-text-primary mb-1">No favorite verses yet</h3>
-              <p className="text-sm theme-text-secondary">Tap verses in the Bible to save favorites</p>
-            </motion.div>
-          )
+           filteredFavorites.length > 0 ? (
+             <div className="space-y-3">
+               {filteredFavorites.map((fav) => (
+                 <motion.div
+                   key={fav.id}
+                   initial={{ opacity: 0, y: 20 }}
+                   animate={{ opacity: 1, y: 0 }}
+                   className="rounded-2xl p-4 theme-card"
+                 >
+                   <div className="flex items-start gap-3">
+                     <Star className="w-5 h-5 theme-text-primary flex-shrink-0 mt-1" />
+                     <div className="flex-1">
+                       <h3 className="font-semibold theme-text-primary mb-2">{fav.verse_reference}</h3>
+                       <p 
+                         className="leading-relaxed font-serif theme-text-primary"
+                         style={fav.highlight_color ? { 
+                           backgroundColor: fav.highlight_color,
+                           padding: '2px 4px',
+                           borderRadius: '4px'
+                         } : {}}
+                       >
+                         {fav.verse_text}
+                       </p>
+                       <p className="text-xs theme-text-secondary mt-2">{fav.bible_version}</p>
+                     </div>
+                   </div>
+                 </motion.div>
+               ))}
+             </div>
+           ) : (
+             <motion.div
+               initial={{ opacity: 0 }}
+               animate={{ opacity: 1 }}
+               className="text-center py-16"
+             >
+               <Star className="w-16 h-16 theme-text-secondary mx-auto mb-3" />
+               <h3 className="font-semibold theme-text-primary mb-1">No favorite verses yet</h3>
+               <p className="text-sm theme-text-secondary">Tap verses in the Bible to save favorites</p>
+             </motion.div>
+           )
         ) : Object.keys(groupedEntries).length > 0 ? (
           <div className="space-y-6">
             {Object.entries(groupedEntries).map(([date, dayEntries]) => (
