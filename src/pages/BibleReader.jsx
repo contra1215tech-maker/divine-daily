@@ -213,19 +213,21 @@ export default function BibleReader() {
                                         <div className="flex items-center justify-center py-12">
                                             <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
                                         </div>
-                                    ) : chapterData ? (
+                                    ) : chapterData?.chapter?.content ? (
                                         <div className="bg-white rounded-3xl p-6 border border-slate-200">
                                             <div className="space-y-4">
-                                                {chapterData.verses?.map((verse) => (
-                                                    <div key={verse.verse} className="flex gap-3">
-                                                        <span className="text-sm font-bold text-sky-500 mt-1 flex-shrink-0">
-                                                            {verse.verse}
-                                                        </span>
-                                                        <p className="text-slate-800 leading-relaxed font-serif">
-                                                            {verse.text}
-                                                        </p>
-                                                    </div>
-                                                ))}
+                                                {chapterData.chapter.content
+                                                    .filter(item => item.type === 'verse')
+                                                    .map((verse) => (
+                                                        <div key={verse.number} className="flex gap-3">
+                                                            <span className="text-sm font-bold text-sky-500 mt-1 flex-shrink-0">
+                                                                {verse.number}
+                                                            </span>
+                                                            <p className="text-slate-800 leading-relaxed font-serif">
+                                                                {verse.content.join(' ')}
+                                                            </p>
+                                                        </div>
+                                                    ))}
                                             </div>
                                         </div>
                                     ) : null}
