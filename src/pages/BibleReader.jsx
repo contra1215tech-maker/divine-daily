@@ -447,7 +447,7 @@ export default function BibleReader() {
                                             <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
                                         </div>
                                     ) : chapterData?.chapter?.content ? (
-                                        <div className="rounded-3xl p-6 theme-card">
+                                        <div className="rounded-3xl p-6">
                                             <div className="space-y-4">
                                                 {chapterData.chapter.content
                                                     .filter(item => item.type === 'verse')
