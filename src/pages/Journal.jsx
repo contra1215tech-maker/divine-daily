@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 const filters = [
   { id: 'all', label: 'All', icon: null },
   { id: 'entries', label: 'Entries', icon: Camera },
+  { id: 'pictures', label: 'Pictures', icon: Image },
   { id: 'favorites', label: 'Favorites', icon: Star },
 ];
 
