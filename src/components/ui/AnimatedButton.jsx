@@ -14,10 +14,10 @@ export default function AnimatedButton({
   ...props 
 }) {
   const variants = {
-    primary: "bg-gradient-to-r from-sky-500 to-sky-600 text-white shadow-lg shadow-sky-200 hover:shadow-xl hover:shadow-sky-300",
-    secondary: "bg-white border-2 border-slate-200 text-slate-700 hover:border-sky-300 hover:text-sky-600",
-    gold: "bg-gradient-to-r from-amber-400 to-amber-500 text-white shadow-lg shadow-amber-200 hover:shadow-xl hover:shadow-amber-300",
-    ghost: "bg-transparent text-slate-600 hover:bg-slate-100",
+    primary: "bg-transparent border-2 theme-text-primary hover:bg-white/10",
+    secondary: "bg-transparent border-2 theme-text-secondary hover:bg-white/10",
+    gold: "bg-transparent border-2 theme-text-primary hover:bg-white/10",
+    ghost: "bg-transparent theme-text-secondary hover:bg-white/10",
   };
   
   const sizes = {

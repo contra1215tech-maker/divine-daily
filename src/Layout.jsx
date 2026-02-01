@@ -135,6 +135,14 @@ export default function Layout({ children, currentPageName }) {
         .theme-accent {
           background-color: ${currentTheme['--accent-primary']} !important;
         }
+      button, .theme-button, [role="button"] {
+        background: transparent !important;
+        background-image: none !important;
+        border-color: ${currentTheme['--text-light']} !important;
+      }
+      button:hover, .theme-button:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+      }
       `}</style>
       
       {children}
