@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import BookSelector from '../components/bible/BookSelector';
 import ChapterSelector from '../components/bible/ChapterSelector';
+import { cn } from "@/lib/utils";
 
 export default function BibleReader() {
     const [user, setUser] = useState(null);
