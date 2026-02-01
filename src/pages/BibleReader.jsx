@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, ChevronLeft, Settings2, Loader2, MessageSquare, Database } from 'lucide-react';
+import { BookOpen, ChevronLeft, ChevronRight, Settings2, Loader2, MessageSquare, Database } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -16,6 +16,7 @@ export default function BibleReader() {
     const [selectedChapter, setSelectedChapter] = useState(1);
     const [showBookSelector, setShowBookSelector] = useState(true);
     const [activeTab, setActiveTab] = useState('text');
+    const [showNavControls, setShowNavControls] = useState(false);
 
     useEffect(() => {
         base44.auth.me().then(setUser).catch(() => {});
@@ -77,13 +78,28 @@ export default function BibleReader() {
 
     const handleBookSelect = (book) => {
         setSelectedBook(book);
-        setSelectedChapter(1);
-        setShowBookSelector(false);
     };
 
     const handleChapterSelect = (chapter) => {
         setSelectedChapter(chapter);
-        setActiveTab('text'); // Reset to text tab when changing chapters
+        setActiveTab('text');
+        setShowBookSelector(false);
+    };
+
+    const handlePrevChapter = () => {
+        if (selectedChapter > 1) {
+            setSelectedChapter(selectedChapter - 1);
+        }
+    };
+
+    const handleNextChapter = () => {
+        if (selectedChapter < selectedBook?.numberOfChapters) {
+            setSelectedChapter(selectedChapter + 1);
+        }
+    };
+
+    const toggleNavControls = () => {
+        setShowNavControls(!showNavControls);
     };
 
     if (!user || booksLoading) {
@@ -168,8 +184,8 @@ export default function BibleReader() {
                         >
                             <BookSelector
                                 books={booksData?.books || []}
-                                selectedBook={selectedBook}
                                 onSelectBook={handleBookSelect}
+                                onChapterSelect={handleChapterSelect}
                             />
                         </motion.div>
                     ) : selectedBook ? (
@@ -178,19 +194,44 @@ export default function BibleReader() {
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: 20 }}
-                            className="space-y-6"
+                            className="relative"
+                            onClick={toggleNavControls}
                         >
-                            {/* Chapter Selector */}
-                            <div className="bg-white rounded-3xl p-4 border border-slate-200">
-                                <h3 className="text-sm font-semibold text-slate-600 mb-3">
-                                    Select Chapter
-                                </h3>
-                                <ChapterSelector
-                                    numberOfChapters={selectedBook.numberOfChapters}
-                                    selectedChapter={selectedChapter}
-                                    onSelectChapter={handleChapterSelect}
-                                />
-                            </div>
+                            {/* Navigation Controls */}
+                            <AnimatePresence>
+                                {showNavControls && (
+                                    <>
+                                        {selectedChapter > 1 && (
+                                            <motion.button
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={{ opacity: 0 }}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handlePrevChapter();
+                                                }}
+                                                className="fixed left-4 top-1/2 -translate-y-1/2 z-40 w-16 h-16 rounded-full bg-sky-500 text-white shadow-lg flex items-center justify-center"
+                                            >
+                                                <ChevronLeft className="w-8 h-8" />
+                                            </motion.button>
+                                        )}
+                                        {selectedChapter < selectedBook.numberOfChapters && (
+                                            <motion.button
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={{ opacity: 0 }}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleNextChapter();
+                                                }}
+                                                className="fixed right-4 top-1/2 -translate-y-1/2 z-40 w-16 h-16 rounded-full bg-sky-500 text-white shadow-lg flex items-center justify-center"
+                                            >
+                                                <ChevronRight className="w-8 h-8" />
+                                            </motion.button>
+                                        )}
+                                    </>
+                                )}
+                            </AnimatePresence>
 
                             {/* Chapter Content with Tabs */}
                             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
