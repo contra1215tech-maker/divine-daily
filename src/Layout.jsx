@@ -165,8 +165,8 @@ export default function Layout({ children, currentPageName }) {
           animate={{ y: 0 }}
           className="fixed bottom-0 left-0 right-0 z-40 max-w-md mx-auto backdrop-blur-xl"
           style={{ 
-            backgroundColor: 'rgba(255, 255, 255, 0.5)',
-            borderTop: '1px solid rgba(255, 255, 255, 0.3)'
+            backgroundColor: 'rgba(45, 27, 78, 0.7)',
+            borderTop: '1px solid rgba(139, 95, 191, 0.3)'
           }}
         >
           <div className="flex items-center justify-around py-1">
