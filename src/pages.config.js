@@ -50,7 +50,6 @@
 import BibleReader from './pages/BibleReader';
 import CaptureMoment from './pages/CaptureMoment';
 import HeartCheck from './pages/HeartCheck';
-import Home from './pages/Home';
 import Journal from './pages/Journal';
 import Settings from './pages/Settings';
 import __Layout from './Layout.jsx';
@@ -60,13 +59,12 @@ export const PAGES = {
     "BibleReader": BibleReader,
     "CaptureMoment": CaptureMoment,
     "HeartCheck": HeartCheck,
-    "Home": Home,
     "Journal": Journal,
     "Settings": Settings,
 }
 
 export const pagesConfig = {
-    mainPage: "Home",
+    mainPage: "BibleReader",
     Pages: PAGES,
     Layout: __Layout,
 };
