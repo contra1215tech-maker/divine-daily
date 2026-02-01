@@ -94,6 +94,7 @@ export default function Layout({ children, currentPageName }) {
       '--button-secondary': 'transparent',
       '--border-color': 'rgba(139, 95, 191, 0.3)',
       '--nav-bg': 'rgba(45, 27, 78, 0.7)',
+      '--bible-text': '#F5F1E8',
     },
   };
 
