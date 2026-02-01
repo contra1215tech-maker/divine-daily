@@ -168,15 +168,15 @@ export default function Settings() {
         <motion.button
           whileTap={{ scale: 0.98 }}
           onClick={() => setShowThemePicker(true)}
-          className="w-full p-4 rounded-2xl bg-white border border-slate-100 flex items-center justify-between"
+          className="w-full p-4 rounded-2xl theme-card flex items-center justify-between"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
-              <Palette className="w-5 h-5 text-purple-500" />
+            <div className="w-10 h-10 rounded-xl theme-accent flex items-center justify-center">
+              <Palette className="w-5 h-5 theme-text-primary" />
             </div>
             <div className="text-left">
-              <p className="font-medium text-slate-800">Theme</p>
-              <p className="text-sm text-slate-500">
+              <p className="font-medium theme-text-primary">Theme</p>
+              <p className="text-sm theme-text-secondary">
                 {themes.find(t => t.id === (user?.theme || 'morning_dew'))?.name}
               </p>
             </div>
@@ -188,15 +188,15 @@ export default function Settings() {
         <motion.button
           whileTap={{ scale: 0.98 }}
           onClick={() => setShowBiblePicker(true)}
-          className="w-full p-4 rounded-2xl bg-white border border-slate-100 flex items-center justify-between"
+          className="w-full p-4 rounded-2xl theme-card flex items-center justify-between"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-sky-100 flex items-center justify-center">
-              <BookOpen className="w-5 h-5 text-sky-500" />
+            <div className="w-10 h-10 rounded-xl theme-accent flex items-center justify-center">
+              <BookOpen className="w-5 h-5 theme-text-primary" />
             </div>
             <div className="text-left">
-              <p className="font-medium text-slate-800">Bible Version</p>
-              <p className="text-sm text-slate-500">{user?.preferred_bible_version || 'NIV'}</p>
+              <p className="font-medium theme-text-primary">Bible Version</p>
+              <p className="text-sm theme-text-secondary">{user?.preferred_bible_version || 'NIV'}</p>
             </div>
           </div>
           <ChevronRight className="w-5 h-5 text-slate-400" />
@@ -206,22 +206,22 @@ export default function Settings() {
         <motion.button
           whileTap={{ scale: 0.98 }}
           onClick={handleNotificationToggle}
-          className="w-full p-4 rounded-2xl bg-white border border-slate-100 flex items-center justify-between"
+          className="w-full p-4 rounded-2xl theme-card flex items-center justify-between"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
-              <Bell className="w-5 h-5 text-amber-500" />
+            <div className="w-10 h-10 rounded-xl theme-accent flex items-center justify-center">
+              <Bell className="w-5 h-5 theme-text-primary" />
             </div>
             <div className="text-left">
-              <p className="font-medium text-slate-800">Daily Reminders</p>
-              <p className="text-sm text-slate-500">
+              <p className="font-medium theme-text-primary">Daily Reminders</p>
+              <p className="text-sm theme-text-secondary">
                 {user?.notifications_enabled ? 'Enabled' : 'Disabled'}
               </p>
             </div>
           </div>
           <div className={cn(
-            "w-12 h-7 rounded-full p-1 transition-colors",
-            user?.notifications_enabled ? "bg-sky-500" : "bg-slate-300"
+            "w-12 h-7 rounded-full p-1 transition-colors theme-button",
+            !user?.notifications_enabled && "opacity-40"
           )}>
             <motion.div
               animate={{ x: user?.notifications_enabled ? 20 : 0 }}
@@ -234,12 +234,13 @@ export default function Settings() {
         <motion.button
           whileTap={{ scale: 0.98 }}
           onClick={handleLogout}
-          className="w-full p-4 rounded-2xl bg-white border border-red-100 flex items-center gap-3"
+          className="w-full p-4 rounded-2xl theme-card flex items-center gap-3"
+          style={{ borderColor: 'var(--border-color)' }}
         >
-          <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center">
-            <LogOut className="w-5 h-5 text-red-500" />
+          <div className="w-10 h-10 rounded-xl theme-accent flex items-center justify-center">
+            <LogOut className="w-5 h-5 theme-text-primary" />
           </div>
-          <p className="font-medium text-red-600">Sign Out</p>
+          <p className="font-medium theme-text-primary">Sign Out</p>
         </motion.button>
       </div>
 

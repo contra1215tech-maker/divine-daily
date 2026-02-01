@@ -180,7 +180,7 @@ export default function BibleReader() {
                         <Sheet>
                             <SheetTrigger asChild>
                                 <Button variant="ghost" size="icon">
-                                    <Settings2 className="w-5 h-5 text-slate-600" />
+                                    <Settings2 className="w-5 h-5 theme-text-primary" />
                                 </Button>
                             </SheetTrigger>
                             <SheetContent>
@@ -254,7 +254,7 @@ export default function BibleReader() {
                                         {selectedChapter > 1 && (
                                             <button
                                                 onClick={handlePrevChapter}
-                                                className="w-12 h-12 rounded-full bg-sky-500 text-white shadow-lg flex items-center justify-center"
+                                                className="w-12 h-12 rounded-full theme-button text-white shadow-lg flex items-center justify-center"
                                             >
                                                 <ChevronLeft className="w-5 h-5" />
                                             </button>
@@ -262,7 +262,7 @@ export default function BibleReader() {
                                         {selectedChapter < selectedBook.numberOfChapters && (
                                             <button
                                                 onClick={handleNextChapter}
-                                                className="w-12 h-12 rounded-full bg-sky-500 text-white shadow-lg flex items-center justify-center"
+                                                className="w-12 h-12 rounded-full theme-button text-white shadow-lg flex items-center justify-center"
                                             >
                                                 <ChevronRight className="w-5 h-5" />
                                             </button>
@@ -278,17 +278,17 @@ export default function BibleReader() {
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: 20 }}
-                                        className="fixed bottom-16 left-4 right-4 z-50 bg-white rounded-2xl shadow-2xl border border-slate-200 p-4 max-w-md mx-auto"
+                                        className="fixed bottom-16 left-4 right-4 z-50 theme-card rounded-2xl shadow-2xl p-4 max-w-md mx-auto"
                                         onClick={(e) => e.stopPropagation()}
                                     >
-                                        <h3 className="text-sm font-semibold text-slate-700 mb-3">
+                                        <h3 className="text-sm font-semibold mb-3 theme-text-primary">
                                             Verse {selectedVerse.number}
                                         </h3>
                                         
                                         <div className="space-y-3">
                                             {/* Highlight Colors */}
                                             <div>
-                                                <p className="text-xs text-slate-500 mb-2 flex items-center gap-1">
+                                                <p className="text-xs mb-2 flex items-center gap-1 theme-text-secondary">
                                                     <Palette className="w-3 h-3" />
                                                     Highlight Color
                                                 </p>
@@ -308,14 +308,15 @@ export default function BibleReader() {
                                             <div className="flex gap-2">
                                                 <button
                                                     onClick={handleFavorite}
-                                                    className="flex-1 flex items-center justify-center gap-2 py-2 bg-amber-100 text-amber-700 rounded-xl font-medium"
+                                                    className="flex-1 flex items-center justify-center gap-2 py-2 rounded-xl font-medium theme-button text-white"
                                                 >
                                                     <Star className="w-4 h-4" />
                                                     Favorite
                                                 </button>
                                                 <button
                                                     onClick={handleCopy}
-                                                    className="flex-1 flex items-center justify-center gap-2 py-2 bg-sky-100 text-sky-700 rounded-xl font-medium"
+                                                    className="flex-1 flex items-center justify-center gap-2 py-2 rounded-xl font-medium theme-card theme-text-primary border"
+                                                    style={{ borderColor: 'var(--border-color)' }}
                                                 >
                                                     <Copy className="w-4 h-4" />
                                                     Copy
@@ -324,7 +325,7 @@ export default function BibleReader() {
 
                                             <button
                                                 onClick={() => setSelectedVerse(null)}
-                                                className="w-full py-2 text-sm text-slate-500"
+                                                className="w-full py-2 text-sm theme-text-secondary"
                                             >
                                                 Cancel
                                             </button>

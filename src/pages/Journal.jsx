@@ -106,8 +106,8 @@ export default function Journal() {
                 className={cn(
                   "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all",
                   activeFilter === filter.id
-                    ? "bg-slate-800 text-white"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                    ? "theme-button text-white"
+                    : "theme-card theme-text-secondary hover:shadow-md"
                 )}
               >
                 {Icon && <Icon className="w-4 h-4" />}
