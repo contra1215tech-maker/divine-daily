@@ -86,8 +86,8 @@ export default function Home() {
   return (
     <div className="min-h-screen pb-24" style={{ background: 'transparent' }}>
       {/* Header */}
-      <div className="px-6 pt-8 pb-6">
-        <div className="flex items-center justify-between mb-6">
+      <div className="px-6 pt-3 pb-2">
+        <div className="flex items-center justify-between mb-4">
           <div>
             <p className="text-sm theme-text-secondary">
               {format(new Date(), 'EEEE, MMMM d')}
