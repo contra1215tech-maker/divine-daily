@@ -79,7 +79,7 @@ export default function Journal() {
         backgroundColor: 'var(--nav-bg)',
         borderBottom: '1px solid var(--border-color)'
       }}>
-        <div className="px-6 pt-6 pb-4">
+        <div className="px-6 pt-3 pb-2">
           <h1 className="text-2xl font-bold mb-4 theme-text-primary">Journal</h1>
           
           {/* Search */}
@@ -104,10 +104,10 @@ export default function Journal() {
                 key={filter.id}
                 onClick={() => setActiveFilter(filter.id)}
                 className={cn(
-                  "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all",
+                  "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border-2",
                   activeFilter === filter.id
-                    ? "theme-button text-white"
-                    : "theme-card theme-text-secondary hover:shadow-md"
+                    ? "border-current theme-text-primary"
+                    : "border-transparent theme-card theme-text-secondary hover:shadow-md"
                 )}
               >
                 {Icon && <Icon className="w-4 h-4" />}
