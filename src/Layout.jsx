@@ -148,7 +148,7 @@ export default function Layout({ children, currentPageName }) {
         background: rgba(255, 255, 255, 0.1) !important;
       }
       ${theme === 'dark_mode' ? `
-        p, span {
+        p, span, .dark-mode-text {
           color: #F5F1E8 !important;
         }
       ` : ''}
