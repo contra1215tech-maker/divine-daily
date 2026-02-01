@@ -39,12 +39,11 @@ export default function Journal() {
 
   // Filter entries
   const filteredEntries = (activeFilter === 'favorites' || activeFilter === 'pictures') ? [] : entries.filter(entry => {
-      const matchesFilter = activeFilter === 'all' || activeFilter === 'entries';
       const matchesSearch = !searchQuery || 
           entry.reflection?.toLowerCase().includes(searchQuery.toLowerCase()) ||
           entry.verse_reference?.toLowerCase().includes(searchQuery.toLowerCase()) ||
           entry.tags?.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
-      return matchesFilter && matchesSearch;
+      return matchesSearch;
   });
 
   const filteredFavorites = activeFilter === 'favorites' ? favorites.filter(fav => {
