@@ -225,7 +225,11 @@ export default function BibleReader() {
                                                                 {verse.number}
                                                             </span>
                                                             <p className="text-slate-800 leading-relaxed font-serif">
-                                                                {verse.content.join(' ')}
+                                                                {Array.isArray(verse.content) 
+                                                                    ? verse.content.map(item => 
+                                                                        typeof item === 'string' ? item : item.text || ''
+                                                                    ).join(' ')
+                                                                    : verse.content}
                                                             </p>
                                                         </div>
                                                     ))}
