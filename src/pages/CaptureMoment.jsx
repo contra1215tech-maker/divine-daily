@@ -217,7 +217,8 @@ export default function CaptureMoment() {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   onClick={() => handleRemoveTag(tag)}
-                  className="flex items-center gap-1 px-3 py-1.5 rounded-full theme-button text-white text-sm font-medium"
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-full border-2 theme-text-primary text-sm font-medium"
+                  style={{ borderColor: 'var(--text-light)' }}
                 >
                   #{tag}
                   <X className="w-3.5 h-3.5" />

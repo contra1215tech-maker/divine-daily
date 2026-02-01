@@ -27,21 +27,28 @@ const themes = [
     name: 'Morning Dew',
     description: 'Fresh & restorative',
     icon: '🌅',
-    colors: { primary: '#E0F2F1', accent: '#A8DADC', warm: '#FAD5A5' }
+    colors: { primary: '#C8E6F5', accent: '#A8DADC', warm: '#E8D5F2' }
   },
   {
     id: 'still_waters',
     name: 'Still Waters',
     description: 'Serene & restful',
     icon: '🌊',
-    colors: { primary: '#E0F7FA', accent: '#E1BEE7', warm: '#E8DAB2' }
+    colors: { primary: '#7FA8D1', accent: '#E1BEE7', warm: '#C8A8E6' }
   },
   {
     id: 'eternal_hope',
     name: 'Eternal Hope',
     description: 'Warm & uplifting',
     icon: '✨',
-    colors: { primary: '#FDFBF7', accent: '#FADADD', warm: '#F9E4B7' }
+    colors: { primary: '#F5C5A8', accent: '#FADADD', warm: '#F9E4B7' }
+  },
+  {
+    id: 'dark_mode',
+    name: 'Dark Mode',
+    description: 'Mysterious & rich',
+    icon: '🌙',
+    colors: { primary: '#2D1B4E', accent: '#8B5FBF', warm: '#6B4BA6' }
   }
 ];
 
@@ -107,7 +114,7 @@ export default function Settings() {
   return (
     <div className="min-h-screen pb-24" style={{ background: 'transparent' }}>
       {/* Header */}
-      <div className="px-6 pt-8 pb-6">
+      <div className="px-6 pt-3 pb-2">
         <h1 className="text-2xl font-bold theme-text-primary">Settings</h1>
       </div>
 
