@@ -223,34 +223,7 @@ export default function BibleReader() {
                             </div>
                         )}
 
-                        <Sheet>
-                            <SheetTrigger asChild>
-                                <Button variant="ghost" size="icon">
-                                    <Settings2 className="w-5 h-5 theme-text-primary" />
-                                </Button>
-                            </SheetTrigger>
-                            <SheetContent>
-                                <SheetHeader>
-                                    <SheetTitle>Bible Version</SheetTitle>
-                                </SheetHeader>
-                                <div className="mt-6 space-y-2">
-                                    {['BSB', 'ENGWEBP'].map((id) => (
-                                        <Button
-                                            key={id}
-                                            variant={translationId === id ? "default" : "outline"}
-                                            className="w-full justify-start"
-                                            onClick={() => {
-                                                setTranslationId(id);
-                                                setSelectedBook(null);
-                                                setShowBookSelector(true);
-                                            }}
-                                        >
-                                            {id === 'BSB' ? 'Berean Standard Bible' : 'World English Bible'}
-                                        </Button>
-                                    ))}
-                                </div>
-                            </SheetContent>
-                        </Sheet>
+
                     </div>
 
                     {selectedBook && !showBookSelector && (
