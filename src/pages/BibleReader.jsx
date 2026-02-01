@@ -201,8 +201,9 @@ export default function BibleReader() {
     return (
         <div className="min-h-screen" style={{ background: 'transparent' }}>
             {/* Header */}
-            <div className="sticky top-0 z-30" style={{
-                backgroundColor: 'transparent'
+            <div className="sticky top-0 z-30 backdrop-blur-md" style={{
+                background: 'linear-gradient(to bottom, var(--bg-primary), var(--bg-gradient-from))',
+                borderBottom: '1px solid var(--border-color)'
             }}>
                 <div className="px-4 py-4">
                     <div className="flex items-center justify-between">
