@@ -4,6 +4,7 @@ import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
 import { Home, BookOpen, Camera, Settings, Book } from 'lucide-react';
 import { cn } from "@/lib/utils";
+import { base44 } from '@/api/base44Client';
 
 const navItems = [
   { id: 'Home', icon: Home, label: 'Home' },
@@ -14,21 +15,67 @@ const navItems = [
 ];
 
 export default function Layout({ children, currentPageName }) {
+  const [user, setUser] = React.useState(null);
+
+  React.useEffect(() => {
+    base44.auth.me().then(setUser).catch(() => {});
+  }, []);
+
+  const theme = user?.theme || 'morning_dew';
+
+  const themeStyles = {
+    morning_dew: {
+      '--bg-primary': '#E0F2F1',
+      '--bg-secondary': '#D4EAF7',
+      '--accent-primary': '#A8DADC',
+      '--accent-secondary': '#B2D8B2',
+      '--accent-warm': '#FAD5A5',
+      '--text-primary': '#1E3A5F',
+      '--text-secondary': '#475569',
+      '--card-bg': '#FFFFFF',
+      '--card-overlay': '#FEFEFE',
+    },
+    still_waters: {
+      '--bg-primary': '#E0F7FA',
+      '--bg-secondary': '#D9E8E6',
+      '--accent-primary': '#E1BEE7',
+      '--accent-secondary': '#D7BDE2',
+      '--accent-warm': '#E8DAB2',
+      '--text-primary': '#4A5568',
+      '--text-secondary': '#64748B',
+      '--card-bg': '#FFFFFF',
+      '--card-overlay': '#F5F0E6',
+    },
+    eternal_hope: {
+      '--bg-primary': '#FDFBF7',
+      '--bg-secondary': '#FFF8E8',
+      '--accent-primary': '#FADADD',
+      '--accent-secondary': '#E8C39E',
+      '--accent-warm': '#F9E4B7',
+      '--text-primary': '#3E2723',
+      '--text-secondary': '#5D4037',
+      '--card-bg': '#FFFFFF',
+      '--card-overlay': '#FFFAF0',
+    },
+  };
+
+  const currentTheme = themeStyles[theme];
+
   // Hide nav on onboarding or capture/mood pages for full-screen experience
   const hideNav = !currentPageName || 
     currentPageName === 'CaptureMoment' || 
     currentPageName === 'HeartCheck';
 
   return (
-    <div className="min-h-screen bg-white max-w-md mx-auto">
+    <div className="min-h-screen max-w-md mx-auto" style={{ backgroundColor: currentTheme['--bg-primary'] }}>
       <style>{`
         :root {
-          --color-primary: #5DADE2;
-          --color-accent: #F4D03F;
+          ${Object.entries(currentTheme).map(([key, value]) => `${key}: ${value};`).join('\n          ')}
         }
         body {
           max-width: 448px;
           margin: 0 auto;
+          background-color: ${currentTheme['--bg-primary']};
         }
       `}</style>
       
