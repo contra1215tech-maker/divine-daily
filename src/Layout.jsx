@@ -35,12 +35,12 @@ export default function Layout({ children, currentPageName }) {
       '--text-primary': '#1E3A5F',
       '--text-secondary': '#475569',
       '--text-light': '#64748B',
-      '--card-bg': '#FFFFFF',
-      '--card-overlay': '#F0F9F9',
+      '--card-bg': '#F0FFFE',
+      '--card-overlay': '#E5F7F6',
       '--button-primary': '#5DADE2',
       '--button-secondary': '#B2D8B2',
       '--border-color': '#B8E6E3',
-      '--nav-bg': 'rgba(255, 255, 255, 0.85)',
+      '--nav-bg': 'rgba(240, 255, 254, 0.95)',
     },
     still_waters: {
       '--bg-primary': '#E0F7FA',
@@ -53,12 +53,12 @@ export default function Layout({ children, currentPageName }) {
       '--text-primary': '#37474F',
       '--text-secondary': '#546E7A',
       '--text-light': '#78909C',
-      '--card-bg': '#FFFFFF',
-      '--card-overlay': '#F5F0E6',
+      '--card-bg': '#F3F0F8',
+      '--card-overlay': '#EDE7F6',
       '--button-primary': '#9575CD',
       '--button-secondary': '#B39DDB',
-      '--border-color': '#CFD8DC',
-      '--nav-bg': 'rgba(255, 255, 255, 0.9)',
+      '--border-color': '#D9D1E3',
+      '--nav-bg': 'rgba(243, 240, 248, 0.95)',
     },
     eternal_hope: {
       '--bg-primary': '#FFF8E8',
@@ -71,12 +71,12 @@ export default function Layout({ children, currentPageName }) {
       '--text-primary': '#3E2723',
       '--text-secondary': '#5D4037',
       '--text-light': '#795548',
-      '--card-bg': '#FFFDF8',
+      '--card-bg': '#FFF9F0',
       '--card-overlay': '#FFF4E6',
       '--button-primary': '#D4A574',
       '--button-secondary': '#E8B298',
       '--border-color': '#E8D4C4',
-      '--nav-bg': 'rgba(255, 252, 245, 0.9)',
+      '--nav-bg': 'rgba(255, 249, 240, 0.95)',
     },
   };
 
@@ -101,20 +101,21 @@ export default function Layout({ children, currentPageName }) {
           background: linear-gradient(to bottom, ${currentTheme['--bg-gradient-from']}, ${currentTheme['--bg-gradient-to']});
         }
         .theme-card {
-          background-color: ${currentTheme['--card-bg']};
-          border-color: ${currentTheme['--border-color']};
+          background-color: ${currentTheme['--card-bg']} !important;
+          border-color: ${currentTheme['--border-color']} !important;
         }
         .theme-text-primary {
-          color: ${currentTheme['--text-primary']};
+          color: ${currentTheme['--text-primary']} !important;
         }
         .theme-text-secondary {
-          color: ${currentTheme['--text-secondary']};
+          color: ${currentTheme['--text-secondary']} !important;
         }
         .theme-button {
-          background: linear-gradient(to right, ${currentTheme['--button-primary']}, ${currentTheme['--button-secondary']});
+          background: linear-gradient(to right, ${currentTheme['--button-primary']}, ${currentTheme['--button-secondary']}) !important;
+          color: white !important;
         }
         .theme-accent {
-          background-color: ${currentTheme['--accent-primary']};
+          background-color: ${currentTheme['--accent-primary']} !important;
         }
       `}</style>
       
