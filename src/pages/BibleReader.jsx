@@ -409,7 +409,7 @@ export default function BibleReader() {
                                             <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
                                         </div>
                                     ) : commentaryData ? (
-                                        <div className="bg-white rounded-3xl p-6 border border-slate-200">
+                                        <div className="rounded-3xl p-6 border border-slate-200 theme-card">
                                             <div className="space-y-4">
                                                 {commentaryData.verses?.map((verse) => (
                                                     <div key={verse.verse} className="space-y-2">
@@ -424,7 +424,7 @@ export default function BibleReader() {
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="bg-white rounded-3xl p-6 border border-slate-200 text-center text-slate-500">
+                                        <div className="rounded-3xl p-6 border border-slate-200 theme-card text-center text-slate-500">
                                             No commentary available for this chapter
                                         </div>
                                     )}
@@ -436,7 +436,7 @@ export default function BibleReader() {
                                             <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
                                         </div>
                                     ) : datasetData ? (
-                                        <div className="bg-white rounded-3xl p-6 border border-slate-200">
+                                        <div className="rounded-3xl p-6 border border-slate-200 theme-card">
                                             <div className="space-y-4">
                                                 {datasetData.verses?.map((verse) => (
                                                     <div key={verse.verse} className="space-y-2">
@@ -451,7 +451,7 @@ export default function BibleReader() {
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="bg-white rounded-3xl p-6 border border-slate-200 text-center text-slate-500">
+                                        <div className="rounded-3xl p-6 border border-slate-200 theme-card text-center text-slate-500">
                                             No cross-references available for this chapter
                                         </div>
                                     )}
