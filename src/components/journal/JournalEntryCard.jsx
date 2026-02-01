@@ -14,10 +14,7 @@ export default function JournalEntryCard({ entry, onClick }) {
       whileHover={{ scale: 1.01, y: -2 }}
       whileTap={{ scale: 0.99 }}
       onClick={onClick}
-      className={cn(
-        "group relative overflow-hidden rounded-3xl cursor-pointer",
-        "bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow"
-      )}
+      className="group relative overflow-hidden rounded-3xl cursor-pointer theme-card shadow-sm hover:shadow-md transition-shadow"
     >
       <div className="flex">
         {/* Image or Mood Display */}
@@ -56,7 +53,7 @@ export default function JournalEntryCard({ entry, onClick }) {
               </span>
             </div>
             
-            <p className="text-slate-700 text-sm line-clamp-2 mb-2">
+            <p className="text-sm line-clamp-2 mb-2 theme-text-primary">
               {entry.reflection || (isMoment ? 'A glimpse of God...' : 'Heart check-in')}
             </p>
           </div>

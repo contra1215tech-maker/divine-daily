@@ -36,16 +36,16 @@ export default function BookSelector({ books, onSelectBook, onChapterSelect }) {
                     style={{ backgroundColor: 'transparent' }}
                 >
                     <div className="flex items-center gap-2">
-                        <BookOpen className="w-4 h-4 text-sky-500" />
+                        <BookOpen className="w-4 h-4 theme-text-primary" />
                         <div className="text-left">
-                            <p className="font-semibold text-slate-800 text-sm">{book.name}</p>
-                            <p className="text-xs text-slate-500">{book.numberOfChapters} ch</p>
+                            <p className="font-semibold text-sm theme-text-primary">{book.name}</p>
+                            <p className="text-xs theme-text-secondary">{book.numberOfChapters} ch</p>
                         </div>
                     </div>
                     {isExpanded ? (
-                        <ChevronDown className="w-4 h-4 text-slate-400" />
+                        <ChevronDown className="w-4 h-4 theme-text-secondary" />
                     ) : (
-                        <ChevronRight className="w-4 h-4 text-slate-400" />
+                        <ChevronRight className="w-4 h-4 theme-text-secondary" />
                     )}
                 </motion.button>
                 
@@ -56,16 +56,17 @@ export default function BookSelector({ books, onSelectBook, onChapterSelect }) {
                             animate={{ height: 'auto' }}
                             exit={{ height: 0 }}
                             transition={{ duration: 0.2 }}
-                            className="overflow-hidden border-t border-slate-200"
+                            className="overflow-hidden"
+                            style={{ borderTop: '1px solid var(--border-color)' }}
                         >
-                            <div className="p-2 bg-slate-50">
+                            <div className="p-2" style={{ backgroundColor: 'var(--card-overlay)' }}>
                                 <div className="grid grid-cols-6 gap-1">
                                     {chapters.map((chapter) => (
                                         <motion.button
                                             key={chapter}
                                             whileTap={{ scale: 0.9 }}
                                             onClick={() => handleChapterClick(book, chapter)}
-                                            className="aspect-square rounded-lg bg-white border border-slate-200 hover:bg-sky-50 hover:border-sky-300 text-sm font-medium text-slate-700 hover:text-sky-600 transition-colors"
+                                            className="aspect-square rounded-lg theme-card text-sm font-medium theme-text-primary transition-colors hover:shadow-md"
                                         >
                                             {chapter}
                                         </motion.button>
@@ -83,7 +84,7 @@ export default function BookSelector({ books, onSelectBook, onChapterSelect }) {
         <div className="space-y-4">
             {oldTestament.length > 0 && (
                 <div>
-                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 px-1">
+                    <h3 className="text-xs font-bold uppercase tracking-wider mb-2 px-1 theme-text-secondary">
                         Old Testament
                     </h3>
                     <div className="space-y-1">
@@ -96,7 +97,7 @@ export default function BookSelector({ books, onSelectBook, onChapterSelect }) {
 
             {newTestament.length > 0 && (
                 <div>
-                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 px-1">
+                    <h3 className="text-xs font-bold uppercase tracking-wider mb-2 px-1 theme-text-secondary">
                         New Testament
                     </h3>
                     <div className="space-y-1">
