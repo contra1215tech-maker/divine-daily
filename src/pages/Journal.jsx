@@ -132,26 +132,26 @@ export default function Journal() {
                 exit={{ height: 0, opacity: 0 }}
                 className="overflow-hidden"
               >
-                <div className="flex gap-2 mt-3 overflow-x-auto">
-                  {filters.map((filter) => {
-                    const Icon = filter.icon;
-                    return (
-                      <button
-                        key={filter.id}
-                        onClick={() => setActiveFilter(filter.id)}
-                        className={cn(
-                          "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border-2",
-                          activeFilter === filter.id
-                            ? "border-current theme-text-primary"
-                            : "border-transparent theme-card theme-text-secondary hover:shadow-md"
-                        )}
-                      >
-                        {Icon && <Icon className="w-4 h-4" />}
-                        {filter.label}
-                      </button>
-                    );
-                  })}
-                </div>
+                <div className="flex gap-2 mt-3 justify-start">
+                   {filters.map((filter) => {
+                     const Icon = filter.icon;
+                     return (
+                       <button
+                         key={filter.id}
+                         onClick={() => setActiveFilter(filter.id)}
+                         className={cn(
+                           "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all border-2",
+                           activeFilter === filter.id
+                             ? "border-current theme-text-primary"
+                             : "border-transparent theme-card theme-text-secondary hover:shadow-md"
+                         )}
+                       >
+                         {Icon && <Icon className="w-3.5 h-3.5" />}
+                         {filter.label}
+                       </button>
+                     );
+                   })}
+                 </div>
               </motion.div>
             )}
           </AnimatePresence>
