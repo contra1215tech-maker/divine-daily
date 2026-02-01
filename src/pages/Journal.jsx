@@ -89,16 +89,7 @@ export default function Journal() {
         borderBottom: '1px solid var(--border-color)'
       }}>
         <div className="px-6 pt-3 pb-2">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-2xl font-bold theme-text-primary">Journal</h1>
-            <button
-              onClick={() => navigate(createPageUrl('CaptureMoment'))}
-              className="w-10 h-10 rounded-full border-2 theme-text-primary flex items-center justify-center"
-              style={{ borderColor: 'var(--text-light)' }}
-            >
-              <Plus className="w-5 h-5" />
-            </button>
-          </div>
+          <h1 className="text-2xl font-bold theme-text-primary mb-4">Journal</h1>
           
           {/* Search */}
           <div className="relative">
