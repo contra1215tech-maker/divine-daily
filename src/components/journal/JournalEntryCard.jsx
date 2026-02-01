@@ -9,6 +9,9 @@ export default function JournalEntryCard({ entry, onClick }) {
   const moodData = moods.find(m => m.id === entry.mood);
   const isMoment = entry.type === 'moment';
 
+  const hasPhoto = isMoment && entry.photo_url;
+  const hasNoPhoto = isMoment && !entry.photo_url;
+
   return (
     <motion.div
       whileHover={{ scale: 1.01, y: -2 }}
@@ -16,23 +19,18 @@ export default function JournalEntryCard({ entry, onClick }) {
       onClick={onClick}
       className="group relative overflow-hidden rounded-3xl cursor-pointer theme-card shadow-sm hover:shadow-md transition-shadow"
     >
-      <div className="flex">
-        {/* Image or Mood Display */}
-        {isMoment && entry.photo_url ? (
-          <div className="w-28 h-28 sm:w-32 sm:h-32 flex-shrink-0">
-            <img 
-              src={entry.photo_url} 
-              alt="Moment"
-              className="w-full h-full object-cover"
-            />
-          </div>
-        ) : (
+      <div className={cn("flex", hasNoPhoto && "flex-col")}>
+        {/* Image, Mood, or Photo Indicator */}
+        {!hasNoPhoto && (
           <div className={cn(
-            "w-28 h-28 sm:w-32 sm:h-32 flex-shrink-0 flex items-center justify-center",
-            moodData?.color || "bg-slate-100"
+            "w-28 h-28 sm:w-32 sm:h-32 flex-shrink-0 flex items-center justify-center relative",
+            !isMoment && (moodData?.color || "bg-slate-100")
           )}>
-            {isMoment ? (
-              <Camera className="w-8 h-8 text-slate-400" />
+            {hasPhoto ? (
+              <>
+                <div className="w-full h-full bg-gradient-to-br from-slate-200 to-slate-300" />
+                <Camera className="absolute w-6 h-6 text-slate-500" />
+              </>
             ) : (
               <span className="text-5xl">{moodData?.emoji || '💭'}</span>
             )}
@@ -40,7 +38,7 @@ export default function JournalEntryCard({ entry, onClick }) {
         )}
 
         {/* Content */}
-        <div className="flex-1 p-4 flex flex-col justify-between min-w-0">
+        <div className={cn("flex-1 p-4 flex flex-col justify-between min-w-0", hasNoPhoto && "py-3")}>
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className={cn(
