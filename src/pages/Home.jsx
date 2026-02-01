@@ -84,15 +84,15 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-50 via-white to-amber-50/30 pb-24">
+    <div className="min-h-screen pb-24" style={{ background: 'transparent' }}>
       {/* Header */}
       <div className="px-6 pt-8 pb-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <p className="text-slate-500 text-sm">
+            <p className="text-sm theme-text-secondary">
               {format(new Date(), 'EEEE, MMMM d')}
             </p>
-            <h1 className="text-2xl font-bold text-slate-800">
+            <h1 className="text-2xl font-bold theme-text-primary">
               Hello, {user.full_name?.split(' ')[0] || 'Friend'} ✨
             </h1>
           </div>
@@ -103,7 +103,7 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-sky-500 via-sky-400 to-cyan-400 p-6 text-white shadow-xl shadow-sky-200"
+          className="relative overflow-hidden rounded-3xl theme-button p-6 text-white shadow-xl"
         >
           <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-32 h-32 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2" />
@@ -127,13 +127,13 @@ export default function Home() {
             <motion.div
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="p-5 rounded-3xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow"
+              className="p-5 rounded-3xl theme-card shadow-sm hover:shadow-md transition-shadow"
             >
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-100 to-sky-50 flex items-center justify-center mb-3">
-                <Camera className="w-6 h-6 text-sky-500" />
+              <div className="w-12 h-12 rounded-2xl theme-accent flex items-center justify-center mb-3">
+                <Camera className="w-6 h-6 theme-text-primary" />
               </div>
-              <h3 className="font-semibold text-slate-800">Capture Moment</h3>
-              <p className="text-sm text-slate-400 mt-1">Spot God today</p>
+              <h3 className="font-semibold theme-text-primary">Capture Moment</h3>
+              <p className="text-sm theme-text-secondary mt-1">Spot God today</p>
             </motion.div>
           </Link>
 
@@ -141,13 +141,13 @@ export default function Home() {
             <motion.div
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="p-5 rounded-3xl bg-white border border-slate-100 shadow-sm hover:shadow-md transition-shadow"
+              className="p-5 rounded-3xl theme-card shadow-sm hover:shadow-md transition-shadow"
             >
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-100 to-amber-50 flex items-center justify-center mb-3">
-                <Heart className="w-6 h-6 text-amber-500" />
+              <div className="w-12 h-12 rounded-2xl theme-accent flex items-center justify-center mb-3">
+                <Heart className="w-6 h-6 theme-text-primary" />
               </div>
-              <h3 className="font-semibold text-slate-800">Check Heart</h3>
-              <p className="text-sm text-slate-400 mt-1">How are you feeling?</p>
+              <h3 className="font-semibold theme-text-primary">Check Heart</h3>
+              <p className="text-sm theme-text-secondary mt-1">How are you feeling?</p>
             </motion.div>
           </Link>
         </div>
@@ -156,10 +156,10 @@ export default function Home() {
       {/* Recent Entries */}
       <div className="px-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold text-slate-800">Recent Entries</h2>
+          <h2 className="text-lg font-bold theme-text-primary">Recent Entries</h2>
           <Link 
             to={createPageUrl('Journal')}
-            className="flex items-center gap-1 text-sm font-medium text-sky-500 hover:text-sky-600"
+            className="flex items-center gap-1 text-sm font-medium theme-text-secondary"
           >
             View all
             <ChevronRight className="w-4 h-4" />

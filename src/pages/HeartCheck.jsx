@@ -140,19 +140,22 @@ export default function HeartCheck() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50/50 via-white to-sky-50/30 pb-8">
+    <div className="min-h-screen pb-8" style={{ background: 'transparent' }}>
       <Celebration type="highfive" show={showCelebration} onComplete={handleCelebrationComplete} />
       
       {/* Header */}
-      <div className="sticky top-0 bg-white/80 backdrop-blur-lg border-b border-slate-100 px-4 py-4 z-10">
+      <div className="sticky top-0 backdrop-blur-lg px-4 py-4 z-10" style={{ 
+        backgroundColor: 'var(--nav-bg)',
+        borderBottom: '1px solid var(--border-color)'
+      }}>
         <div className="flex items-center justify-between">
           <button 
             onClick={() => step === 1 ? navigate(createPageUrl('Home')) : setStep(1)}
-            className="p-2 -ml-2 rounded-xl hover:bg-slate-100 transition-colors"
+            className="p-2 -ml-2 rounded-xl transition-colors theme-card"
           >
-            <ArrowLeft className="w-6 h-6 text-slate-600" />
+            <ArrowLeft className="w-6 h-6 theme-text-primary" />
           </button>
-          <h1 className="font-semibold text-slate-800">Heart Check</h1>
+          <h1 className="font-semibold theme-text-primary">Heart Check</h1>
           <div className="w-10" />
         </div>
       </div>
@@ -176,10 +179,10 @@ export default function HeartCheck() {
                 >
                   💛
                 </motion.div>
-                <h2 className="text-2xl font-bold text-slate-800 mb-2">
+                <h2 className="text-2xl font-bold mb-2 theme-text-primary">
                   How's your heart today?
                 </h2>
-                <p className="text-slate-500">
+                <p className="theme-text-secondary">
                   Take a moment to check in with yourself
                 </p>
               </div>
@@ -212,14 +215,15 @@ export default function HeartCheck() {
 
               {/* Optional Reflection */}
               <div className="space-y-2">
-                <label className="text-sm font-medium text-slate-700">
+                <label className="text-sm font-medium theme-text-primary">
                   Want to reflect? (optional)
                 </label>
                 <Textarea
                   value={reflection}
                   onChange={(e) => setReflection(e.target.value)}
                   placeholder="What's on your mind..."
-                  className="min-h-[100px] rounded-2xl border-slate-200 focus:border-amber-300 focus:ring-amber-200 resize-none"
+                  className="min-h-[100px] rounded-2xl theme-card resize-none"
+                  style={{ borderColor: 'var(--border-color)' }}
                 />
               </div>
 
