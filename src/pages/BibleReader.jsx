@@ -466,13 +466,13 @@ export default function BibleReader() {
                                                                     {verse.number}
                                                                 </span>
                                                                 <p 
-                                                                    className={cn(
-                                                                        "text-slate-800 leading-relaxed font-serif transition-all",
-                                                                        isSelected && "underline decoration-2",
-                                                                        highlightColor && "px-1 rounded"
-                                                                    )}
-                                                                    style={highlightColor ? { backgroundColor: highlightColor } : {}}
-                                                                >
+                                                                        className={cn(
+                                                                            "text-slate-800 leading-relaxed transition-all",
+                                                                            isSelected && "underline decoration-2",
+                                                                            highlightColor && "px-1 rounded"
+                                                                        )}
+                                                                        style={highlightColor ? { backgroundColor: highlightColor } : {}}
+                                                                    >
                                                                     {Array.isArray(verse.content) 
                                                                         ? verse.content.map(item => 
                                                                             typeof item === 'string' ? item : item.text || ''
