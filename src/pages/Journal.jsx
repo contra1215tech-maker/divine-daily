@@ -39,7 +39,7 @@ export default function Journal() {
   });
 
   // Filter entries
-  const filteredEntries = activeFilter === 'favorites' ? [] : entries.filter(entry => {
+  const filteredEntries = (activeFilter === 'favorites' || activeFilter === 'pictures') ? [] : entries.filter(entry => {
       const matchesFilter = activeFilter === 'all' || activeFilter === 'entries';
       const matchesSearch = !searchQuery || 
           entry.reflection?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -53,6 +53,14 @@ export default function Journal() {
       fav.verse_text?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       fav.verse_reference?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesSearch;
+  }) : [];
+
+  const pictureEntries = activeFilter === 'pictures' ? entries.filter(entry => {
+    const hasPicture = entry.photo_url && entry.type === 'moment';
+    const matchesSearch = !searchQuery ||
+      entry.reflection?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      entry.tags?.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
+    return hasPicture && matchesSearch;
   }) : [];
 
   // Group by date
