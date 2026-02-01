@@ -5,7 +5,7 @@ import { base44 } from '@/api/base44Client';
 import { format, startOfWeek, endOfWeek, isWithinInterval, subWeeks } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { Search, Filter, Calendar, Camera, Heart, TrendingUp, Star, Plus, ChevronDown } from 'lucide-react';
+import { Search, Filter, Calendar, Camera, Heart, TrendingUp, Star, Plus, ChevronDown, Image } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import JournalEntryCard from '@/components/journal/JournalEntryCard';
 import { cn } from "@/lib/utils";
