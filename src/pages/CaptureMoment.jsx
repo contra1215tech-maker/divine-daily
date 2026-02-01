@@ -148,7 +148,7 @@ export default function CaptureMoment() {
           value={reflection}
           onChange={(e) => setReflection(e.target.value)}
           placeholder="Describe what you noticed..."
-          className="min-h-[200px] text-base rounded-2xl theme-card resize-none"
+          className="min-h-[200px] text-base rounded-2xl theme-card resize-none dark-mode-text"
           style={{ borderColor: 'var(--border-color)' }}
         />
       </div>
