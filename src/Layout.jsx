@@ -147,6 +147,11 @@ export default function Layout({ children, currentPageName }) {
       button:hover, .theme-button:hover {
         background: rgba(255, 255, 255, 0.1) !important;
       }
+      ${theme === 'dark_mode' ? `
+        p, span {
+          color: #F5F1E8 !important;
+        }
+      ` : ''}
       `}</style>
 
       <div className="pb-24">
