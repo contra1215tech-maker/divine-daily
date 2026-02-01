@@ -3,26 +3,29 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { format, startOfWeek, endOfWeek, isWithinInterval, subWeeks } from 'date-fns';
-import { Search, Filter, Calendar, Camera, Heart, TrendingUp, Star } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
+import { Search, Filter, Calendar, Camera, Heart, TrendingUp, Star, Plus, ChevronDown } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import JournalEntryCard from '@/components/journal/JournalEntryCard';
 import { cn } from "@/lib/utils";
 
 const filters = [
   { id: 'all', label: 'All', icon: null },
-  { id: 'moment', label: 'Moments', icon: Camera },
-  { id: 'mood', label: 'Moods', icon: Heart },
+  { id: 'entries', label: 'Entries', icon: Camera },
   { id: 'favorites', label: 'Favorites', icon: Star },
 ];
 
 export default function Journal() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeFilter, setActiveFilter] = useState('all');
-  const [user, setUser] = useState(null);
+    const navigate = useNavigate();
+    const [searchQuery, setSearchQuery] = useState('');
+    const [activeFilter, setActiveFilter] = useState('all');
+    const [user, setUser] = useState(null);
+    const [showFilters, setShowFilters] = useState(false);
 
-  useEffect(() => {
-    base44.auth.me().then(setUser).catch(console.error);
-  }, []);
+    useEffect(() => {
+        base44.auth.me().then(setUser).catch(console.error);
+    }, []);
 
   const { data: entries = [], isLoading } = useQuery({
     queryKey: ['journal-entries'],
@@ -36,12 +39,12 @@ export default function Journal() {
 
   // Filter entries
   const filteredEntries = activeFilter === 'favorites' ? [] : entries.filter(entry => {
-    const matchesFilter = activeFilter === 'all' || entry.type === activeFilter;
-    const matchesSearch = !searchQuery || 
-      entry.reflection?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      entry.verse_reference?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      entry.tags?.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesFilter && matchesSearch;
+      const matchesFilter = activeFilter === 'all' || activeFilter === 'entries';
+      const matchesSearch = !searchQuery || 
+          entry.reflection?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          entry.verse_reference?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          entry.tags?.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
+      return matchesFilter && matchesSearch;
   });
 
   const filteredFavorites = activeFilter === 'favorites' ? favorites.filter(fav => {
@@ -70,7 +73,6 @@ export default function Journal() {
   );
   
   const weeklyMoments = weeklyEntries.filter(e => e.type === 'moment').length;
-  const weeklyMoods = weeklyEntries.filter(e => e.type === 'mood').length;
 
   return (
     <div className="min-h-screen pb-24" style={{ background: 'transparent' }}>
@@ -80,7 +82,16 @@ export default function Journal() {
         borderBottom: '1px solid var(--border-color)'
       }}>
         <div className="px-6 pt-3 pb-2">
-          <h1 className="text-2xl font-bold mb-4 theme-text-primary">Journal</h1>
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-2xl font-bold theme-text-primary">Journal</h1>
+            <button
+              onClick={() => navigate(createPageUrl('CaptureMoment'))}
+              className="w-10 h-10 rounded-full border-2 theme-text-primary flex items-center justify-center"
+              style={{ borderColor: 'var(--text-light)' }}
+            >
+              <Plus className="w-5 h-5" />
+            </button>
+          </div>
           
           {/* Search */}
           <div className="relative">
@@ -95,28 +106,50 @@ export default function Journal() {
           </div>
         </div>
 
-        {/* Filters */}
-        <div className="px-6 pb-4 flex gap-2 overflow-x-auto">
-          {filters.map((filter) => {
-            const Icon = filter.icon;
-            return (
-              <button
-                key={filter.id}
-                onClick={() => setActiveFilter(filter.id)}
-                className={cn(
-                  "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border-2",
-                  activeFilter === filter.id
-                    ? "border-current theme-text-primary"
-                    : "border-transparent theme-card theme-text-secondary hover:shadow-md"
-                )}
+        {/* Filters Toggle */}
+        <div className="px-6 pb-4">
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium theme-card theme-text-secondary"
+          >
+            <Filter className="w-4 h-4" />
+            Filters
+            <ChevronDown className={cn("w-4 h-4 transition-transform", showFilters && "rotate-180")} />
+          </button>
+
+          <AnimatePresence>
+            {showFilters && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
               >
-                {Icon && <Icon className="w-4 h-4" />}
-                {filter.label}
-              </button>
-            );
-          })}
+                <div className="flex gap-2 mt-3 overflow-x-auto">
+                  {filters.map((filter) => {
+                    const Icon = filter.icon;
+                    return (
+                      <button
+                        key={filter.id}
+                        onClick={() => setActiveFilter(filter.id)}
+                        className={cn(
+                          "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-all border-2",
+                          activeFilter === filter.id
+                            ? "border-current theme-text-primary"
+                            : "border-transparent theme-card theme-text-secondary hover:shadow-md"
+                        )}
+                      >
+                        {Icon && <Icon className="w-4 h-4" />}
+                        {filter.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-      </div>
+        </div>
 
       {/* Weekly Summary */}
       <div className="px-6 py-4">
@@ -129,17 +162,10 @@ export default function Journal() {
             <TrendingUp className="w-4 h-4 theme-text-primary" />
             <span className="text-sm font-medium theme-text-primary">This Week</span>
           </div>
-          <div className="flex gap-6">
-            <div className="flex items-center gap-2">
-              <Camera className="w-4 h-4 theme-text-primary" />
-              <span className="text-2xl font-bold theme-text-primary">{weeklyMoments}</span>
-              <span className="text-sm theme-text-secondary">moments</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Heart className="w-4 h-4 theme-text-primary" />
-              <span className="text-2xl font-bold theme-text-primary">{weeklyMoods}</span>
-              <span className="text-sm theme-text-secondary">check-ins</span>
-            </div>
+          <div className="flex items-center gap-2">
+            <Camera className="w-4 h-4 theme-text-primary" />
+            <span className="text-2xl font-bold theme-text-primary">{weeklyMoments}</span>
+            <span className="text-sm theme-text-secondary">entries this week</span>
           </div>
         </motion.div>
       </div>
