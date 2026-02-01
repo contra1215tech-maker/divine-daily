@@ -136,7 +136,7 @@ export default function HeartCheck() {
 
   const handleCelebrationComplete = () => {
     setShowCelebration(false);
-    navigate(createPageUrl('Home'));
+    navigate(createPageUrl('BibleReader'));
   };
 
   return (
@@ -150,7 +150,7 @@ export default function HeartCheck() {
       }}>
         <div className="flex items-center justify-between">
           <button 
-            onClick={() => step === 1 ? navigate(createPageUrl('Home')) : setStep(1)}
+            onClick={() => step === 1 ? navigate(createPageUrl('BibleReader')) : setStep(1)}
             className="p-2 -ml-2 rounded-xl transition-colors theme-card"
           >
             <ArrowLeft className="w-6 h-6 theme-text-primary" />

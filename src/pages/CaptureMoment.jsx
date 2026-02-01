@@ -131,7 +131,7 @@ export default function CaptureMoment() {
 
   const handleCelebrationComplete = () => {
     setShowCelebration(false);
-    navigate(createPageUrl('Home'));
+    navigate(createPageUrl('BibleReader'));
   };
 
   return (
@@ -145,7 +145,7 @@ export default function CaptureMoment() {
       }}>
         <div className="flex items-center justify-between">
           <button 
-            onClick={() => navigate(createPageUrl('Home'))}
+            onClick={() => navigate(createPageUrl('BibleReader'))}
             className="p-2 -ml-2 rounded-xl transition-colors theme-card"
           >
             <ArrowLeft className="w-6 h-6 theme-text-primary" />
