@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, ChevronLeft, ChevronRight, Settings2, Loader2, MessageSquare, Database } from 'lucide-react';
+import { BookOpen, ChevronLeft, ChevronRight, Settings2, Loader2, MessageSquare, Database, Star, Copy, Palette } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -17,6 +17,8 @@ export default function BibleReader() {
     const [showBookSelector, setShowBookSelector] = useState(true);
     const [activeTab, setActiveTab] = useState('text');
     const [showNavControls, setShowNavControls] = useState(false);
+    const [selectedVerse, setSelectedVerse] = useState(null);
+    const [verseHighlights, setVerseHighlights] = useState({});
 
     useEffect(() => {
         base44.auth.me().then(setUser).catch(() => {});
@@ -100,6 +102,48 @@ export default function BibleReader() {
 
     const toggleNavControls = () => {
         setShowNavControls(!showNavControls);
+    };
+
+    const handleVerseClick = (verse, e) => {
+        e.stopPropagation();
+        const verseKey = `${selectedBook.id}-${selectedChapter}-${verse.number}`;
+        setSelectedVerse({ ...verse, key: verseKey });
+    };
+
+    const handleHighlight = async (color) => {
+        const verseKey = selectedVerse.key;
+        setVerseHighlights({ ...verseHighlights, [verseKey]: color });
+        setSelectedVerse(null);
+    };
+
+    const handleFavorite = async () => {
+        const verseText = Array.isArray(selectedVerse.content)
+            ? selectedVerse.content.map(item => typeof item === 'string' ? item : item.text || '').join(' ')
+            : selectedVerse.content;
+
+        await base44.entities.FavoriteVerse.create({
+            verse_reference: `${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`,
+            verse_text: verseText,
+            book_name: selectedBook.name,
+            chapter: selectedChapter,
+            verse_number: selectedVerse.number,
+            bible_version: translationId,
+            highlight_color: verseHighlights[selectedVerse.key] || null
+        });
+
+        alert('Verse saved to favorites!');
+        setSelectedVerse(null);
+    };
+
+    const handleCopy = () => {
+        const verseText = Array.isArray(selectedVerse.content)
+            ? selectedVerse.content.map(item => typeof item === 'string' ? item : item.text || '').join(' ')
+            : selectedVerse.content;
+        
+        const fullText = `${selectedBook.name} ${selectedChapter}:${selectedVerse.number} - ${verseText}`;
+        navigator.clipboard.writeText(fullText);
+        alert('Verse copied to clipboard!');
+        setSelectedVerse(null);
     };
 
     if (!user || booksLoading) {
@@ -204,7 +248,7 @@ export default function BibleReader() {
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: 20 }}
-                                        className="fixed bottom-24 left-0 right-0 z-40 flex justify-center gap-4 px-4"
+                                        className="fixed bottom-16 left-0 right-0 z-40 flex justify-center gap-4 px-4 max-w-md mx-auto"
                                         onClick={(e) => e.stopPropagation()}
                                     >
                                         {selectedChapter > 1 && (
@@ -223,6 +267,68 @@ export default function BibleReader() {
                                                 <ChevronRight className="w-5 h-5" />
                                             </button>
                                         )}
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+
+                            {/* Verse Actions Menu */}
+                            <AnimatePresence>
+                                {selectedVerse && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: 20 }}
+                                        className="fixed bottom-16 left-4 right-4 z-50 bg-white rounded-2xl shadow-2xl border border-slate-200 p-4 max-w-md mx-auto"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
+                                        <h3 className="text-sm font-semibold text-slate-700 mb-3">
+                                            Verse {selectedVerse.number}
+                                        </h3>
+                                        
+                                        <div className="space-y-3">
+                                            {/* Highlight Colors */}
+                                            <div>
+                                                <p className="text-xs text-slate-500 mb-2 flex items-center gap-1">
+                                                    <Palette className="w-3 h-3" />
+                                                    Highlight Color
+                                                </p>
+                                                <div className="flex gap-2">
+                                                    {['#ffcdd2', '#f8bbd0', '#e1bee7', '#c5cae9', '#bbdefb', '#b2dfdb', '#fff9c4'].map((color) => (
+                                                        <button
+                                                            key={color}
+                                                            onClick={() => handleHighlight(color)}
+                                                            className="w-8 h-8 rounded-full border-2 border-slate-300"
+                                                            style={{ backgroundColor: color }}
+                                                        />
+                                                    ))}
+                                                </div>
+                                            </div>
+
+                                            {/* Action Buttons */}
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={handleFavorite}
+                                                    className="flex-1 flex items-center justify-center gap-2 py-2 bg-amber-100 text-amber-700 rounded-xl font-medium"
+                                                >
+                                                    <Star className="w-4 h-4" />
+                                                    Favorite
+                                                </button>
+                                                <button
+                                                    onClick={handleCopy}
+                                                    className="flex-1 flex items-center justify-center gap-2 py-2 bg-sky-100 text-sky-700 rounded-xl font-medium"
+                                                >
+                                                    <Copy className="w-4 h-4" />
+                                                    Copy
+                                                </button>
+                                            </div>
+
+                                            <button
+                                                onClick={() => setSelectedVerse(null)}
+                                                className="w-full py-2 text-sm text-slate-500"
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
@@ -254,20 +360,37 @@ export default function BibleReader() {
                                             <div className="space-y-4">
                                                 {chapterData.chapter.content
                                                     .filter(item => item.type === 'verse')
-                                                    .map((verse) => (
-                                                        <div key={verse.number} className="flex gap-3">
-                                                            <span className="text-sm font-bold text-sky-500 mt-1 flex-shrink-0">
-                                                                {verse.number}
-                                                            </span>
-                                                            <p className="text-slate-800 leading-relaxed font-serif">
-                                                                {Array.isArray(verse.content) 
-                                                                    ? verse.content.map(item => 
-                                                                        typeof item === 'string' ? item : item.text || ''
-                                                                    ).join(' ')
-                                                                    : verse.content}
-                                                            </p>
-                                                        </div>
-                                                    ))}
+                                                    .map((verse) => {
+                                                        const verseKey = `${selectedBook.id}-${selectedChapter}-${verse.number}`;
+                                                        const highlightColor = verseHighlights[verseKey];
+                                                        const isSelected = selectedVerse?.key === verseKey;
+                                                        
+                                                        return (
+                                                            <div 
+                                                                key={verse.number} 
+                                                                className="flex gap-3 cursor-pointer"
+                                                                onClick={(e) => handleVerseClick(verse, e)}
+                                                            >
+                                                                <span className="text-sm font-bold text-sky-500 mt-1 flex-shrink-0">
+                                                                    {verse.number}
+                                                                </span>
+                                                                <p 
+                                                                    className={cn(
+                                                                        "text-slate-800 leading-relaxed font-serif transition-all",
+                                                                        isSelected && "underline decoration-2",
+                                                                        highlightColor && "px-1 rounded"
+                                                                    )}
+                                                                    style={highlightColor ? { backgroundColor: highlightColor } : {}}
+                                                                >
+                                                                    {Array.isArray(verse.content) 
+                                                                        ? verse.content.map(item => 
+                                                                            typeof item === 'string' ? item : item.text || ''
+                                                                        ).join(' ')
+                                                                        : verse.content}
+                                                                </p>
+                                                            </div>
+                                                        );
+                                                    })}
                                             </div>
                                         </div>
                                     ) : null}

@@ -47,22 +47,22 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-import Home from './pages/Home';
+import BibleReader from './pages/BibleReader';
 import CaptureMoment from './pages/CaptureMoment';
 import HeartCheck from './pages/HeartCheck';
+import Home from './pages/Home';
 import Journal from './pages/Journal';
 import Settings from './pages/Settings';
-import BibleReader from './pages/BibleReader';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
-    "Home": Home,
+    "BibleReader": BibleReader,
     "CaptureMoment": CaptureMoment,
     "HeartCheck": HeartCheck,
+    "Home": Home,
     "Journal": Journal,
     "Settings": Settings,
-    "BibleReader": BibleReader,
 }
 
 export const pagesConfig = {
