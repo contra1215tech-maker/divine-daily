@@ -132,20 +132,20 @@ export default function Settings() {
 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4">
-            <div className="text-center p-3 rounded-2xl bg-slate-50">
-              <Flame className="w-5 h-5 text-orange-500 mx-auto mb-1" />
-              <p className="text-xl font-bold text-slate-800">{user?.current_streak || 0}</p>
-              <p className="text-xs text-slate-500">Current Streak</p>
+            <div className="text-center p-3 rounded-2xl" style={{ backgroundColor: 'var(--card-overlay)' }}>
+              <Flame className="w-5 h-5 mx-auto mb-1 theme-text-primary" />
+              <p className="text-xl font-bold theme-text-primary">{user?.current_streak || 0}</p>
+              <p className="text-xs theme-text-secondary">Current Streak</p>
             </div>
-            <div className="text-center p-3 rounded-2xl bg-slate-50">
-              <Camera className="w-5 h-5 text-sky-500 mx-auto mb-1" />
-              <p className="text-xl font-bold text-slate-800">{user?.total_moments || 0}</p>
-              <p className="text-xs text-slate-500">Moments</p>
+            <div className="text-center p-3 rounded-2xl" style={{ backgroundColor: 'var(--card-overlay)' }}>
+              <Camera className="w-5 h-5 mx-auto mb-1 theme-text-primary" />
+              <p className="text-xl font-bold theme-text-primary">{user?.total_moments || 0}</p>
+              <p className="text-xs theme-text-secondary">Moments</p>
             </div>
-            <div className="text-center p-3 rounded-2xl bg-slate-50">
-              <Heart className="w-5 h-5 text-amber-500 mx-auto mb-1" />
-              <p className="text-xl font-bold text-slate-800">{user?.total_moods || 0}</p>
-              <p className="text-xs text-slate-500">Check-ins</p>
+            <div className="text-center p-3 rounded-2xl" style={{ backgroundColor: 'var(--card-overlay)' }}>
+              <Heart className="w-5 h-5 mx-auto mb-1 theme-text-primary" />
+              <p className="text-xl font-bold theme-text-primary">{user?.total_moods || 0}</p>
+              <p className="text-xs theme-text-secondary">Check-ins</p>
             </div>
           </div>
         </motion.div>
@@ -154,10 +154,10 @@ export default function Settings() {
       {/* Badges */}
       <div className="px-6 mb-6">
         <div className="flex items-center gap-2 mb-4">
-          <Award className="w-5 h-5 text-amber-500" />
-          <h3 className="font-semibold text-slate-800">Badges</h3>
+          <Award className="w-5 h-5 theme-text-primary" />
+          <h3 className="font-semibold theme-text-primary">Badges</h3>
         </div>
-        <div className="p-4 rounded-2xl bg-white border border-slate-100">
+        <div className="p-4 rounded-2xl theme-card">
           <BadgeGrid earnedBadges={user?.badges || []} />
         </div>
       </div>
@@ -246,8 +246,8 @@ export default function Settings() {
 
       {/* App Info */}
       <div className="px-6 mt-8 text-center">
-        <p className="text-sm text-slate-400">Divine Daily v1.0</p>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-sm theme-text-secondary">Divine Daily v1.0</p>
+        <p className="text-xs theme-text-secondary mt-1">
           Spot God today. Hear His heart. Journal the journey.
         </p>
       </div>

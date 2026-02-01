@@ -126,19 +126,19 @@ export default function Journal() {
           className="p-4 rounded-2xl theme-card"
         >
           <div className="flex items-center gap-2 mb-3">
-            <TrendingUp className="w-4 h-4 text-sky-500" />
-            <span className="text-sm font-medium text-slate-700">This Week</span>
+            <TrendingUp className="w-4 h-4 theme-text-primary" />
+            <span className="text-sm font-medium theme-text-primary">This Week</span>
           </div>
           <div className="flex gap-6">
             <div className="flex items-center gap-2">
-              <Camera className="w-4 h-4 text-sky-500" />
-              <span className="text-2xl font-bold text-slate-800">{weeklyMoments}</span>
-              <span className="text-sm text-slate-500">moments</span>
+              <Camera className="w-4 h-4 theme-text-primary" />
+              <span className="text-2xl font-bold theme-text-primary">{weeklyMoments}</span>
+              <span className="text-sm theme-text-secondary">moments</span>
             </div>
             <div className="flex items-center gap-2">
-              <Heart className="w-4 h-4 text-amber-500" />
-              <span className="text-2xl font-bold text-slate-800">{weeklyMoods}</span>
-              <span className="text-sm text-slate-500">check-ins</span>
+              <Heart className="w-4 h-4 theme-text-primary" />
+              <span className="text-2xl font-bold theme-text-primary">{weeklyMoods}</span>
+              <span className="text-sm theme-text-secondary">check-ins</span>
             </div>
           </div>
         </motion.div>
@@ -160,14 +160,14 @@ export default function Journal() {
                   key={fav.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-white rounded-2xl p-4 border border-slate-200"
+                  className="rounded-2xl p-4 theme-card"
                 >
                   <div className="flex items-start gap-3">
-                    <Star className="w-5 h-5 text-amber-500 flex-shrink-0 mt-1" />
+                    <Star className="w-5 h-5 theme-text-primary flex-shrink-0 mt-1" />
                     <div className="flex-1">
-                      <h3 className="font-semibold text-sky-600 mb-2">{fav.verse_reference}</h3>
+                      <h3 className="font-semibold theme-text-primary mb-2">{fav.verse_reference}</h3>
                       <p 
-                        className="text-slate-800 leading-relaxed font-serif"
+                        className="leading-relaxed font-serif theme-text-primary"
                         style={fav.highlight_color ? { 
                           backgroundColor: fav.highlight_color,
                           padding: '2px 4px',
@@ -176,7 +176,7 @@ export default function Journal() {
                       >
                         {fav.verse_text}
                       </p>
-                      <p className="text-xs text-slate-500 mt-2">{fav.bible_version}</p>
+                      <p className="text-xs theme-text-secondary mt-2">{fav.bible_version}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -188,9 +188,9 @@ export default function Journal() {
               animate={{ opacity: 1 }}
               className="text-center py-16"
             >
-              <Star className="w-16 h-16 text-slate-300 mx-auto mb-3" />
-              <h3 className="font-semibold text-slate-700 mb-1">No favorite verses yet</h3>
-              <p className="text-sm text-slate-400">Tap verses in the Bible to save favorites</p>
+              <Star className="w-16 h-16 theme-text-secondary mx-auto mb-3" />
+              <h3 className="font-semibold theme-text-primary mb-1">No favorite verses yet</h3>
+              <p className="text-sm theme-text-secondary">Tap verses in the Bible to save favorites</p>
             </motion.div>
           )
         ) : Object.keys(groupedEntries).length > 0 ? (
@@ -198,8 +198,8 @@ export default function Journal() {
             {Object.entries(groupedEntries).map(([date, dayEntries]) => (
               <div key={date}>
                 <div className="flex items-center gap-2 mb-3">
-                  <Calendar className="w-4 h-4 text-slate-400" />
-                  <h3 className="text-sm font-medium text-slate-500">
+                  <Calendar className="w-4 h-4 theme-text-secondary" />
+                  <h3 className="text-sm font-medium theme-text-secondary">
                     {format(new Date(date), 'EEEE, MMMM d')}
                   </h3>
                 </div>
@@ -222,10 +222,10 @@ export default function Journal() {
             className="text-center py-16"
           >
             <div className="text-4xl mb-3">📖</div>
-            <h3 className="font-semibold text-slate-700 mb-1">
+            <h3 className="font-semibold theme-text-primary mb-1">
               {searchQuery ? 'No matches found' : 'No entries yet'}
             </h3>
-            <p className="text-sm text-slate-400">
+            <p className="text-sm theme-text-secondary">
               {searchQuery ? 'Try a different search term' : 'Start capturing God moments'}
             </p>
           </motion.div>
