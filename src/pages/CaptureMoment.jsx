@@ -135,19 +135,22 @@ export default function CaptureMoment() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-sky-50 via-white to-amber-50/30 pb-8">
+    <div className="min-h-screen pb-8" style={{ background: 'transparent' }}>
       <Celebration type="confetti" show={showCelebration} onComplete={handleCelebrationComplete} />
       
       {/* Header */}
-      <div className="sticky top-0 bg-white/80 backdrop-blur-lg border-b border-slate-100 px-4 py-4 z-10">
+      <div className="sticky top-0 backdrop-blur-lg px-4 py-4 z-10" style={{ 
+        backgroundColor: 'var(--nav-bg)',
+        borderBottom: '1px solid var(--border-color)'
+      }}>
         <div className="flex items-center justify-between">
           <button 
             onClick={() => navigate(createPageUrl('Home'))}
-            className="p-2 -ml-2 rounded-xl hover:bg-slate-100 transition-colors"
+            className="p-2 -ml-2 rounded-xl transition-colors theme-card"
           >
-            <ArrowLeft className="w-6 h-6 text-slate-600" />
+            <ArrowLeft className="w-6 h-6 theme-text-primary" />
           </button>
-          <h1 className="font-semibold text-slate-800">Capture Moment</h1>
+          <h1 className="font-semibold theme-text-primary">Capture Moment</h1>
           <div className="w-10" />
         </div>
       </div>
@@ -162,14 +165,15 @@ export default function CaptureMoment() {
 
         {/* Reflection */}
         <div className="space-y-2">
-          <label className="text-sm font-medium text-slate-700">
+          <label className="text-sm font-medium theme-text-primary">
             I saw God in...
           </label>
           <Textarea
             value={reflection}
             onChange={(e) => setReflection(e.target.value)}
             placeholder="Describe what you noticed..."
-            className="min-h-[120px] rounded-2xl border-slate-200 focus:border-sky-300 focus:ring-sky-200 resize-none"
+            className="min-h-[120px] rounded-2xl theme-card resize-none"
+            style={{ borderColor: 'var(--border-color)' }}
           />
         </div>
 
@@ -200,8 +204,8 @@ export default function CaptureMoment() {
         {/* Tags */}
         <div className="space-y-3">
           <div className="flex items-center gap-2">
-            <Tag className="w-4 h-4 text-slate-400" />
-            <label className="text-sm font-medium text-slate-700">Tags</label>
+            <Tag className="w-4 h-4 theme-text-secondary" />
+            <label className="text-sm font-medium theme-text-primary">Tags</label>
           </div>
           
           {/* Selected Tags */}
@@ -213,7 +217,7 @@ export default function CaptureMoment() {
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   onClick={() => handleRemoveTag(tag)}
-                  className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-sky-100 text-sky-700 text-sm font-medium"
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-full theme-button text-white text-sm font-medium"
                 >
                   #{tag}
                   <X className="w-3.5 h-3.5" />
@@ -228,7 +232,7 @@ export default function CaptureMoment() {
               <button
                 key={tag}
                 onClick={() => handleAddTag(tag)}
-                className="px-3 py-1.5 rounded-full bg-slate-100 text-slate-600 text-sm hover:bg-slate-200 transition-colors"
+                className="px-3 py-1.5 rounded-full theme-card theme-text-secondary text-sm hover:shadow-md transition-all"
               >
                 #{tag}
               </button>
