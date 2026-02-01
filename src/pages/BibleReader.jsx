@@ -83,6 +83,7 @@ export default function BibleReader() {
 
     const handleChapterSelect = (chapter) => {
         setSelectedChapter(chapter);
+        setActiveTab('text'); // Reset to text tab when changing chapters
     };
 
     if (!user || booksLoading) {
