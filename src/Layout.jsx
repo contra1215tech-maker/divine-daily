@@ -27,35 +27,56 @@ export default function Layout({ children, currentPageName }) {
     morning_dew: {
       '--bg-primary': '#E0F2F1',
       '--bg-secondary': '#D4EAF7',
+      '--bg-gradient-from': '#D4EAF7',
+      '--bg-gradient-to': '#E0F2F1',
       '--accent-primary': '#A8DADC',
       '--accent-secondary': '#B2D8B2',
       '--accent-warm': '#FAD5A5',
       '--text-primary': '#1E3A5F',
       '--text-secondary': '#475569',
+      '--text-light': '#64748B',
       '--card-bg': '#FFFFFF',
-      '--card-overlay': '#FEFEFE',
+      '--card-overlay': '#F0F9F9',
+      '--button-primary': '#5DADE2',
+      '--button-secondary': '#B2D8B2',
+      '--border-color': '#B8E6E3',
+      '--nav-bg': 'rgba(255, 255, 255, 0.85)',
     },
     still_waters: {
       '--bg-primary': '#E0F7FA',
       '--bg-secondary': '#D9E8E6',
+      '--bg-gradient-from': '#E0F7FA',
+      '--bg-gradient-to': '#EDE7F6',
       '--accent-primary': '#E1BEE7',
       '--accent-secondary': '#D7BDE2',
       '--accent-warm': '#E8DAB2',
-      '--text-primary': '#4A5568',
-      '--text-secondary': '#64748B',
+      '--text-primary': '#37474F',
+      '--text-secondary': '#546E7A',
+      '--text-light': '#78909C',
       '--card-bg': '#FFFFFF',
       '--card-overlay': '#F5F0E6',
+      '--button-primary': '#9575CD',
+      '--button-secondary': '#B39DDB',
+      '--border-color': '#CFD8DC',
+      '--nav-bg': 'rgba(255, 255, 255, 0.9)',
     },
     eternal_hope: {
-      '--bg-primary': '#FDFBF7',
-      '--bg-secondary': '#FFF8E8',
-      '--accent-primary': '#FADADD',
-      '--accent-secondary': '#E8C39E',
+      '--bg-primary': '#FFF8E8',
+      '--bg-secondary': '#FDFBF7',
+      '--bg-gradient-from': '#FFF8E8',
+      '--bg-gradient-to': '#FFE8D6',
+      '--accent-primary': '#E8C39E',
+      '--accent-secondary': '#FADADD',
       '--accent-warm': '#F9E4B7',
       '--text-primary': '#3E2723',
       '--text-secondary': '#5D4037',
-      '--card-bg': '#FFFFFF',
-      '--card-overlay': '#FFFAF0',
+      '--text-light': '#795548',
+      '--card-bg': '#FFFDF8',
+      '--card-overlay': '#FFF4E6',
+      '--button-primary': '#D4A574',
+      '--button-secondary': '#E8B298',
+      '--border-color': '#E8D4C4',
+      '--nav-bg': 'rgba(255, 252, 245, 0.9)',
     },
   };
 
@@ -67,7 +88,9 @@ export default function Layout({ children, currentPageName }) {
     currentPageName === 'HeartCheck';
 
   return (
-    <div className="min-h-screen max-w-md mx-auto" style={{ backgroundColor: currentTheme['--bg-primary'] }}>
+    <div className="min-h-screen max-w-md mx-auto" style={{ 
+      background: `linear-gradient(to bottom, ${currentTheme['--bg-gradient-from']}, ${currentTheme['--bg-gradient-to']})` 
+    }}>
       <style>{`
         :root {
           ${Object.entries(currentTheme).map(([key, value]) => `${key}: ${value};`).join('\n          ')}
@@ -75,7 +98,23 @@ export default function Layout({ children, currentPageName }) {
         body {
           max-width: 448px;
           margin: 0 auto;
-          background-color: ${currentTheme['--bg-primary']};
+          background: linear-gradient(to bottom, ${currentTheme['--bg-gradient-from']}, ${currentTheme['--bg-gradient-to']});
+        }
+        .theme-card {
+          background-color: ${currentTheme['--card-bg']};
+          border-color: ${currentTheme['--border-color']};
+        }
+        .theme-text-primary {
+          color: ${currentTheme['--text-primary']};
+        }
+        .theme-text-secondary {
+          color: ${currentTheme['--text-secondary']};
+        }
+        .theme-button {
+          background: linear-gradient(to right, ${currentTheme['--button-primary']}, ${currentTheme['--button-secondary']});
+        }
+        .theme-accent {
+          background-color: ${currentTheme['--accent-primary']};
         }
       `}</style>
       
@@ -86,7 +125,11 @@ export default function Layout({ children, currentPageName }) {
         <motion.nav
           initial={{ y: 100 }}
           animate={{ y: 0 }}
-          className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-lg border-t border-slate-100 z-40 max-w-md mx-auto"
+          className="fixed bottom-0 left-0 right-0 backdrop-blur-lg z-40 max-w-md mx-auto"
+          style={{ 
+            backgroundColor: currentTheme['--nav-bg'],
+            borderTop: `1px solid ${currentTheme['--border-color']}`
+          }}
         >
           <div className="flex items-center justify-around py-1">
             {navItems.map((item) => {
@@ -101,17 +144,17 @@ export default function Layout({ children, currentPageName }) {
                 >
                   <div className={cn(
                     "p-1.5 rounded-lg transition-colors",
-                    isActive ? "bg-sky-100" : "bg-transparent"
+                    isActive && "theme-accent"
                   )}>
-                    <Icon className={cn(
-                      "w-5 h-5 transition-colors",
-                      isActive ? "text-sky-500" : "text-slate-400"
-                    )} />
+                    <Icon 
+                      className="w-5 h-5 transition-colors"
+                      style={{ color: isActive ? currentTheme['--text-primary'] : currentTheme['--text-light'] }}
+                    />
                   </div>
-                  <span className={cn(
-                    "text-[10px] mt-0.5 font-medium transition-colors",
-                    isActive ? "text-sky-500" : "text-slate-400"
-                  )}>
+                  <span 
+                    className="text-[10px] mt-0.5 font-medium transition-colors"
+                    style={{ color: isActive ? currentTheme['--text-primary'] : currentTheme['--text-light'] }}
+                  >
                     {item.label}
                   </span>
                 </Link>

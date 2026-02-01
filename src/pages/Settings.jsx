@@ -105,10 +105,10 @@ export default function Settings() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white pb-24">
+    <div className="min-h-screen pb-24" style={{ background: 'transparent' }}>
       {/* Header */}
       <div className="px-6 pt-8 pb-6">
-        <h1 className="text-2xl font-bold text-slate-800">Settings</h1>
+        <h1 className="text-2xl font-bold theme-text-primary">Settings</h1>
       </div>
 
       {/* Profile Card */}
@@ -116,7 +116,7 @@ export default function Settings() {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-6 rounded-3xl bg-white border border-slate-100 shadow-sm"
+          className="p-6 rounded-3xl theme-card shadow-sm"
         >
           <div className="flex items-center gap-4 mb-6">
             <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-400 to-sky-500 flex items-center justify-center">
@@ -125,8 +125,8 @@ export default function Settings() {
               </span>
             </div>
             <div>
-              <h2 className="text-xl font-bold text-slate-800">{user?.full_name || 'Friend'}</h2>
-              <p className="text-sm text-slate-500">{user?.email}</p>
+              <h2 className="text-xl font-bold theme-text-primary">{user?.full_name || 'Friend'}</h2>
+              <p className="text-sm theme-text-secondary">{user?.email}</p>
             </div>
           </div>
 

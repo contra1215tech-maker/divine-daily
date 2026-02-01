@@ -73,11 +73,14 @@ export default function Journal() {
   const weeklyMoods = weeklyEntries.filter(e => e.type === 'mood').length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white via-slate-50/50 to-white pb-24">
+    <div className="min-h-screen pb-24" style={{ background: 'transparent' }}>
       {/* Header */}
-      <div className="sticky top-0 bg-white/90 backdrop-blur-lg z-10 border-b border-slate-100">
+      <div className="sticky top-0 backdrop-blur-lg z-10" style={{ 
+        backgroundColor: 'var(--nav-bg)',
+        borderBottom: '1px solid var(--border-color)'
+      }}>
         <div className="px-6 pt-6 pb-4">
-          <h1 className="text-2xl font-bold text-slate-800 mb-4">Journal</h1>
+          <h1 className="text-2xl font-bold mb-4 theme-text-primary">Journal</h1>
           
           {/* Search */}
           <div className="relative">
@@ -86,7 +89,8 @@ export default function Journal() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search entries, verses, tags..."
-              className="pl-12 rounded-2xl border-slate-200 bg-slate-50 focus:bg-white"
+              className="pl-12 rounded-2xl theme-card"
+              style={{ borderColor: 'var(--border-color)' }}
             />
           </div>
         </div>
@@ -119,7 +123,7 @@ export default function Journal() {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-4 rounded-2xl bg-gradient-to-r from-sky-50 to-amber-50 border border-slate-100"
+          className="p-4 rounded-2xl theme-card"
         >
           <div className="flex items-center gap-2 mb-3">
             <TrendingUp className="w-4 h-4 text-sky-500" />

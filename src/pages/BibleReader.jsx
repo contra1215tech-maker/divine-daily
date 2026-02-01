@@ -172,8 +172,8 @@ export default function BibleReader() {
                             </Button>
                         ) : (
                             <div className="flex items-center gap-2">
-                                <BookOpen className="w-5 h-5 text-sky-600" />
-                                <h1 className="text-xl font-bold text-slate-800">Bible</h1>
+                                <BookOpen className="w-5 h-5 theme-text-primary" />
+                                <h1 className="text-xl font-bold theme-text-primary">Bible</h1>
                             </div>
                         )}
 
@@ -209,7 +209,7 @@ export default function BibleReader() {
 
                     {selectedBook && !showBookSelector && (
                         <div className="mt-4">
-                            <h2 className="text-lg font-semibold text-slate-800">
+                            <h2 className="text-lg font-semibold theme-text-primary">
                                 {selectedBook.name} {selectedChapter}
                             </h2>
                         </div>
@@ -356,7 +356,7 @@ export default function BibleReader() {
                                             <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
                                         </div>
                                     ) : chapterData?.chapter?.content ? (
-                                        <div className="bg-white rounded-3xl p-6 border border-slate-200">
+                                        <div className="rounded-3xl p-6 theme-card">
                                             <div className="space-y-4">
                                                 {chapterData.chapter.content
                                                     .filter(item => item.type === 'verse')

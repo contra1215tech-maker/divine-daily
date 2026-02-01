@@ -28,11 +28,12 @@ export default function BookSelector({ books, onSelectBook, onChapterSelect }) {
         const chapters = Array.from({ length: book.numberOfChapters }, (_, i) => i + 1);
         
         return (
-            <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+            <div className="rounded-xl theme-card overflow-hidden">
                 <motion.button
                     whileTap={{ scale: 0.98 }}
                     onClick={() => handleBookClick(book)}
-                    className="w-full flex items-center justify-between p-3 hover:bg-slate-50 transition-colors"
+                    className="w-full flex items-center justify-between p-3 transition-colors"
+                    style={{ backgroundColor: 'transparent' }}
                 >
                     <div className="flex items-center gap-2">
                         <BookOpen className="w-4 h-4 text-sky-500" />
