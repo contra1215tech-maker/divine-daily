@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, ChevronLeft, Settings2, Loader2 } from 'lucide-react';
+import { BookOpen, ChevronLeft, Settings2, Loader2, MessageSquare, Database } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import BookSelector from '../components/bible/BookSelector';
 import ChapterSelector from '../components/bible/ChapterSelector';
 
@@ -14,6 +15,7 @@ export default function BibleReader() {
     const [selectedBook, setSelectedBook] = useState(null);
     const [selectedChapter, setSelectedChapter] = useState(1);
     const [showBookSelector, setShowBookSelector] = useState(true);
+    const [activeTab, setActiveTab] = useState('text');
 
     useEffect(() => {
         base44.auth.me().then(setUser).catch(() => {});
@@ -43,6 +45,34 @@ export default function BibleReader() {
             return response.data;
         },
         enabled: !!selectedBook && !!selectedChapter,
+    });
+
+    // Fetch commentary
+    const { data: commentaryData, isLoading: commentaryLoading } = useQuery({
+        queryKey: ['bible-commentary', 'mhcc', selectedBook?.id, selectedChapter],
+        queryFn: async () => {
+            const response = await base44.functions.invoke('getBibleCommentary', {
+                commentary_id: 'mhcc',
+                book_id: selectedBook.id,
+                chapter: selectedChapter
+            });
+            return response.data;
+        },
+        enabled: !!selectedBook && !!selectedChapter && activeTab === 'commentary',
+    });
+
+    // Fetch dataset (cross-references)
+    const { data: datasetData, isLoading: datasetLoading } = useQuery({
+        queryKey: ['bible-dataset', 'cross_references', selectedBook?.id, selectedChapter],
+        queryFn: async () => {
+            const response = await base44.functions.invoke('getBibleDataset', {
+                dataset_id: 'cross_references',
+                book_id: selectedBook.id,
+                chapter: selectedChapter
+            });
+            return response.data;
+        },
+        enabled: !!selectedBook && !!selectedChapter && activeTab === 'references',
     });
 
     const handleBookSelect = (book) => {
@@ -161,27 +191,100 @@ export default function BibleReader() {
                                 />
                             </div>
 
-                            {/* Chapter Content */}
-                            {chapterLoading ? (
-                                <div className="flex items-center justify-center py-12">
-                                    <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
-                                </div>
-                            ) : chapterData ? (
-                                <div className="bg-white rounded-3xl p-6 border border-slate-200">
-                                    <div className="space-y-4">
-                                        {chapterData.verses?.map((verse) => (
-                                            <div key={verse.verse} className="flex gap-3">
-                                                <span className="text-sm font-bold text-sky-500 mt-1 flex-shrink-0">
-                                                    {verse.verse}
-                                                </span>
-                                                <p className="text-slate-800 leading-relaxed font-serif">
-                                                    {verse.text}
-                                                </p>
+                            {/* Chapter Content with Tabs */}
+                            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                                <TabsList className="grid w-full grid-cols-3 bg-white border border-slate-200 rounded-2xl p-1">
+                                    <TabsTrigger value="text" className="rounded-xl">
+                                        <BookOpen className="w-4 h-4 mr-2" />
+                                        Text
+                                    </TabsTrigger>
+                                    <TabsTrigger value="commentary" className="rounded-xl">
+                                        <MessageSquare className="w-4 h-4 mr-2" />
+                                        Commentary
+                                    </TabsTrigger>
+                                    <TabsTrigger value="references" className="rounded-xl">
+                                        <Database className="w-4 h-4 mr-2" />
+                                        References
+                                    </TabsTrigger>
+                                </TabsList>
+
+                                <TabsContent value="text" className="mt-4">
+                                    {chapterLoading ? (
+                                        <div className="flex items-center justify-center py-12">
+                                            <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
+                                        </div>
+                                    ) : chapterData ? (
+                                        <div className="bg-white rounded-3xl p-6 border border-slate-200">
+                                            <div className="space-y-4">
+                                                {chapterData.verses?.map((verse) => (
+                                                    <div key={verse.verse} className="flex gap-3">
+                                                        <span className="text-sm font-bold text-sky-500 mt-1 flex-shrink-0">
+                                                            {verse.verse}
+                                                        </span>
+                                                        <p className="text-slate-800 leading-relaxed font-serif">
+                                                            {verse.text}
+                                                        </p>
+                                                    </div>
+                                                ))}
                                             </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            ) : null}
+                                        </div>
+                                    ) : null}
+                                </TabsContent>
+
+                                <TabsContent value="commentary" className="mt-4">
+                                    {commentaryLoading ? (
+                                        <div className="flex items-center justify-center py-12">
+                                            <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
+                                        </div>
+                                    ) : commentaryData ? (
+                                        <div className="bg-white rounded-3xl p-6 border border-slate-200">
+                                            <div className="space-y-4">
+                                                {commentaryData.verses?.map((verse) => (
+                                                    <div key={verse.verse} className="space-y-2">
+                                                        <span className="text-sm font-bold text-amber-600">
+                                                            Verse {verse.verse}
+                                                        </span>
+                                                        <p className="text-slate-700 leading-relaxed">
+                                                            {verse.text}
+                                                        </p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="bg-white rounded-3xl p-6 border border-slate-200 text-center text-slate-500">
+                                            No commentary available for this chapter
+                                        </div>
+                                    )}
+                                </TabsContent>
+
+                                <TabsContent value="references" className="mt-4">
+                                    {datasetLoading ? (
+                                        <div className="flex items-center justify-center py-12">
+                                            <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
+                                        </div>
+                                    ) : datasetData ? (
+                                        <div className="bg-white rounded-3xl p-6 border border-slate-200">
+                                            <div className="space-y-4">
+                                                {datasetData.verses?.map((verse) => (
+                                                    <div key={verse.verse} className="space-y-2">
+                                                        <span className="text-sm font-bold text-purple-600">
+                                                            Verse {verse.verse}
+                                                        </span>
+                                                        <div className="text-slate-700 leading-relaxed">
+                                                            {verse.text}
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="bg-white rounded-3xl p-6 border border-slate-200 text-center text-slate-500">
+                                            No cross-references available for this chapter
+                                        </div>
+                                    )}
+                                </TabsContent>
+                            </Tabs>
                         </motion.div>
                     ) : null}
                 </AnimatePresence>
