@@ -44,7 +44,7 @@ export default function BibleReader() {
             });
             return response.data;
         },
-        enabled: !!selectedBook && !!selectedChapter,
+        enabled: !!selectedBook && !!selectedChapter && !showBookSelector,
     });
 
     // Fetch commentary
