@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, ChevronLeft, ChevronRight, Settings2, Loader2, MessageSquare, Database, Star, Copy, Palette } from 'lucide-react';
+import { BookOpen, ChevronLeft, ChevronRight, Settings2, Loader2, MessageSquare, Database, Star, Copy, Palette, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -20,6 +20,8 @@ export default function BibleReader() {
     const [showNavControls, setShowNavControls] = useState(false);
     const [selectedVerse, setSelectedVerse] = useState(null);
     const [verseHighlights, setVerseHighlights] = useState({});
+    const [showCommentInput, setShowCommentInput] = useState(false);
+    const [commentText, setCommentText] = useState('');
 
     useEffect(() => {
         base44.auth.me().then(setUser).catch(() => {});
@@ -61,6 +63,18 @@ export default function BibleReader() {
                 chapter: selectedChapter
             });
             return response.data;
+        },
+        enabled: !!selectedBook && !!selectedChapter && activeTab === 'commentary',
+    });
+
+    // Fetch user comments
+    const { data: userComments } = useQuery({
+        queryKey: ['verse-comments', selectedBook?.id, selectedChapter],
+        queryFn: async () => {
+            return await base44.entities.VerseComment.filter({
+                book_id: selectedBook.id,
+                chapter: selectedChapter
+            });
         },
         enabled: !!selectedBook && !!selectedChapter && activeTab === 'commentary',
     });
@@ -108,7 +122,13 @@ export default function BibleReader() {
     const handleVerseClick = (verse, e) => {
         e.stopPropagation();
         const verseKey = `${selectedBook.id}-${selectedChapter}-${verse.number}`;
-        setSelectedVerse({ ...verse, key: verseKey });
+        
+        // Toggle: if clicking the same verse, deselect it
+        if (selectedVerse?.key === verseKey) {
+            setSelectedVerse(null);
+        } else {
+            setSelectedVerse({ ...verse, key: verseKey });
+        }
     };
 
     const handleHighlight = async (color) => {
@@ -144,6 +164,29 @@ export default function BibleReader() {
         const fullText = `${selectedBook.name} ${selectedChapter}:${selectedVerse.number} - ${verseText}`;
         navigator.clipboard.writeText(fullText);
         alert('Verse copied to clipboard!');
+        setSelectedVerse(null);
+    };
+
+    const handleComment = () => {
+        setShowCommentInput(true);
+    };
+
+    const handleSaveComment = async () => {
+        if (!commentText.trim()) return;
+
+        await base44.entities.VerseComment.create({
+            book_id: selectedBook.id,
+            book_name: selectedBook.name,
+            chapter: selectedChapter,
+            verse_number: selectedVerse.number,
+            verse_reference: `${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`,
+            comment: commentText,
+            bible_version: translationId
+        });
+
+        alert('Comment saved!');
+        setCommentText('');
+        setShowCommentInput(false);
         setSelectedVerse(null);
     };
 
@@ -291,50 +334,91 @@ export default function BibleReader() {
                                         </h3>
                                         
                                         <div className="space-y-3">
-                                            {/* Highlight Colors */}
-                                            <div>
-                                                <p className="text-xs mb-2 flex items-center gap-1 theme-text-secondary">
-                                                    <Palette className="w-3 h-3" />
-                                                    Highlight Color
-                                                </p>
-                                                <div className="flex gap-2">
-                                                    {['#ffcdd2', '#f8bbd0', '#e1bee7', '#c5cae9', '#bbdefb', '#b2dfdb', '#fff9c4'].map((color) => (
-                                                        <button
-                                                            key={color}
-                                                            onClick={() => handleHighlight(color)}
-                                                            className="w-8 h-8 rounded-full border-2 border-slate-300"
-                                                            style={{ backgroundColor: color }}
-                                                        />
-                                                    ))}
-                                                </div>
-                                            </div>
+                                           {!showCommentInput ? (
+                                               <>
+                                                   {/* Highlight Colors */}
+                                                   <div>
+                                                       <p className="text-xs mb-2 flex items-center gap-1 theme-text-secondary">
+                                                           <Palette className="w-3 h-3" />
+                                                           Highlight Color
+                                                       </p>
+                                                       <div className="flex gap-2 justify-center">
+                                                           {['#ffcdd2', '#f8bbd0', '#e1bee7', '#c5cae9', '#bbdefb', '#b2dfdb', '#fff9c4'].map((color) => (
+                                                               <button
+                                                                   key={color}
+                                                                   onClick={() => handleHighlight(color)}
+                                                                   className="w-10 h-10 rounded-full border-2 border-slate-400 shadow-sm"
+                                                                   style={{ backgroundColor: color }}
+                                                               />
+                                                           ))}
+                                                       </div>
+                                                   </div>
 
-                                            {/* Action Buttons */}
-                                            <div className="flex gap-2">
-                                                <button
-                                                    onClick={handleFavorite}
-                                                    className="flex-1 flex items-center justify-center gap-2 py-2 rounded-xl font-medium border-2 theme-text-primary"
-                                                    style={{ borderColor: 'var(--text-light)' }}
-                                                >
-                                                    <Star className="w-4 h-4" />
-                                                    Favorite
-                                                </button>
-                                                <button
-                                                    onClick={handleCopy}
-                                                    className="flex-1 flex items-center justify-center gap-2 py-2 rounded-xl font-medium theme-card theme-text-primary border"
-                                                    style={{ borderColor: 'var(--border-color)' }}
-                                                >
-                                                    <Copy className="w-4 h-4" />
-                                                    Copy
-                                                </button>
-                                            </div>
+                                                   {/* Action Buttons */}
+                                                   <div className="grid grid-cols-3 gap-2">
+                                                       <button
+                                                           onClick={handleFavorite}
+                                                           className="flex flex-col items-center justify-center gap-1 py-3 rounded-xl font-medium border-2 theme-text-primary"
+                                                           style={{ borderColor: 'var(--text-light)' }}
+                                                       >
+                                                           <Star className="w-5 h-5" />
+                                                           <span className="text-xs">Favorite</span>
+                                                       </button>
+                                                       <button
+                                                           onClick={handleCopy}
+                                                           className="flex flex-col items-center justify-center gap-1 py-3 rounded-xl font-medium theme-card theme-text-primary border"
+                                                           style={{ borderColor: 'var(--border-color)' }}
+                                                       >
+                                                           <Copy className="w-5 h-5" />
+                                                           <span className="text-xs">Copy</span>
+                                                       </button>
+                                                       <button
+                                                           onClick={handleComment}
+                                                           className="flex flex-col items-center justify-center gap-1 py-3 rounded-xl font-medium theme-card theme-text-primary border"
+                                                           style={{ borderColor: 'var(--border-color)' }}
+                                                       >
+                                                           <MessageCircle className="w-5 h-5" />
+                                                           <span className="text-xs">Comment</span>
+                                                       </button>
+                                                   </div>
 
-                                            <button
-                                                onClick={() => setSelectedVerse(null)}
-                                                className="w-full py-2 text-sm theme-text-secondary"
-                                            >
-                                                Cancel
-                                            </button>
+                                                   <button
+                                                       onClick={() => setSelectedVerse(null)}
+                                                       className="w-full py-2 text-sm theme-text-secondary"
+                                                   >
+                                                       Cancel
+                                                   </button>
+                                               </>
+                                           ) : (
+                                               <>
+                                                   <textarea
+                                                       value={commentText}
+                                                       onChange={(e) => setCommentText(e.target.value)}
+                                                       placeholder="Write your comment..."
+                                                       className="w-full p-3 rounded-xl border-2 theme-card theme-text-primary resize-none"
+                                                       rows={4}
+                                                       style={{ borderColor: 'var(--border-color)' }}
+                                                   />
+                                                   <div className="flex gap-2">
+                                                       <button
+                                                           onClick={handleSaveComment}
+                                                           className="flex-1 py-2 rounded-xl font-medium border-2 theme-text-primary"
+                                                           style={{ borderColor: 'var(--text-light)' }}
+                                                       >
+                                                           Save Comment
+                                                       </button>
+                                                       <button
+                                                           onClick={() => {
+                                                               setShowCommentInput(false);
+                                                               setCommentText('');
+                                                           }}
+                                                           className="flex-1 py-2 rounded-xl font-medium theme-card theme-text-secondary"
+                                                       >
+                                                           Cancel
+                                                       </button>
+                                                   </div>
+                                               </>
+                                           )}
                                         </div>
                                     </motion.div>
                                 )}
@@ -408,24 +492,54 @@ export default function BibleReader() {
                                         <div className="flex items-center justify-center py-12">
                                             <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
                                         </div>
-                                    ) : commentaryData ? (
-                                        <div className="rounded-3xl p-6 border border-slate-200 theme-card">
-                                            <div className="space-y-4">
-                                                {commentaryData.verses?.map((verse) => (
-                                                    <div key={verse.verse} className="space-y-2">
-                                                        <span className="text-sm font-bold text-amber-600">
-                                                            Verse {verse.verse}
-                                                        </span>
-                                                        <p className="text-slate-700 leading-relaxed">
-                                                            {verse.text}
-                                                        </p>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
                                     ) : (
-                                        <div className="rounded-3xl p-6 border border-slate-200 theme-card text-center text-slate-500">
-                                            No commentary available for this chapter
+                                        <div className="space-y-4">
+                                            {/* User Comments */}
+                                            {userComments && userComments.length > 0 && (
+                                                <div className="rounded-3xl p-6 theme-card">
+                                                    <h3 className="text-sm font-bold theme-text-primary mb-4 flex items-center gap-2">
+                                                        <MessageCircle className="w-4 h-4" />
+                                                        My Comments
+                                                    </h3>
+                                                    <div className="space-y-4">
+                                                        {userComments.map((comment) => (
+                                                            <div key={comment.id} className="space-y-2 pb-4 border-b last:border-b-0" style={{ borderColor: 'var(--border-color)' }}>
+                                                                <span className="text-sm font-bold text-sky-600">
+                                                                    Verse {comment.verse_number}
+                                                                </span>
+                                                                <p className="text-slate-700 leading-relaxed">
+                                                                    {comment.comment}
+                                                                </p>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {/* Bible Commentary */}
+                                            {commentaryData && (
+                                                <div className="rounded-3xl p-6 border border-slate-200 theme-card">
+                                                    <h3 className="text-sm font-bold text-amber-600 mb-4">Bible Commentary</h3>
+                                                    <div className="space-y-4">
+                                                        {commentaryData.verses?.map((verse) => (
+                                                            <div key={verse.verse} className="space-y-2">
+                                                                <span className="text-sm font-bold text-amber-600">
+                                                                    Verse {verse.verse}
+                                                                </span>
+                                                                <p className="text-slate-700 leading-relaxed">
+                                                                    {verse.text}
+                                                                </p>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {!commentaryData && (!userComments || userComments.length === 0) && (
+                                                <div className="rounded-3xl p-6 border border-slate-200 theme-card text-center text-slate-500">
+                                                    No commentary available for this chapter
+                                                </div>
+                                            )}
                                         </div>
                                     )}
                                 </TabsContent>
