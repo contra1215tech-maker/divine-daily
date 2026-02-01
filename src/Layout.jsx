@@ -152,10 +152,9 @@ export default function Layout({ children, currentPageName }) {
         <motion.nav
           initial={{ y: 100 }}
           animate={{ y: 0 }}
-          className="fixed bottom-0 left-0 right-0 backdrop-blur-lg z-40 max-w-md mx-auto"
+          className="fixed bottom-0 left-0 right-0 z-40 max-w-md mx-auto"
           style={{ 
-            backgroundColor: currentTheme['--nav-bg'],
-            borderTop: `1px solid ${currentTheme['--border-color']}`
+            backgroundColor: 'transparent'
           }}
         >
           <div className="flex items-center justify-around py-1">
