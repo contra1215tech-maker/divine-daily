@@ -108,14 +108,19 @@ export default function Layout({ children, currentPageName }) {
       background: `linear-gradient(to bottom, ${currentTheme['--bg-gradient-from']}, ${currentTheme['--bg-gradient-to']})` 
     }}>
       <style>{`
-        :root {
-          ${Object.entries(currentTheme).map(([key, value]) => `${key}: ${value};`).join('\n          ')}
-        }
-        body {
-          max-width: 448px;
-          margin: 0 auto;
-          background: linear-gradient(to bottom, ${currentTheme['--bg-gradient-from']}, ${currentTheme['--bg-gradient-to']});
-        }
+            @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&display=swap');
+
+            :root {
+              ${Object.entries(currentTheme).map(([key, value]) => `${key}: ${value};`).join('\n          ')}
+            }
+            * {
+              font-family: 'Merriweather', serif;
+            }
+            body {
+              max-width: 448px;
+              margin: 0 auto;
+              background: linear-gradient(to bottom, ${currentTheme['--bg-gradient-from']}, ${currentTheme['--bg-gradient-to']});
+            }
         .theme-card {
           background-color: ${currentTheme['--card-bg']} !important;
           border-color: ${currentTheme['--border-color']} !important;
