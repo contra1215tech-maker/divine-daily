@@ -181,7 +181,7 @@ export default function Settings() {
               </p>
             </div>
           </div>
-          <ChevronRight className="w-5 h-5 text-slate-400" />
+          <ChevronRight className="w-5 h-5 theme-text-secondary" />
         </motion.button>
 
         {/* Bible Version */}
@@ -199,7 +199,7 @@ export default function Settings() {
               <p className="text-sm theme-text-secondary">{user?.preferred_bible_version || 'NIV'}</p>
             </div>
           </div>
-          <ChevronRight className="w-5 h-5 text-slate-400" />
+          <ChevronRight className="w-5 h-5 theme-text-secondary" />
         </motion.button>
 
         {/* Notifications */}
