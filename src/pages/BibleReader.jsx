@@ -155,9 +155,12 @@ export default function BibleReader() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-sky-50 to-white pb-20">
+        <div className="min-h-screen pb-20" style={{ background: 'transparent' }}>
             {/* Header */}
-            <div className="sticky top-0 z-30 bg-white/90 backdrop-blur-lg border-b border-slate-200">
+            <div className="sticky top-0 z-30 backdrop-blur-lg" style={{
+                backgroundColor: 'var(--nav-bg)',
+                borderBottom: '1px solid var(--border-color)'
+            }}>
                 <div className="px-4 py-4">
                     <div className="flex items-center justify-between">
                         {selectedBook && !showBookSelector ? (
