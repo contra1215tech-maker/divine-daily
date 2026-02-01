@@ -10,10 +10,7 @@ export default function BookSelector({ books, onSelectBook, onChapterSelect }) {
     const oldTestament = books.filter((b, idx) => idx < 39);
     const newTestament = books.filter((b, idx) => idx >= 39);
 
-    const gradientStyle = {
-        background: 'linear-gradient(to bottom, var(--accent-primary), var(--accent-secondary), var(--accent-warm))',
-        minHeight: '100vh',
-    };
+
 
     const handleBookClick = (book) => {
         if (expandedBook?.id === book.id) {
@@ -70,8 +67,7 @@ export default function BookSelector({ books, onSelectBook, onChapterSelect }) {
                                             key={chapter}
                                             whileTap={{ scale: 0.9 }}
                                             onClick={() => handleChapterClick(book, chapter)}
-                                            className="aspect-square rounded-lg text-sm font-medium theme-text-primary transition-opacity hover:opacity-70"
-                                            style={{ background: 'rgba(255, 255, 255, 0.2)', backdropFilter: 'blur(10px)' }}
+                                            className="aspect-square rounded-lg text-sm font-medium theme-text-primary transition-opacity hover:opacity-70 theme-card"
                                         >
                                             {chapter}
                                         </motion.button>
@@ -86,7 +82,7 @@ export default function BookSelector({ books, onSelectBook, onChapterSelect }) {
     };
 
     return (
-        <div style={gradientStyle} className="p-4">
+        <div className="p-4">
             <div className="space-y-2">
                 {oldTestament.length > 0 && (
                     <div>
