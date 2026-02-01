@@ -342,7 +342,7 @@ export default function BibleReader() {
 
                             {/* Chapter Content with Tabs */}
                             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                                <TabsList className="grid w-full grid-cols-3 bg-white border border-slate-200 rounded-2xl p-1">
+                                <TabsList className="grid w-full grid-cols-3 border border-slate-200 rounded-2xl p-1" style={{ backgroundColor: 'transparent' }}>
                                     <TabsTrigger value="text" className="rounded-xl">
                                         <BookOpen className="w-4 h-4 mr-2" />
                                         Text
