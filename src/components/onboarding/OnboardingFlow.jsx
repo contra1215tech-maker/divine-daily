@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronRight, ChevronLeft, Sparkles, BookOpen, Heart, Bell } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Sparkles, BookOpen, Heart } from 'lucide-react';
 import AnimatedButton from '../ui/AnimatedButton';
 import { cn } from "@/lib/utils";
 
@@ -29,12 +29,6 @@ const steps = [
     subtitle: 'Select your preferred translation for Scripture.',
   },
   {
-    id: 'notifications',
-    icon: Bell,
-    title: 'Stay Connected',
-    subtitle: 'Get gentle reminders to pause and see God.',
-  },
-  {
     id: 'ready',
     icon: Heart,
     title: "You're All Set!",
@@ -47,8 +41,6 @@ export default function OnboardingFlow({ onComplete }) {
   const [settings, setSettings] = useState({
     preferred_bible_version: 'NIV',
     alternate_versions: [],
-    notifications_enabled: true,
-    notification_time: '08:00',
   });
 
   const step = steps[currentStep];
@@ -202,69 +194,7 @@ export default function OnboardingFlow({ onComplete }) {
                 </div>
               )}
 
-              {step.id === 'notifications' && (
-                <div className="space-y-6">
-                  <motion.button
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => setSettings({ ...settings, notifications_enabled: !settings.notifications_enabled })}
-                    className={cn(
-                      "w-full p-5 rounded-2xl border-2 transition-all",
-                      settings.notifications_enabled
-                        ? "border-sky-400 bg-sky-50"
-                        : "border-slate-200 bg-white"
-                    )}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <Bell className={cn(
-                          "w-6 h-6",
-                          settings.notifications_enabled ? "text-sky-500" : "text-slate-400"
-                        )} />
-                        <div className="text-left">
-                          <p className="font-semibold text-slate-800">Daily Reminders</p>
-                          <p className="text-sm text-slate-500">Gentle nudges to see God</p>
-                        </div>
-                      </div>
-                      <div className={cn(
-                        "w-12 h-7 rounded-full p-1 transition-colors",
-                        settings.notifications_enabled ? "bg-sky-500" : "bg-slate-300"
-                      )}>
-                        <motion.div
-                          animate={{ x: settings.notifications_enabled ? 20 : 0 }}
-                          className="w-5 h-5 rounded-full bg-white shadow"
-                        />
-                      </div>
-                    </div>
-                  </motion.button>
 
-                  {settings.notifications_enabled && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      className="space-y-3"
-                    >
-                      <p className="text-sm text-slate-500">Preferred time</p>
-                      <div className="grid grid-cols-3 gap-3">
-                        {['07:00', '08:00', '09:00'].map((time) => (
-                          <motion.button
-                            key={time}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => setSettings({ ...settings, notification_time: time })}
-                            className={cn(
-                              "p-3 rounded-xl border-2 font-medium transition-all",
-                              settings.notification_time === time
-                                ? "border-sky-400 bg-sky-50 text-sky-600"
-                                : "border-slate-200 text-slate-600"
-                            )}
-                          >
-                            {time.replace(':00', '')} AM
-                          </motion.button>
-                        ))}
-                      </div>
-                    </motion.div>
-                  )}
-                </div>
-              )}
 
               {step.id === 'ready' && (
                 <div className="text-center space-y-6">

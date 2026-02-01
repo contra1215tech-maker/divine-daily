@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import { useMutation } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { 
-  BookOpen, Bell, Award, LogOut, ChevronRight, Check, 
+  BookOpen, Award, LogOut, ChevronRight, Check, 
   User, Flame, Camera, Heart, Info, Palette
 } from 'lucide-react';
 import { StreakCounter, BadgeGrid } from '@/components/ui/StreakBadge';
@@ -83,11 +83,7 @@ export default function Settings() {
     setShowBiblePicker(false);
   };
 
-  const handleNotificationToggle = async () => {
-    await updateUserMutation.mutateAsync({ 
-      notifications_enabled: !user.notifications_enabled 
-    });
-  };
+
 
   const handleThemeChange = async (themeId) => {
     await updateUserMutation.mutateAsync({ theme: themeId });
@@ -209,33 +205,7 @@ export default function Settings() {
           <ChevronRight className="w-5 h-5 theme-text-secondary" />
         </motion.button>
 
-        {/* Notifications */}
-        <motion.button
-          whileTap={{ scale: 0.98 }}
-          onClick={handleNotificationToggle}
-          className="w-full p-4 rounded-2xl theme-card flex items-center justify-between"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl theme-accent flex items-center justify-center">
-              <Bell className="w-5 h-5 theme-text-primary" />
-            </div>
-            <div className="text-left">
-              <p className="font-medium theme-text-primary">Daily Reminders</p>
-              <p className="text-sm theme-text-secondary">
-                {user?.notifications_enabled ? 'Enabled' : 'Disabled'}
-              </p>
-            </div>
-          </div>
-          <div className={cn(
-            "w-12 h-7 rounded-full p-1 transition-colors theme-button",
-            !user?.notifications_enabled && "opacity-40"
-          )}>
-            <motion.div
-              animate={{ x: user?.notifications_enabled ? 20 : 0 }}
-              className="w-5 h-5 rounded-full bg-white shadow"
-            />
-          </div>
-        </motion.button>
+
 
         {/* Logout */}
         <motion.button
