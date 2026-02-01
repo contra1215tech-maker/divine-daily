@@ -144,26 +144,31 @@ export default function CaptureMoment() {
     </div>
 
     <div className="px-6 pb-32 space-y-6">
-        {/* Photo Capture */}
+      {/* Reflection - Main Focus */}
+      <div className="space-y-3">
+        <label className="text-2xl font-bold theme-text-primary">
+          I saw God in...
+        </label>
+        <Textarea
+          value={reflection}
+          onChange={(e) => setReflection(e.target.value)}
+          placeholder="Describe what you noticed..."
+          className="min-h-[200px] text-base rounded-2xl theme-card resize-none"
+          style={{ borderColor: 'var(--border-color)' }}
+        />
+      </div>
+
+      {/* Photo Capture - Small Option */}
+      <div className="space-y-2">
+        <label className="text-sm font-medium theme-text-secondary">
+          Add a photo (optional)
+        </label>
         <PhotoCapture 
           photo={photo}
           onPhotoCapture={setPhoto}
           onRemove={() => setPhoto(null)}
         />
-
-        {/* Reflection */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium theme-text-primary">
-            I saw God in...
-          </label>
-          <Textarea
-            value={reflection}
-            onChange={(e) => setReflection(e.target.value)}
-            placeholder="Describe what you noticed..."
-            className="min-h-[120px] rounded-2xl theme-card resize-none"
-            style={{ borderColor: 'var(--border-color)' }}
-          />
-        </div>
+      </div>
 
         {/* Get Verse Button */}
         {reflection && !verse && (
