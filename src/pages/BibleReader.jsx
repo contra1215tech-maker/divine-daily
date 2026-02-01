@@ -200,36 +200,30 @@ export default function BibleReader() {
                             {/* Navigation Controls */}
                             <AnimatePresence>
                                 {showNavControls && (
-                                    <>
+                                    <motion.div
+                                        initial={{ opacity: 0, y: 20 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: 20 }}
+                                        className="fixed bottom-24 left-0 right-0 z-40 flex justify-center gap-4 px-4"
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
                                         {selectedChapter > 1 && (
-                                            <motion.button
-                                                initial={{ opacity: 0 }}
-                                                animate={{ opacity: 1 }}
-                                                exit={{ opacity: 0 }}
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handlePrevChapter();
-                                                }}
-                                                className="fixed left-4 top-1/2 -translate-y-1/2 z-40 w-16 h-16 rounded-full bg-sky-500 text-white shadow-lg flex items-center justify-center"
+                                            <button
+                                                onClick={handlePrevChapter}
+                                                className="w-12 h-12 rounded-full bg-sky-500 text-white shadow-lg flex items-center justify-center"
                                             >
-                                                <ChevronLeft className="w-8 h-8" />
-                                            </motion.button>
+                                                <ChevronLeft className="w-5 h-5" />
+                                            </button>
                                         )}
                                         {selectedChapter < selectedBook.numberOfChapters && (
-                                            <motion.button
-                                                initial={{ opacity: 0 }}
-                                                animate={{ opacity: 1 }}
-                                                exit={{ opacity: 0 }}
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    handleNextChapter();
-                                                }}
-                                                className="fixed right-4 top-1/2 -translate-y-1/2 z-40 w-16 h-16 rounded-full bg-sky-500 text-white shadow-lg flex items-center justify-center"
+                                            <button
+                                                onClick={handleNextChapter}
+                                                className="w-12 h-12 rounded-full bg-sky-500 text-white shadow-lg flex items-center justify-center"
                                             >
-                                                <ChevronRight className="w-8 h-8" />
-                                            </motion.button>
+                                                <ChevronRight className="w-5 h-5" />
+                                            </button>
                                         )}
-                                    </>
+                                    </motion.div>
                                 )}
                             </AnimatePresence>
 

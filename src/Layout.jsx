@@ -20,11 +20,15 @@ export default function Layout({ children, currentPageName }) {
     currentPageName === 'HeartCheck';
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white max-w-md mx-auto">
       <style>{`
         :root {
           --color-primary: #5DADE2;
           --color-accent: #F4D03F;
+        }
+        body {
+          max-width: 448px;
+          margin: 0 auto;
         }
       `}</style>
       
