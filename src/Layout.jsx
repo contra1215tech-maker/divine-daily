@@ -2,11 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
-import { Home, BookOpen, Camera, Settings } from 'lucide-react';
+import { Home, BookOpen, Camera, Settings, Book } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
 const navItems = [
   { id: 'Home', icon: Home, label: 'Home' },
+  { id: 'BibleReader', icon: Book, label: 'Bible' },
   { id: 'Journal', icon: BookOpen, label: 'Journal' },
   { id: 'CaptureMoment', icon: Camera, label: 'Capture', highlight: true },
   { id: 'Settings', icon: Settings, label: 'Settings' },
