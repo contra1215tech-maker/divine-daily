@@ -135,7 +135,7 @@ export default function CaptureMoment() {
   };
 
   return (
-    <div className="min-h-screen pb-8" style={{ background: 'transparent' }}>
+    <div className="min-h-screen" style={{ background: 'transparent' }}>
       <Celebration type="confetti" show={showCelebration} onComplete={handleCelebrationComplete} />
 
       <div className="px-6 pt-6 space-y-6">

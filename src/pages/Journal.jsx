@@ -75,7 +75,7 @@ export default function Journal() {
   const weeklyMoments = weeklyEntries.filter(e => e.type === 'moment').length;
 
   return (
-    <div className="min-h-screen pb-24" style={{ background: 'transparent' }}>
+      <div className="min-h-screen" style={{ background: 'transparent' }}>
       {/* Header */}
       <div className="sticky top-0 backdrop-blur-lg z-10" style={{ 
         backgroundColor: 'var(--nav-bg)',

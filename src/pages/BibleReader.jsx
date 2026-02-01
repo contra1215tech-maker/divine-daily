@@ -199,7 +199,7 @@ export default function BibleReader() {
     }
 
     return (
-        <div className="min-h-screen pb-20" style={{ background: 'transparent' }}>
+        <div className="min-h-screen" style={{ background: 'transparent' }}>
             {/* Header */}
             <div className="sticky top-0 z-30" style={{
                 backgroundColor: 'transparent'

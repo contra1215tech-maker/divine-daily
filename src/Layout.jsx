@@ -142,17 +142,20 @@ export default function Layout({ children, currentPageName }) {
         background: rgba(255, 255, 255, 0.1) !important;
       }
       `}</style>
-      
-      {children}
+
+      <div className="pb-24">
+        {children}
+      </div>
 
       {/* Bottom Navigation */}
       {!hideNav && (
         <motion.nav
           initial={{ y: 100 }}
           animate={{ y: 0 }}
-          className="fixed bottom-0 left-0 right-0 z-40 max-w-md mx-auto"
+          className="fixed bottom-0 left-0 right-0 z-40 max-w-md mx-auto backdrop-blur-md border-t"
           style={{ 
-            backgroundColor: 'transparent'
+            backgroundColor: 'var(--nav-bg)',
+            borderColor: 'var(--border-color)'
           }}
         >
           <div className="flex items-center justify-around py-1">

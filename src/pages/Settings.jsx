@@ -108,7 +108,7 @@ export default function Settings() {
   }
 
   return (
-    <div className="min-h-screen pb-24" style={{ background: 'transparent' }}>
+    <div className="min-h-screen" style={{ background: 'transparent' }}>
       {/* Header */}
       <div className="px-6 pt-3 pb-2">
         <h1 className="text-2xl font-bold theme-text-primary">Settings</h1>
