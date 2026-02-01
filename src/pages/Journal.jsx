@@ -19,7 +19,7 @@ const filters = [
 export default function Journal() {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
-    const [activeFilter, setActiveFilter] = useState('all');
+    const [activeFilter, setActiveFilter] = useState('entries');
     const [user, setUser] = useState(null);
     const [showFilters, setShowFilters] = useState(false);
 
