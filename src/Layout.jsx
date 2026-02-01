@@ -99,9 +99,8 @@ export default function Layout({ children, currentPageName }) {
 
   const currentTheme = themeStyles[theme];
 
-  // Hide nav on onboarding or capture/mood pages for full-screen experience
+  // Hide nav on onboarding or mood pages for full-screen experience
   const hideNav = !currentPageName || 
-    currentPageName === 'CaptureMoment' || 
     currentPageName === 'HeartCheck';
 
   return (

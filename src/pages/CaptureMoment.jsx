@@ -137,23 +137,6 @@ export default function CaptureMoment() {
   return (
     <div className="min-h-screen pb-8" style={{ background: 'transparent' }}>
       <Celebration type="confetti" show={showCelebration} onComplete={handleCelebrationComplete} />
-      
-      {/* Header */}
-      <div className="sticky top-0 backdrop-blur-lg px-4 py-4 z-10" style={{ 
-        backgroundColor: 'var(--nav-bg)',
-        borderBottom: '1px solid var(--border-color)'
-      }}>
-        <div className="flex items-center justify-between">
-          <button 
-            onClick={() => navigate(createPageUrl('BibleReader'))}
-            className="p-2 -ml-2 rounded-xl transition-colors theme-card"
-          >
-            <ArrowLeft className="w-6 h-6 theme-text-primary" />
-          </button>
-          <h1 className="font-semibold theme-text-primary">Capture Moment</h1>
-          <div className="w-10" />
-        </div>
-      </div>
 
       <div className="px-6 pt-6 space-y-6">
         {/* Photo Capture */}
