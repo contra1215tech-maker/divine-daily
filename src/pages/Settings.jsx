@@ -3,10 +3,9 @@ import { motion } from 'framer-motion';
 import { useMutation } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { 
-  BookOpen, Award, LogOut, ChevronRight, Check, 
+  BookOpen, LogOut, ChevronRight, Check, 
   User, Flame, Camera, Heart, Info, Palette
 } from 'lucide-react';
-import { StreakCounter, BadgeGrid } from '@/components/ui/StreakBadge';
 import AnimatedButton from '@/components/ui/AnimatedButton';
 import { cn } from "@/lib/utils";
 
@@ -152,17 +151,6 @@ export default function Settings() {
             </div>
           </div>
         </motion.div>
-      </div>
-
-      {/* Badges */}
-      <div className="px-6 mb-6">
-        <div className="flex items-center gap-2 mb-4">
-          <Award className="w-5 h-5 theme-text-primary" />
-          <h3 className="font-semibold theme-text-primary">Badges</h3>
-        </div>
-        <div className="p-4 rounded-2xl theme-card">
-          <BadgeGrid earnedBadges={user?.badges || []} />
-        </div>
       </div>
 
       {/* Settings List */}
