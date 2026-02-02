@@ -152,6 +152,22 @@ export default function Layout({ children, currentPageName }) {
           color: #F5F1E8 !important;
         }
       ` : ''}
+      
+      /* Scrollbar styling */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: ${currentTheme['--bg-primary']};
+      }
+      ::-webkit-scrollbar-thumb {
+        background: ${currentTheme['--accent-primary']};
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: ${currentTheme['--accent-secondary']};
+      }
       `}</style>
 
       <div className="pb-24">

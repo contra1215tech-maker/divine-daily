@@ -51,8 +51,8 @@ import BibleReader from './pages/BibleReader';
 import CaptureMoment from './pages/CaptureMoment';
 import HeartCheck from './pages/HeartCheck';
 import Journal from './pages/Journal';
-import Settings from './pages/Settings';
 import JournalEntryDetail from './pages/JournalEntryDetail';
+import Settings from './pages/Settings';
 import __Layout from './Layout.jsx';
 
 
@@ -61,8 +61,8 @@ export const PAGES = {
     "CaptureMoment": CaptureMoment,
     "HeartCheck": HeartCheck,
     "Journal": Journal,
-    "Settings": Settings,
     "JournalEntryDetail": JournalEntryDetail,
+    "Settings": Settings,
 }
 
 export const pagesConfig = {
