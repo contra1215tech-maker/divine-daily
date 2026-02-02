@@ -362,33 +362,33 @@ export default function BibleReader() {
                                                   </div>
 
                                                    {/* Action Buttons */}
-                                                   <div className="grid grid-cols-3 gap-2">
+                                                   <div className="grid grid-cols-3 gap-1.5">
                                                        <button
                                                            onClick={handleFavorite}
-                                                           className="flex flex-col items-center justify-center gap-1 py-3 rounded-xl font-medium border-2 theme-text-primary"
+                                                           className="flex flex-col items-center justify-center gap-0.5 py-1.5 rounded-lg font-medium border theme-text-primary"
                                                            style={{ 
                                                                borderColor: favoritedVerses.has(`${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`) ? '#f59e0b' : 'var(--text-light)',
                                                                backgroundColor: favoritedVerses.has(`${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`) ? '#fef3c7' : 'transparent'
                                                            }}
                                                        >
-                                                           <Star className={cn("w-5 h-5", favoritedVerses.has(`${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`) && "fill-amber-500 text-amber-500")} />
-                                                           <span className="text-xs">{favoritedVerses.has(`${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`) ? 'Unfavorite' : 'Favorite'}</span>
+                                                           <Star className={cn("w-4 h-4", favoritedVerses.has(`${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`) && "fill-amber-500 text-amber-500")} />
+                                                           <span className="text-[10px]">{favoritedVerses.has(`${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`) ? 'Unfavorite' : 'Favorite'}</span>
                                                        </button>
                                                        <button
                                                            onClick={handleCopy}
-                                                           className="flex flex-col items-center justify-center gap-1 py-3 rounded-xl font-medium theme-text-primary border-2"
+                                                           className="flex flex-col items-center justify-center gap-0.5 py-1.5 rounded-lg font-medium theme-text-primary border"
                                                            style={{ borderColor: 'var(--text-light)', backgroundColor: 'transparent' }}
                                                        >
-                                                           <Copy className="w-5 h-5" />
-                                                           <span className="text-xs">Copy</span>
+                                                           <Copy className="w-4 h-4" />
+                                                           <span className="text-[10px]">Copy</span>
                                                        </button>
                                                        <button
                                                            onClick={handleComment}
-                                                           className="flex flex-col items-center justify-center gap-1 py-3 rounded-xl font-medium theme-text-primary border-2"
+                                                           className="flex flex-col items-center justify-center gap-0.5 py-1.5 rounded-lg font-medium theme-text-primary border"
                                                            style={{ borderColor: 'var(--text-light)', backgroundColor: 'transparent' }}
                                                        >
-                                                           <MessageCircle className="w-5 h-5" />
-                                                           <span className="text-xs">Comment</span>
+                                                           <MessageCircle className="w-4 h-4" />
+                                                           <span className="text-[10px]">Comment</span>
                                                        </button>
                                                    </div>
 
