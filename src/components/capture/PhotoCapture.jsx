@@ -88,6 +88,7 @@ export default function PhotoCapture({ onPhotoCapture, photo, onRemove }) {
               ref={fileInputRef}
               type="file"
               accept="image/*"
+              capture={undefined}
               onChange={(e) => handleFileSelect(e.target.files[0])}
               className="hidden"
             />
