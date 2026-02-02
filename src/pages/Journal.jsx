@@ -267,7 +267,7 @@ export default function Journal() {
                     <JournalEntryCard 
                       key={entry.id} 
                       entry={entry}
-                      onClick={() => {}}
+                      onClick={() => navigate(createPageUrl('JournalEntryDetail') + `?id=${entry.id}`)}
                     />
                   ))}
                 </div>
