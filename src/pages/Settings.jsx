@@ -277,8 +277,8 @@ export default function Settings() {
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-lg rounded-t-3xl p-6 theme-card"
-            style={{ backgroundColor: 'var(--card-bg)' }}
+            className="w-full max-w-lg rounded-t-3xl p-6"
+            style={{ backgroundColor: 'var(--bg-secondary)' }}
           >
             <div className="w-12 h-1 rounded-full mx-auto mb-4" style={{ backgroundColor: 'var(--border-color)' }} />
             <h3 className="text-lg font-bold theme-text-primary mb-4">Choose Theme</h3>
@@ -328,8 +328,8 @@ export default function Settings() {
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-lg rounded-t-3xl p-6 max-h-[70vh] overflow-y-auto theme-card"
-            style={{ backgroundColor: 'var(--card-bg)' }}
+            className="w-full max-w-lg rounded-t-3xl p-6 max-h-[70vh] overflow-y-auto"
+            style={{ backgroundColor: 'var(--bg-secondary)' }}
           >
             <div className="w-12 h-1 rounded-full mx-auto mb-4" style={{ backgroundColor: 'var(--border-color)' }} />
             <h3 className="text-lg font-bold theme-text-primary mb-4">Choose Bible Version</h3>
