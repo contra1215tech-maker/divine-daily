@@ -88,31 +88,29 @@ export default function Journal() {
         backgroundColor: 'var(--nav-bg)',
         borderBottom: '1px solid var(--border-color)'
       }}>
-        <div className="px-6 pt-3 pb-2">
-          <h1 className="text-2xl font-bold theme-text-primary mb-4">Journal</h1>
-          
+        <div className="px-6 py-3">
+          <h1 className="text-xl font-bold theme-text-primary mb-3">Journal</h1>
+
           {/* Search */}
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+          <div className="relative mb-2">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <Input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search entries, verses, tags..."
-              className="pl-12 rounded-2xl theme-card"
+              placeholder="Search..."
+              className="pl-9 h-9 text-sm rounded-xl theme-card"
               style={{ borderColor: 'var(--border-color)' }}
             />
           </div>
-        </div>
 
-        {/* Filters Toggle */}
-        <div className="px-6 pb-4">
+          {/* Filters Toggle */}
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium theme-card theme-text-secondary"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium theme-card theme-text-secondary"
           >
-            <Filter className="w-4 h-4" />
+            <Filter className="w-3.5 h-3.5" />
             Filters
-            <ChevronDown className={cn("w-4 h-4 transition-transform", showFilters && "rotate-180")} />
+            <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", showFilters && "rotate-180")} />
           </button>
 
           <AnimatePresence>
@@ -148,25 +146,6 @@ export default function Journal() {
           </AnimatePresence>
         </div>
         </div>
-
-      {/* Weekly Summary */}
-      <div className="px-6 py-4">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="p-4 rounded-2xl theme-card"
-        >
-          <div className="flex items-center gap-2 mb-3">
-            <TrendingUp className="w-4 h-4 theme-text-primary" />
-            <span className="text-sm font-medium theme-text-primary">This Week</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Camera className="w-4 h-4 theme-text-primary" />
-            <span className="text-2xl font-bold theme-text-primary">{weeklyMoments}</span>
-            <span className="text-sm theme-text-secondary">entries this week</span>
-          </div>
-        </motion.div>
-      </div>
 
       {/* Entries */}
       <div className="px-6">
