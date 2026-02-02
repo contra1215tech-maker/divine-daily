@@ -170,8 +170,12 @@ export default function Support() {
           className="p-6 rounded-3xl theme-card"
         >
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-xl bg-pink-100 flex items-center justify-center">
-              <Heart className="w-6 h-6 text-pink-600" />
+            <div className="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center">
+              <img 
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/2d764fa06_heart.jpg" 
+                alt="Support"
+                className="w-full h-full object-cover"
+              />
             </div>
             <h2 className="text-lg font-bold theme-text-primary">Monthly Donation</h2>
           </div>
@@ -192,9 +196,10 @@ export default function Support() {
                 </p>
               </div>
 
-              <button
+              <motion.button
+                whileTap={{ scale: 0.98 }}
                 onClick={handleCancelSubscription}
-                className="w-full py-3 px-4 rounded-xl font-medium theme-text-secondary border-2"
+                className="w-full py-3 px-4 rounded-xl font-medium theme-text-secondary border-2 hover:bg-red-50 transition-colors"
                 style={{ borderColor: 'var(--border-color)' }}
               >
                 Cancel Subscription
