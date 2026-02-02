@@ -203,7 +203,7 @@ export default function Support() {
                 style={{ borderColor: 'var(--border-color)' }}
               >
                 Cancel Subscription
-              </button>
+              </motion.button>
             </div>
           ) : (
             <div className="space-y-3">
