@@ -52,10 +52,10 @@ import CaptureMoment from './pages/CaptureMoment';
 import HeartCheck from './pages/HeartCheck';
 import Journal from './pages/Journal';
 import JournalEntryDetail from './pages/JournalEntryDetail';
+import License from './pages/License';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Support from './pages/Support';
-import License from './pages/License';
 import __Layout from './Layout.jsx';
 
 
@@ -65,10 +65,10 @@ export const PAGES = {
     "HeartCheck": HeartCheck,
     "Journal": Journal,
     "JournalEntryDetail": JournalEntryDetail,
+    "License": License,
     "Profile": Profile,
     "Settings": Settings,
     "Support": Support,
-    "License": License,
 }
 
 export const pagesConfig = {

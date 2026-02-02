@@ -209,7 +209,7 @@ export default function Settings() {
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center">
               <img 
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/9d4994dfb_bibleicon.jpg" 
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/29b034366_cross.jpg" 
                 alt="Bible"
                 className="w-full h-full object-cover"
               />

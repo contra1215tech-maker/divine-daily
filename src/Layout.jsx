@@ -193,7 +193,7 @@ export default function Layout({ children, currentPageName }) {
                   )}>
                     {item.useImage ? (
                       <img 
-                        src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/9d4994dfb_bibleicon.jpg"
+                        src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/29b034366_cross.jpg"
                         alt={item.label}
                         className="w-5 h-5 object-cover rounded"
                       />
