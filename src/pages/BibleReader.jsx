@@ -22,9 +22,15 @@ export default function BibleReader() {
     const [verseHighlights, setVerseHighlights] = useState({});
     const [showCommentInput, setShowCommentInput] = useState(false);
     const [commentText, setCommentText] = useState('');
+    const [favoritedVerses, setFavoritedVerses] = useState(new Set());
 
     useEffect(() => {
         base44.auth.me().then(setUser).catch(() => {});
+        // Load favorited verses
+        base44.entities.FavoriteVerse.list().then(favs => {
+            const favSet = new Set(favs.map(f => f.verse_reference));
+            setFavoritedVerses(favSet);
+        }).catch(() => {});
     }, []);
 
     // Fetch books for selected translation
@@ -133,26 +139,49 @@ export default function BibleReader() {
 
     const handleHighlight = async (color) => {
         const verseKey = selectedVerse.key;
-        setVerseHighlights({ ...verseHighlights, [verseKey]: color });
+        // Toggle: if same color, remove highlight
+        if (verseHighlights[verseKey] === color) {
+            const newHighlights = { ...verseHighlights };
+            delete newHighlights[verseKey];
+            setVerseHighlights(newHighlights);
+        } else {
+            setVerseHighlights({ ...verseHighlights, [verseKey]: color });
+        }
         setSelectedVerse(null);
     };
 
     const handleFavorite = async () => {
-        const verseText = Array.isArray(selectedVerse.content)
-            ? selectedVerse.content.map(item => typeof item === 'string' ? item : item.text || '').join(' ')
-            : selectedVerse.content;
+        const verseRef = `${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`;
+        
+        // Toggle: if already favorited, unfavorite
+        if (favoritedVerses.has(verseRef)) {
+            const favorites = await base44.entities.FavoriteVerse.filter({ verse_reference: verseRef });
+            if (favorites.length > 0) {
+                await base44.entities.FavoriteVerse.delete(favorites[0].id);
+            }
+            const newFavs = new Set(favoritedVerses);
+            newFavs.delete(verseRef);
+            setFavoritedVerses(newFavs);
+        } else {
+            const verseText = Array.isArray(selectedVerse.content)
+                ? selectedVerse.content.map(item => typeof item === 'string' ? item : item.text || '').join(' ')
+                : selectedVerse.content;
 
-        await base44.entities.FavoriteVerse.create({
-            verse_reference: `${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`,
-            verse_text: verseText,
-            book_name: selectedBook.name,
-            chapter: selectedChapter,
-            verse_number: selectedVerse.number,
-            bible_version: translationId,
-            highlight_color: verseHighlights[selectedVerse.key] || null
-        });
-
-        alert('Verse saved to favorites!');
+            await base44.entities.FavoriteVerse.create({
+                verse_reference: verseRef,
+                verse_text: verseText,
+                book_name: selectedBook.name,
+                chapter: selectedChapter,
+                verse_number: selectedVerse.number,
+                bible_version: translationId,
+                highlight_color: verseHighlights[selectedVerse.key] || null
+            });
+            
+            const newFavs = new Set(favoritedVerses);
+            newFavs.add(verseRef);
+            setFavoritedVerses(newFavs);
+        }
+        
         setSelectedVerse(null);
     };
 
@@ -163,7 +192,6 @@ export default function BibleReader() {
         
         const fullText = `${selectedBook.name} ${selectedChapter}:${selectedVerse.number} - ${verseText}`;
         navigator.clipboard.writeText(fullText);
-        alert('Verse copied to clipboard!');
         setSelectedVerse(null);
     };
 
@@ -184,7 +212,6 @@ export default function BibleReader() {
             bible_version: translationId
         });
 
-        alert('Comment saved!');
         setCommentText('');
         setShowCommentInput(false);
         setSelectedVerse(null);
@@ -300,10 +327,11 @@ export default function BibleReader() {
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: 20 }}
-                                        className="fixed bottom-16 left-4 right-4 z-50 theme-card rounded-2xl shadow-2xl p-4 max-w-md mx-auto"
+                                        className="fixed bottom-16 left-4 right-4 z-50 rounded-2xl shadow-2xl p-4 max-w-md mx-auto backdrop-blur-xl"
+                                        style={{ backgroundColor: 'rgba(255, 255, 255, 0.95)' }}
                                         onClick={(e) => e.stopPropagation()}
                                     >
-                                        <h3 className="text-sm font-semibold mb-3 theme-text-primary">
+                                        <h3 className="text-sm font-semibold mb-3 text-slate-800">
                                             Verse {selectedVerse.number}
                                         </h3>
                                         
@@ -312,19 +340,27 @@ export default function BibleReader() {
                                                <>
                                                    {/* Highlight Colors */}
                                                    <div>
-                                                       <p className="text-xs mb-2 flex items-center gap-1 theme-text-secondary">
+                                                       <p className="text-xs mb-2 flex items-center gap-1 text-slate-700">
                                                            <Palette className="w-3 h-3" />
                                                            Highlight Color
                                                        </p>
                                                        <div className="flex gap-2 justify-center">
-                                                           {['#ffcdd2', '#f8bbd0', '#e1bee7', '#c5cae9', '#bbdefb', '#b2dfdb', '#fff9c4'].map((color) => (
-                                                               <button
-                                                                   key={color}
-                                                                   onClick={() => handleHighlight(color)}
-                                                                   className="w-10 h-10 rounded-full border-2 border-slate-400 shadow-sm"
-                                                                   style={{ backgroundColor: color }}
-                                                               />
-                                                           ))}
+                                                           {['#ffcdd2', '#f8bbd0', '#e1bee7', '#c5cae9', '#bbdefb', '#b2dfdb', '#fff9c4'].map((color) => {
+                                                               const verseKey = selectedVerse.key;
+                                                               const isActive = verseHighlights[verseKey] === color;
+                                                               return (
+                                                                   <button
+                                                                       key={color}
+                                                                       onClick={() => handleHighlight(color)}
+                                                                       className="w-10 h-10 rounded-full border-2 shadow-sm transition-all"
+                                                                       style={{ 
+                                                                           backgroundColor: color,
+                                                                           borderColor: isActive ? '#1e293b' : '#94a3b8',
+                                                                           borderWidth: isActive ? '3px' : '2px'
+                                                                       }}
+                                                                   />
+                                                               );
+                                                           })}
                                                        </div>
                                                    </div>
 
@@ -332,24 +368,27 @@ export default function BibleReader() {
                                                    <div className="grid grid-cols-3 gap-2">
                                                        <button
                                                            onClick={handleFavorite}
-                                                           className="flex flex-col items-center justify-center gap-1 py-3 rounded-xl font-medium border-2 theme-text-primary"
-                                                           style={{ borderColor: 'var(--text-light)' }}
+                                                           className="flex flex-col items-center justify-center gap-1 py-3 rounded-xl font-medium border-2 text-slate-700"
+                                                           style={{ 
+                                                               borderColor: favoritedVerses.has(`${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`) ? '#f59e0b' : '#94a3b8',
+                                                               backgroundColor: favoritedVerses.has(`${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`) ? '#fef3c7' : 'transparent'
+                                                           }}
                                                        >
-                                                           <Star className="w-5 h-5" />
-                                                           <span className="text-xs">Favorite</span>
+                                                           <Star className={cn("w-5 h-5", favoritedVerses.has(`${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`) && "fill-amber-500 text-amber-500")} />
+                                                           <span className="text-xs">{favoritedVerses.has(`${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`) ? 'Unfavorite' : 'Favorite'}</span>
                                                        </button>
                                                        <button
                                                            onClick={handleCopy}
-                                                           className="flex flex-col items-center justify-center gap-1 py-3 rounded-xl font-medium theme-card theme-text-primary border"
-                                                           style={{ borderColor: 'var(--border-color)' }}
+                                                           className="flex flex-col items-center justify-center gap-1 py-3 rounded-xl font-medium text-slate-700 border-2"
+                                                           style={{ borderColor: '#94a3b8', backgroundColor: 'transparent' }}
                                                        >
                                                            <Copy className="w-5 h-5" />
                                                            <span className="text-xs">Copy</span>
                                                        </button>
                                                        <button
                                                            onClick={handleComment}
-                                                           className="flex flex-col items-center justify-center gap-1 py-3 rounded-xl font-medium theme-card theme-text-primary border"
-                                                           style={{ borderColor: 'var(--border-color)' }}
+                                                           className="flex flex-col items-center justify-center gap-1 py-3 rounded-xl font-medium text-slate-700 border-2"
+                                                           style={{ borderColor: '#94a3b8', backgroundColor: 'transparent' }}
                                                        >
                                                            <MessageCircle className="w-5 h-5" />
                                                            <span className="text-xs">Comment</span>
@@ -358,7 +397,7 @@ export default function BibleReader() {
 
                                                    <button
                                                        onClick={() => setSelectedVerse(null)}
-                                                       className="w-full py-2 text-sm theme-text-secondary"
+                                                       className="w-full py-2 text-sm text-slate-500"
                                                    >
                                                        Cancel
                                                    </button>
@@ -369,15 +408,15 @@ export default function BibleReader() {
                                                        value={commentText}
                                                        onChange={(e) => setCommentText(e.target.value)}
                                                        placeholder="Write your comment..."
-                                                       className="w-full p-3 rounded-xl border-2 theme-card theme-text-primary resize-none"
+                                                       className="w-full p-3 rounded-xl border-2 resize-none text-slate-800"
                                                        rows={4}
-                                                       style={{ borderColor: 'var(--border-color)' }}
+                                                       style={{ borderColor: '#94a3b8', backgroundColor: 'white' }}
                                                    />
                                                    <div className="flex gap-2">
                                                        <button
                                                            onClick={handleSaveComment}
-                                                           className="flex-1 py-2 rounded-xl font-medium border-2 theme-text-primary"
-                                                           style={{ borderColor: 'var(--text-light)' }}
+                                                           className="flex-1 py-2 rounded-xl font-medium border-2 text-slate-800"
+                                                           style={{ borderColor: '#64748b', backgroundColor: 'transparent' }}
                                                        >
                                                            Save Comment
                                                        </button>
@@ -386,7 +425,8 @@ export default function BibleReader() {
                                                                setShowCommentInput(false);
                                                                setCommentText('');
                                                            }}
-                                                           className="flex-1 py-2 rounded-xl font-medium theme-card theme-text-secondary"
+                                                           className="flex-1 py-2 rounded-xl font-medium text-slate-500 border-2"
+                                                           style={{ borderColor: '#94a3b8', backgroundColor: 'transparent' }}
                                                        >
                                                            Cancel
                                                        </button>
