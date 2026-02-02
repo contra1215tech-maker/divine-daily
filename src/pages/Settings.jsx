@@ -163,8 +163,12 @@ export default function Settings() {
           className="w-full p-4 rounded-2xl theme-card flex items-center justify-between"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl theme-accent flex items-center justify-center">
-              <Palette className="w-5 h-5 theme-text-primary" />
+            <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center">
+              <img 
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/e80323456_theme.jpg" 
+                alt="Theme"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="text-left">
               <p className="font-medium theme-text-primary">Theme</p>
