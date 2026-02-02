@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { base44 } from '@/api/base44Client';
 
 const navItems = [
-  { id: 'BibleReader', icon: Book, label: 'Bible' },
+  { id: 'BibleReader', icon: Book, label: 'Bible', useImage: true },
   { id: 'Journal', icon: BookOpen, label: 'Journal' },
   { id: 'CaptureMoment', icon: Camera, label: 'Capture' },
   { id: 'Settings', icon: Settings, label: 'Settings' },
@@ -191,10 +191,18 @@ export default function Layout({ children, currentPageName }) {
                     "p-1.5 rounded-lg transition-colors",
                     isActive && "theme-accent"
                   )}>
-                    <Icon 
-                      className="w-5 h-5 transition-colors"
-                      style={{ color: isActive ? currentTheme['--text-primary'] : currentTheme['--text-light'] }}
-                    />
+                    {item.useImage ? (
+                      <img 
+                        src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/9d4994dfb_bibleicon.jpg"
+                        alt={item.label}
+                        className="w-5 h-5 object-cover rounded"
+                      />
+                    ) : (
+                      <Icon 
+                        className="w-5 h-5 transition-colors"
+                        style={{ color: isActive ? currentTheme['--text-primary'] : currentTheme['--text-light'] }}
+                      />
+                    )}
                   </div>
                   <span 
                     className="text-[10px] mt-0.5 font-medium transition-colors"
