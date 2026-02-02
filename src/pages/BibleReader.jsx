@@ -327,11 +327,14 @@ export default function BibleReader() {
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: 20 }}
-                                        className="fixed bottom-16 left-4 right-4 z-50 rounded-2xl shadow-2xl p-4 max-w-md mx-auto backdrop-blur-xl"
-                                        style={{ backgroundColor: 'rgba(255, 255, 255, 0.95)' }}
+                                        className="fixed bottom-16 left-4 right-4 z-50 rounded-2xl shadow-2xl p-4 max-w-md mx-auto backdrop-blur-xl border-2"
+                                        style={{ 
+                                            backgroundColor: 'var(--card-bg)',
+                                            borderColor: 'var(--border-color)'
+                                        }}
                                         onClick={(e) => e.stopPropagation()}
                                     >
-                                        <h3 className="text-sm font-semibold mb-3 text-slate-800">
+                                        <h3 className="text-sm font-semibold mb-3 theme-text-primary">
                                             Verse {selectedVerse.number}
                                         </h3>
                                         
@@ -340,11 +343,11 @@ export default function BibleReader() {
                                                <>
                                                    {/* Highlight Colors */}
                                                    <div>
-                                                       <p className="text-xs mb-2 flex items-center gap-1 text-slate-700">
+                                                       <p className="text-xs mb-2 flex items-center gap-1 theme-text-primary">
                                                            <Palette className="w-3 h-3" />
                                                            Highlight Color
                                                        </p>
-                                                       <div className="flex gap-2 justify-center">
+                                                       <div className="flex gap-2 justify-center flex-wrap">
                                                            {['#ffcdd2', '#f8bbd0', '#e1bee7', '#c5cae9', '#bbdefb', '#b2dfdb', '#fff9c4'].map((color) => {
                                                                const verseKey = selectedVerse.key;
                                                                const isActive = verseHighlights[verseKey] === color;
@@ -352,11 +355,11 @@ export default function BibleReader() {
                                                                    <button
                                                                        key={color}
                                                                        onClick={() => handleHighlight(color)}
-                                                                       className="w-10 h-10 rounded-full border-2 shadow-sm transition-all"
+                                                                       className="w-10 h-10 rounded-full shadow-md transition-all flex-shrink-0"
                                                                        style={{ 
                                                                            backgroundColor: color,
-                                                                           borderColor: isActive ? '#1e293b' : '#94a3b8',
-                                                                           borderWidth: isActive ? '3px' : '2px'
+                                                                           border: isActive ? '3px solid #1e293b' : '2px solid #64748b',
+                                                                           boxShadow: isActive ? '0 0 0 2px rgba(30, 41, 59, 0.2)' : 'none'
                                                                        }}
                                                                    />
                                                                );
@@ -368,9 +371,9 @@ export default function BibleReader() {
                                                    <div className="grid grid-cols-3 gap-2">
                                                        <button
                                                            onClick={handleFavorite}
-                                                           className="flex flex-col items-center justify-center gap-1 py-3 rounded-xl font-medium border-2 text-slate-700"
+                                                           className="flex flex-col items-center justify-center gap-1 py-3 rounded-xl font-medium border-2 theme-text-primary"
                                                            style={{ 
-                                                               borderColor: favoritedVerses.has(`${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`) ? '#f59e0b' : '#94a3b8',
+                                                               borderColor: favoritedVerses.has(`${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`) ? '#f59e0b' : 'var(--text-light)',
                                                                backgroundColor: favoritedVerses.has(`${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`) ? '#fef3c7' : 'transparent'
                                                            }}
                                                        >
@@ -379,16 +382,16 @@ export default function BibleReader() {
                                                        </button>
                                                        <button
                                                            onClick={handleCopy}
-                                                           className="flex flex-col items-center justify-center gap-1 py-3 rounded-xl font-medium text-slate-700 border-2"
-                                                           style={{ borderColor: '#94a3b8', backgroundColor: 'transparent' }}
+                                                           className="flex flex-col items-center justify-center gap-1 py-3 rounded-xl font-medium theme-text-primary border-2"
+                                                           style={{ borderColor: 'var(--text-light)', backgroundColor: 'transparent' }}
                                                        >
                                                            <Copy className="w-5 h-5" />
                                                            <span className="text-xs">Copy</span>
                                                        </button>
                                                        <button
                                                            onClick={handleComment}
-                                                           className="flex flex-col items-center justify-center gap-1 py-3 rounded-xl font-medium text-slate-700 border-2"
-                                                           style={{ borderColor: '#94a3b8', backgroundColor: 'transparent' }}
+                                                           className="flex flex-col items-center justify-center gap-1 py-3 rounded-xl font-medium theme-text-primary border-2"
+                                                           style={{ borderColor: 'var(--text-light)', backgroundColor: 'transparent' }}
                                                        >
                                                            <MessageCircle className="w-5 h-5" />
                                                            <span className="text-xs">Comment</span>
@@ -397,7 +400,7 @@ export default function BibleReader() {
 
                                                    <button
                                                        onClick={() => setSelectedVerse(null)}
-                                                       className="w-full py-2 text-sm text-slate-500"
+                                                       className="w-full py-2 text-sm theme-text-secondary"
                                                    >
                                                        Cancel
                                                    </button>
@@ -408,15 +411,15 @@ export default function BibleReader() {
                                                        value={commentText}
                                                        onChange={(e) => setCommentText(e.target.value)}
                                                        placeholder="Write your comment..."
-                                                       className="w-full p-3 rounded-xl border-2 resize-none text-slate-800"
+                                                       className="w-full p-3 rounded-xl border-2 resize-none theme-text-primary"
                                                        rows={4}
-                                                       style={{ borderColor: '#94a3b8', backgroundColor: 'white' }}
+                                                       style={{ borderColor: 'var(--border-color)', backgroundColor: 'var(--card-overlay)' }}
                                                    />
                                                    <div className="flex gap-2">
                                                        <button
                                                            onClick={handleSaveComment}
-                                                           className="flex-1 py-2 rounded-xl font-medium border-2 text-slate-800"
-                                                           style={{ borderColor: '#64748b', backgroundColor: 'transparent' }}
+                                                           className="flex-1 py-2 rounded-xl font-medium border-2 theme-text-primary"
+                                                           style={{ borderColor: 'var(--text-light)', backgroundColor: 'transparent' }}
                                                        >
                                                            Save Comment
                                                        </button>
@@ -425,8 +428,8 @@ export default function BibleReader() {
                                                                setShowCommentInput(false);
                                                                setCommentText('');
                                                            }}
-                                                           className="flex-1 py-2 rounded-xl font-medium text-slate-500 border-2"
-                                                           style={{ borderColor: '#94a3b8', backgroundColor: 'transparent' }}
+                                                           className="flex-1 py-2 rounded-xl font-medium theme-text-secondary border-2"
+                                                           style={{ borderColor: 'var(--border-color)', backgroundColor: 'transparent' }}
                                                        >
                                                            Cancel
                                                        </button>
