@@ -2,13 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
-import { useQuery } from '@tanstack/react-query';
-import { ArrowLeft, Calendar, BookOpen, Tag, Heart } from 'lucide-react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { ArrowLeft, Calendar, BookOpen, Tag, Heart, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { moods } from '../components/ui/MoodSelector';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function JournalEntryDetail() {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const urlParams = new URLSearchParams(window.location.search);
   const entryId = urlParams.get('id');
 
@@ -19,6 +31,14 @@ export default function JournalEntryDetail() {
       return entries[0];
     },
     enabled: !!entryId,
+  });
+
+  const deleteEntryMutation = useMutation({
+    mutationFn: () => base44.entities.JournalEntry.delete(entryId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['journal-entries'] });
+      navigate(-1);
+    },
   });
 
   if (isLoading) {
@@ -47,22 +67,51 @@ export default function JournalEntryDetail() {
         backgroundColor: 'var(--nav-bg)',
         borderBottom: '1px solid var(--border-color)'
       }}>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => navigate(-1)}
-            className="w-10 h-10 rounded-full border-2 theme-text-primary flex items-center justify-center"
-            style={{ borderColor: 'var(--text-light)' }}
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </button>
-          <div>
-            <h1 className="text-xl font-bold theme-text-primary">
-              {isMoment ? 'Moment' : moodData?.label || 'Entry'}
-            </h1>
-            <p className="text-xs theme-text-secondary">
-              {format(new Date(entry.created_date), 'EEEE, MMMM d, yyyy • h:mm a')}
-            </p>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate(-1)}
+              className="w-10 h-10 rounded-full border-2 theme-text-primary flex items-center justify-center"
+              style={{ borderColor: 'var(--text-light)' }}
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
+            <div>
+              <h1 className="text-xl font-bold theme-text-primary">
+                {isMoment ? 'Moment' : moodData?.label || 'Entry'}
+              </h1>
+              <p className="text-xs theme-text-secondary">
+                {format(new Date(entry.created_date), 'EEEE, MMMM d, yyyy • h:mm a')}
+              </p>
+            </div>
           </div>
+
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button
+                className="w-10 h-10 rounded-full flex items-center justify-center text-red-500 hover:bg-red-50"
+              >
+                <Trash2 className="w-5 h-5" />
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete this entry?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will permanently delete this journal entry. This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => deleteEntryMutation.mutate()}
+                  className="bg-red-500 hover:bg-red-600"
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
 
