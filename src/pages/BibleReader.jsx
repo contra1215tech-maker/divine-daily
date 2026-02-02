@@ -324,48 +324,42 @@ export default function BibleReader() {
                             <AnimatePresence>
                                 {selectedVerse && (
                                     <motion.div
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: 20 }}
-                                        className="fixed bottom-16 left-4 right-4 z-50 rounded-2xl shadow-2xl p-4 max-w-md mx-auto backdrop-blur-xl border-2"
-                                        style={{ 
-                                            backgroundColor: 'var(--card-bg)',
-                                            borderColor: 'var(--border-color)'
-                                        }}
-                                        onClick={(e) => e.stopPropagation()}
+                                       initial={{ opacity: 0, y: 20 }}
+                                       animate={{ opacity: 1, y: 0 }}
+                                       exit={{ opacity: 0, y: 20 }}
+                                       className="fixed bottom-16 left-4 right-4 z-50 rounded-2xl shadow-2xl p-3 max-w-md mx-auto backdrop-blur-xl border-2"
+                                       style={{ 
+                                           backgroundColor: 'var(--card-bg)',
+                                           borderColor: 'var(--border-color)'
+                                       }}
+                                       onClick={(e) => e.stopPropagation()}
                                     >
-                                        <h3 className="text-sm font-semibold mb-3 theme-text-primary">
-                                            Verse {selectedVerse.number}
-                                        </h3>
-                                        
-                                        <div className="space-y-3">
-                                           {!showCommentInput ? (
-                                               <>
-                                                   {/* Highlight Colors */}
-                                                   <div>
-                                                       <p className="text-xs mb-2 flex items-center gap-1 theme-text-primary">
-                                                           <Palette className="w-3 h-3" />
-                                                           Highlight Color
-                                                       </p>
-                                                       <div className="flex gap-2 justify-center flex-wrap">
-                                                           {['#ffcdd2', '#f8bbd0', '#e1bee7', '#c5cae9', '#bbdefb', '#b2dfdb', '#fff9c4'].map((color) => {
-                                                               const verseKey = selectedVerse.key;
-                                                               const isActive = verseHighlights[verseKey] === color;
-                                                               return (
-                                                                   <div
-                                                                       key={color}
-                                                                       onClick={() => handleHighlight(color)}
-                                                                       className="w-10 h-10 rounded-full shadow-md transition-all flex-shrink-0 cursor-pointer"
-                                                                       style={{ 
-                                                                           backgroundColor: color,
-                                                                           border: isActive ? '3px solid #1e293b' : '2px solid #64748b',
-                                                                           boxShadow: isActive ? '0 0 0 2px rgba(30, 41, 59, 0.2)' : 'none'
-                                                                       }}
-                                                                   />
-                                                               );
-                                                           })}
-                                                       </div>
-                                                   </div>
+                                       <h3 className="text-sm font-semibold mb-2 theme-text-primary">
+                                           Verse {selectedVerse.number}
+                                       </h3>
+
+                                       <div className="space-y-2">
+                                          {!showCommentInput ? (
+                                              <>
+                                                  {/* Highlight Colors */}
+                                                  <div className="flex gap-1.5 justify-center">
+                                                      {['#f8bbd0', '#e1bee7', '#c5cae9', '#bbdefb', '#b2dfdb', '#fff9c4'].map((color) => {
+                                                          const verseKey = selectedVerse.key;
+                                                          const isActive = verseHighlights[verseKey] === color;
+                                                          return (
+                                                              <div
+                                                                  key={color}
+                                                                  onClick={() => handleHighlight(color)}
+                                                                  className="w-9 h-9 rounded-full shadow-md transition-all flex-shrink-0 cursor-pointer"
+                                                                  style={{ 
+                                                                      backgroundColor: color,
+                                                                      border: isActive ? '3px solid #1e293b' : '2px solid #64748b',
+                                                                      boxShadow: isActive ? '0 0 0 2px rgba(30, 41, 59, 0.2)' : 'none'
+                                                                  }}
+                                                              />
+                                                          );
+                                                      })}
+                                                  </div>
 
                                                    {/* Action Buttons */}
                                                    <div className="grid grid-cols-3 gap-2">
