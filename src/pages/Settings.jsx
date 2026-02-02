@@ -49,7 +49,7 @@ const themes = [
     name: 'Dark Mode',
     description: 'Mysterious & rich',
     icon: '🌙',
-    colors: { primary: '#2D1B4E', accent: '#8B5FBF', warm: '#6B4BA6' }
+    colors: { primary: '#3A2A1A', accent: '#5A4A3A', warm: '#7A6A5A' }
   }
 ];
 
