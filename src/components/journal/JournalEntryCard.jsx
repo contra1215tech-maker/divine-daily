@@ -65,7 +65,7 @@ export default function JournalEntryCard({ entry, onClick }) {
 
         {/* Arrow indicator */}
         <div className="pr-3 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
-          <ChevronRight className="w-4 h-4 text-slate-300" />
+          <ChevronRight className="w-4 h-4 theme-text-secondary" />
         </div>
       </div>
     </motion.div>
