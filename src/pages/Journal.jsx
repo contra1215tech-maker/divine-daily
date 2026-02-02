@@ -259,7 +259,7 @@ export default function Journal() {
                 <div className="flex items-center gap-2 mb-3">
                   <Calendar className="w-4 h-4 theme-text-secondary" />
                   <h3 className="text-sm font-medium theme-text-secondary">
-                    {format(new Date(date), 'EEEE, MMMM d')}
+                    {format(new Date(dayEntries[0].created_date), 'EEEE, MMMM d')}
                   </h3>
                 </div>
                 <div className="space-y-3">
