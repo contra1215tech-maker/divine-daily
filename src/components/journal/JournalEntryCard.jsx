@@ -41,15 +41,10 @@ export default function JournalEntryCard({ entry, onClick }) {
         {/* Content */}
         <div className={cn("flex-1 py-2 flex flex-col justify-center min-w-0 w-full overflow-hidden", hasNoPhoto && "px-4")}>
           <div className="flex items-center gap-2 mb-1">
-            <span className={cn(
-              "text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full flex-shrink-0",
-              isMoment 
-                ? "bg-sky-100 text-sky-600" 
-                : "bg-amber-100 text-amber-600"
-            )}>
+            <span className="text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full flex-shrink-0 theme-text-primary" style={{ backgroundColor: 'var(--accent-primary)' }}>
               {isMoment ? 'Moment' : moodData?.label || 'Mood'}
             </span>
-            <span className="text-xs text-slate-400 flex-shrink-0">
+            <span className="text-xs theme-text-secondary flex-shrink-0">
               {format(new Date(entry.created_date), 'MMM d')}
             </span>
           </div>
@@ -59,7 +54,7 @@ export default function JournalEntryCard({ entry, onClick }) {
           </p>
 
           {entry.verse_reference && (
-            <div className="flex items-center gap-1.5 text-slate-400 mt-1 min-w-0">
+            <div className="flex items-center gap-1.5 theme-text-secondary mt-1 min-w-0">
               <BookOpen className="w-3 h-3 flex-shrink-0" />
               <span className="text-xs truncate">
                 {entry.verse_reference}
