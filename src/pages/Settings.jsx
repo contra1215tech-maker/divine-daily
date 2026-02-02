@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useMutation } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
+import { useNavigate } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 import { 
   BookOpen, LogOut, ChevronRight, Check, 
   User, Flame, Camera, Heart, Info, Palette, FileText
@@ -52,6 +54,7 @@ const themes = [
 ];
 
 export default function Settings() {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showBiblePicker, setShowBiblePicker] = useState(false);
@@ -141,7 +144,7 @@ export default function Settings() {
         {/* Profile */}
         <motion.button
           whileTap={{ scale: 0.98 }}
-          onClick={() => window.location.href = '/Profile'}
+          onClick={() => navigate(createPageUrl('Profile'))}
           className="w-full p-4 rounded-2xl theme-card flex items-center justify-between"
         >
           <div className="flex items-center gap-3">
@@ -215,7 +218,7 @@ export default function Settings() {
       <div className="px-6 mt-6">
         <motion.button
           whileTap={{ scale: 0.98 }}
-          onClick={() => window.location.href = '/License'}
+          onClick={() => navigate(createPageUrl('License'))}
           className="w-full p-4 rounded-2xl theme-card flex items-center justify-between"
         >
           <div className="flex items-center gap-3">
@@ -239,7 +242,7 @@ export default function Settings() {
       <div className="px-6 mt-3">
         <motion.button
           whileTap={{ scale: 0.98 }}
-          onClick={() => window.location.href = '/Support'}
+          onClick={() => navigate(createPageUrl('Support'))}
           className="w-full p-4 rounded-2xl theme-card flex items-center justify-between"
         >
           <div className="flex items-center gap-3">
