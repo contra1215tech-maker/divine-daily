@@ -121,6 +121,12 @@ export default function Layout({ children, currentPageName }) {
               max-width: 448px;
               margin: 0 auto;
               background: linear-gradient(to bottom, ${currentTheme['--bg-gradient-from']}, ${currentTheme['--bg-gradient-to']});
+              overflow-x: hidden;
+              scrollbar-width: none; /* Firefox */
+              -ms-overflow-style: none; /* IE and Edge */
+            }
+            body::-webkit-scrollbar {
+              display: none; /* Chrome, Safari, Opera */
             }
         .theme-card {
           background-color: ${currentTheme['--card-bg']} !important;
