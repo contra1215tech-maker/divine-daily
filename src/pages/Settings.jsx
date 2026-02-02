@@ -147,7 +147,7 @@ export default function Settings() {
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center">
               <img 
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/fce0de5a5_profile.jpg" 
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/9659554a5_profile2.jpg" 
                 alt="Profile"
                 className="w-full h-full object-cover"
               />
