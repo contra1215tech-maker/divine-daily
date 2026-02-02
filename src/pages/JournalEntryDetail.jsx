@@ -105,7 +105,7 @@ export default function JournalEntryDetail() {
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={() => deleteEntryMutation.mutate()}
-                  className="bg-red-500 hover:bg-red-600"
+                  className="bg-red-500 hover:bg-red-600 text-white"
                 >
                   Delete
                 </AlertDialogAction>
