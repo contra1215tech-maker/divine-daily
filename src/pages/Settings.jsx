@@ -138,6 +138,24 @@ export default function Settings() {
 
       {/* Settings List */}
       <div className="px-6 space-y-3">
+        {/* Profile */}
+        <motion.button
+          whileTap={{ scale: 0.98 }}
+          onClick={() => window.location.href = '/Profile'}
+          className="w-full p-4 rounded-2xl theme-card flex items-center justify-between"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl theme-accent flex items-center justify-center">
+              <User className="w-5 h-5 theme-text-primary" />
+            </div>
+            <div className="text-left">
+              <p className="font-medium theme-text-primary">Profile</p>
+              <p className="text-sm theme-text-secondary">View your account details</p>
+            </div>
+          </div>
+          <ChevronRight className="w-5 h-5 theme-text-secondary" />
+        </motion.button>
+
         {/* Theme */}
         <motion.button
           whileTap={{ scale: 0.98 }}
@@ -178,18 +196,7 @@ export default function Settings() {
 
 
 
-        {/* Logout */}
-        <motion.button
-          whileTap={{ scale: 0.98 }}
-          onClick={handleLogout}
-          className="w-full p-4 rounded-2xl theme-card flex items-center gap-3"
-          style={{ borderColor: 'var(--border-color)' }}
-        >
-          <div className="w-10 h-10 rounded-xl theme-accent flex items-center justify-center">
-            <LogOut className="w-5 h-5 theme-text-primary" />
-          </div>
-          <p className="font-medium theme-text-primary">Sign Out</p>
-        </motion.button>
+
       </div>
 
       {/* App Info */}

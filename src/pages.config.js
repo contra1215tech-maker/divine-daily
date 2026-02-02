@@ -53,6 +53,7 @@ import HeartCheck from './pages/HeartCheck';
 import Journal from './pages/Journal';
 import JournalEntryDetail from './pages/JournalEntryDetail';
 import Settings from './pages/Settings';
+import Profile from './pages/Profile';
 import __Layout from './Layout.jsx';
 
 
@@ -63,6 +64,7 @@ export const PAGES = {
     "Journal": Journal,
     "JournalEntryDetail": JournalEntryDetail,
     "Settings": Settings,
+    "Profile": Profile,
 }
 
 export const pagesConfig = {
