@@ -199,28 +199,8 @@ export default function Settings() {
 
       </div>
 
-      {/* Support Button */}
-      <div className="px-6 mt-6">
-        <motion.button
-          whileTap={{ scale: 0.98 }}
-          onClick={() => window.location.href = '/Support'}
-          className="w-full p-4 rounded-2xl theme-card flex items-center justify-between"
-        >
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-pink-100 flex items-center justify-center">
-              <Heart className="w-5 h-5 text-pink-600" />
-            </div>
-            <div className="text-left">
-              <p className="font-medium theme-text-primary">Support This App</p>
-              <p className="text-sm theme-text-secondary">Help keep this app alive</p>
-            </div>
-          </div>
-          <ChevronRight className="w-5 h-5 theme-text-secondary" />
-        </motion.button>
-      </div>
-
       {/* License Button */}
-      <div className="px-6 mt-3">
+      <div className="px-6 mt-6">
         <motion.button
           whileTap={{ scale: 0.98 }}
           onClick={() => window.location.href = '/License'}
@@ -233,6 +213,26 @@ export default function Settings() {
             <div className="text-left">
               <p className="font-medium theme-text-primary">License</p>
               <p className="text-sm theme-text-secondary">MIT License</p>
+            </div>
+          </div>
+          <ChevronRight className="w-5 h-5 theme-text-secondary" />
+        </motion.button>
+      </div>
+
+      {/* Support Button */}
+      <div className="px-6 mt-3">
+        <motion.button
+          whileTap={{ scale: 0.98 }}
+          onClick={() => window.location.href = '/Support'}
+          className="w-full p-4 rounded-2xl theme-card flex items-center justify-between"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-pink-100 flex items-center justify-center">
+              <Heart className="w-5 h-5 text-pink-600" />
+            </div>
+            <div className="text-left">
+              <p className="font-medium theme-text-primary">Support This App</p>
+              <p className="text-sm theme-text-secondary">Help keep this app alive</p>
             </div>
           </div>
           <ChevronRight className="w-5 h-5 theme-text-secondary" />
