@@ -123,16 +123,9 @@ export default function Settings() {
           animate={{ opacity: 1, y: 0 }}
           className="p-6 rounded-3xl theme-card shadow-sm"
         >
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-sky-400 to-sky-500 flex items-center justify-center">
-              <span className="text-2xl font-bold text-white">
-                {user?.full_name?.[0]?.toUpperCase() || 'U'}
-              </span>
-            </div>
-            <div>
-              <h2 className="text-xl font-bold theme-text-primary">{user?.full_name || 'Friend'}</h2>
-              <p className="text-sm theme-text-secondary">{user?.email}</p>
-            </div>
+          <div className="mb-6">
+            <h2 className="text-xl font-bold theme-text-primary">{user?.full_name || 'Friend'}</h2>
+            <p className="text-sm theme-text-secondary">{user?.email}</p>
           </div>
 
 
