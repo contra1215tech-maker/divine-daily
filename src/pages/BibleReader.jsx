@@ -352,10 +352,10 @@ export default function BibleReader() {
                                                                const verseKey = selectedVerse.key;
                                                                const isActive = verseHighlights[verseKey] === color;
                                                                return (
-                                                                   <button
+                                                                   <div
                                                                        key={color}
                                                                        onClick={() => handleHighlight(color)}
-                                                                       className="w-10 h-10 rounded-full shadow-md transition-all flex-shrink-0"
+                                                                       className="w-10 h-10 rounded-full shadow-md transition-all flex-shrink-0 cursor-pointer"
                                                                        style={{ 
                                                                            backgroundColor: color,
                                                                            border: isActive ? '3px solid #1e293b' : '2px solid #64748b',
