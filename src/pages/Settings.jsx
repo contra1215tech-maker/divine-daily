@@ -141,13 +141,15 @@ export default function Settings() {
           className="w-full p-4 rounded-2xl theme-card flex items-center justify-between"
         >
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center">
-              <img 
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/9659554a5_profile2.jpg" 
-                alt="Profile"
-                className="w-full h-full object-cover"
-              />
-            </div>
+            {user?.theme === 'dark_mode' && (
+              <div className="w-9 h-9 rounded-xl overflow-hidden flex items-center justify-center">
+                <img 
+                  src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/9659554a5_profile2.jpg" 
+                  alt="Profile"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
             <div className="text-left">
               <p className="font-medium theme-text-primary">Profile</p>
               <p className="text-sm theme-text-secondary">View your account details</p>
@@ -163,13 +165,15 @@ export default function Settings() {
           className="w-full p-4 rounded-2xl theme-card flex items-center justify-between"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center">
-              <img 
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/e80323456_theme.jpg" 
-                alt="Theme"
-                className="w-full h-full object-cover"
-              />
-            </div>
+            {user?.theme === 'dark_mode' && (
+              <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center">
+                <img 
+                  src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/e80323456_theme.jpg" 
+                  alt="Theme"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
             <div className="text-left">
               <p className="font-medium theme-text-primary">Theme</p>
               <p className="text-sm theme-text-secondary">
@@ -187,13 +191,15 @@ export default function Settings() {
           className="w-full p-4 rounded-2xl theme-card flex items-center justify-between"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center">
-              <img 
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/9a0adfe6e_newbible.jpg" 
-                alt="Bible Version"
-                className="w-full h-full object-cover"
-              />
-            </div>
+            {user?.theme === 'dark_mode' && (
+              <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center">
+                <img 
+                  src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/9a0adfe6e_newbible.jpg" 
+                  alt="Bible Version"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
             <div className="text-left">
               <p className="font-medium theme-text-primary">Bible Version</p>
               <p className="text-sm theme-text-secondary">{user?.preferred_bible_version || 'NIV'}</p>
@@ -215,13 +221,15 @@ export default function Settings() {
           className="w-full p-4 rounded-2xl theme-card flex items-center justify-between"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center">
-              <img 
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/29b034366_cross.jpg" 
-                alt="Bible"
-                className="w-full h-full object-cover"
-              />
-            </div>
+            {user?.theme === 'dark_mode' && (
+              <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center">
+                <img 
+                  src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/29b034366_cross.jpg" 
+                  alt="Bible"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
             <div className="text-left">
               <p className="font-medium theme-text-primary">License</p>
               <p className="text-sm theme-text-secondary">MIT License</p>
@@ -239,13 +247,15 @@ export default function Settings() {
           className="w-full p-4 rounded-2xl theme-card flex items-center justify-between"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center">
-              <img 
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/2d764fa06_heart.jpg" 
-                alt="Support"
-                className="w-full h-full object-cover"
-              />
-            </div>
+            {user?.theme === 'dark_mode' && (
+              <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center">
+                <img 
+                  src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/2d764fa06_heart.jpg" 
+                  alt="Support"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
             <div className="text-left">
               <p className="font-medium theme-text-primary">Support This App</p>
               <p className="text-sm theme-text-secondary">Help keep this app alive</p>
