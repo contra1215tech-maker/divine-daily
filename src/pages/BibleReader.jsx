@@ -264,7 +264,7 @@ export default function BibleReader() {
                 </div>
             </div>
 
-            <div className="px-4 py-6">
+            <div className="px-2 py-2">
                 <AnimatePresence mode="wait">
                     {showBookSelector ? (
                         <motion.div
