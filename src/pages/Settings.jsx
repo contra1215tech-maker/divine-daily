@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import AnimatedButton from '@/components/ui/AnimatedButton';
 import { cn } from "@/lib/utils";
+import DonationSection from '../components/settings/DonationSection';
 
 const bibleVersions = [
   { id: 'NIV', name: 'NIV', desc: 'New International Version' },
@@ -197,6 +198,11 @@ export default function Settings() {
 
 
 
+      </div>
+
+      {/* Donation Section */}
+      <div className="px-6 mt-6">
+        <DonationSection user={user} />
       </div>
 
       {/* App Info */}
