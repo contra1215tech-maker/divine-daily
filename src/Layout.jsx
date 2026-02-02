@@ -128,6 +128,7 @@ export default function Layout({ children, currentPageName }) {
             body::-webkit-scrollbar {
               display: none; /* Chrome, Safari, Opera */
             }
+            
         .theme-card {
           background-color: ${currentTheme['--card-bg']} !important;
           border-color: ${currentTheme['--border-color']} !important;
