@@ -19,7 +19,7 @@ export default function JournalEntryCard({ entry, onClick }) {
       onClick={onClick}
       className="group relative overflow-hidden rounded-3xl cursor-pointer theme-card shadow-sm hover:shadow-md transition-shadow"
     >
-      <div className={cn("flex gap-3 items-center", hasNoPhoto && "flex-col")}>
+      <div className={cn("flex gap-3 items-center w-full", hasNoPhoto && "flex-col")}>
         {/* Image, Mood, or Photo Preview */}
         {!hasNoPhoto && (
           <div className={cn(
@@ -39,28 +39,28 @@ export default function JournalEntryCard({ entry, onClick }) {
         )}
 
         {/* Content */}
-        <div className={cn("flex-1 py-2 flex flex-col justify-center min-w-0", hasNoPhoto && "px-4")}>
+        <div className={cn("flex-1 py-2 flex flex-col justify-center min-w-0 w-full overflow-hidden", hasNoPhoto && "px-4")}>
           <div className="flex items-center gap-2 mb-1">
             <span className={cn(
-              "text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full",
+              "text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full flex-shrink-0",
               isMoment 
                 ? "bg-sky-100 text-sky-600" 
                 : "bg-amber-100 text-amber-600"
             )}>
               {isMoment ? 'Moment' : moodData?.label || 'Mood'}
             </span>
-            <span className="text-xs text-slate-400">
+            <span className="text-xs text-slate-400 flex-shrink-0">
               {format(new Date(entry.created_date), 'MMM d')}
             </span>
           </div>
-          
-          <p className="text-sm line-clamp-1 theme-text-primary">
+
+          <p className="text-sm line-clamp-1 theme-text-primary break-words w-full">
             {entry.reflection || (isMoment ? 'A glimpse of God...' : 'Heart check-in')}
           </p>
 
           {entry.verse_reference && (
-            <div className="flex items-center gap-1.5 text-slate-400 mt-1">
-              <BookOpen className="w-3 h-3" />
+            <div className="flex items-center gap-1.5 text-slate-400 mt-1 min-w-0">
+              <BookOpen className="w-3 h-3 flex-shrink-0" />
               <span className="text-xs truncate">
                 {entry.verse_reference}
               </span>
@@ -69,7 +69,7 @@ export default function JournalEntryCard({ entry, onClick }) {
         </div>
 
         {/* Arrow indicator */}
-        <div className="pr-3 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="pr-3 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
           <ChevronRight className="w-4 h-4 text-slate-300" />
         </div>
       </div>
