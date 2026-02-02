@@ -109,13 +109,13 @@ export default function Layout({ children, currentPageName }) {
       background: `linear-gradient(to bottom, ${currentTheme['--bg-gradient-from']}, ${currentTheme['--bg-gradient-to']})` 
     }}>
       <style>{`
-            @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
             :root {
               ${Object.entries(currentTheme).map(([key, value]) => `${key}: ${value};`).join('\n          ')}
             }
             * {
-              font-family: 'Merriweather', serif;
+              font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             }
             body {
               max-width: 448px;
