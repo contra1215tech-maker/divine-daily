@@ -84,7 +84,7 @@ export default function Journal() {
   return (
       <div className="min-h-screen" style={{ background: 'transparent' }}>
       {/* Header */}
-      <div className="sticky top-0 backdrop-blur-lg z-10" style={{ 
+      <div className="backdrop-blur-lg" style={{ 
         backgroundColor: 'var(--nav-bg)',
         borderBottom: '1px solid var(--border-color)'
       }}>
