@@ -89,9 +89,9 @@ export default function JournalEntryDetail() {
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <button
-                className="w-10 h-10 rounded-full flex items-center justify-center text-red-500 hover:bg-red-50"
+                className="w-10 h-10 rounded-full flex items-center justify-center theme-text-secondary hover:opacity-70 transition-opacity"
               >
-                <Trash2 className="w-5 h-5" />
+                <Trash2 className="w-4 h-4" />
               </button>
             </AlertDialogTrigger>
             <AlertDialogContent>
