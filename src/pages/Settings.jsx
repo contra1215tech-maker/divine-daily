@@ -277,27 +277,29 @@ export default function Settings() {
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-lg bg-white rounded-t-3xl p-6"
+            className="w-full max-w-lg rounded-t-3xl p-6 theme-card"
+            style={{ backgroundColor: 'var(--card-bg)' }}
           >
-            <div className="w-12 h-1 bg-slate-300 rounded-full mx-auto mb-4" />
-            <h3 className="text-lg font-bold text-slate-800 mb-4">Choose Theme</h3>
+            <div className="w-12 h-1 rounded-full mx-auto mb-4" style={{ backgroundColor: 'var(--border-color)' }} />
+            <h3 className="text-lg font-bold theme-text-primary mb-4">Choose Theme</h3>
             <div className="space-y-3">
               {themes.map((theme) => (
                 <button
                   key={theme.id}
                   onClick={() => handleThemeChange(theme.id)}
                   className={cn(
-                    "w-full p-4 rounded-2xl border-2 transition-all text-left",
+                    "w-full p-4 rounded-2xl border-2 transition-all text-left theme-card",
                     (user?.theme || 'morning_dew') === theme.id
-                      ? "border-sky-500 bg-sky-50"
-                      : "border-slate-200 hover:border-slate-300"
+                      ? "border-sky-500"
+                      : ""
                   )}
+                  style={{ borderColor: (user?.theme || 'morning_dew') === theme.id ? '#0ea5e9' : 'var(--border-color)' }}
                 >
                   <div className="flex items-center gap-3">
                     <div className="text-3xl">{theme.icon}</div>
                     <div className="flex-1">
-                      <h4 className="font-semibold text-slate-800">{theme.name}</h4>
-                      <p className="text-sm text-slate-500">{theme.description}</p>
+                      <h4 className="font-semibold theme-text-primary">{theme.name}</h4>
+                      <p className="text-sm theme-text-secondary">{theme.description}</p>
                     </div>
                     <div className="flex gap-1">
                       <div className="w-6 h-6 rounded-full border border-slate-200" style={{ backgroundColor: theme.colors.primary }} />
@@ -326,25 +328,27 @@ export default function Settings() {
             animate={{ y: 0 }}
             exit={{ y: '100%' }}
             onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-lg bg-white rounded-t-3xl p-6 max-h-[70vh] overflow-y-auto"
+            className="w-full max-w-lg rounded-t-3xl p-6 max-h-[70vh] overflow-y-auto theme-card"
+            style={{ backgroundColor: 'var(--card-bg)' }}
           >
-            <div className="w-12 h-1 bg-slate-300 rounded-full mx-auto mb-4" />
-            <h3 className="text-lg font-bold text-slate-800 mb-4">Choose Bible Version</h3>
+            <div className="w-12 h-1 rounded-full mx-auto mb-4" style={{ backgroundColor: 'var(--border-color)' }} />
+            <h3 className="text-lg font-bold theme-text-primary mb-4">Choose Bible Version</h3>
             <div className="space-y-2">
               {bibleVersions.map((version) => (
                 <button
                   key={version.id}
                   onClick={() => handleBibleVersionChange(version.id)}
                   className={cn(
-                    "w-full p-4 rounded-2xl border-2 text-left transition-all flex items-center justify-between",
+                    "w-full p-4 rounded-2xl border-2 text-left transition-all flex items-center justify-between theme-card",
                     user?.preferred_bible_version === version.id
-                      ? "border-sky-400 bg-sky-50"
-                      : "border-slate-200 hover:border-slate-300"
+                      ? "border-sky-400"
+                      : ""
                   )}
+                  style={{ borderColor: user?.preferred_bible_version === version.id ? '#0ea5e9' : 'var(--border-color)' }}
                 >
                   <div>
-                    <span className="font-semibold text-slate-800">{version.name}</span>
-                    <span className="text-slate-400 text-sm ml-2">{version.desc}</span>
+                    <span className="font-semibold theme-text-primary">{version.name}</span>
+                    <span className="theme-text-secondary text-sm ml-2">{version.desc}</span>
                   </div>
                   {user?.preferred_bible_version === version.id && (
                     <Check className="w-5 h-5 text-sky-500" />
