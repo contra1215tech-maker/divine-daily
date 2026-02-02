@@ -52,8 +52,9 @@ import CaptureMoment from './pages/CaptureMoment';
 import HeartCheck from './pages/HeartCheck';
 import Journal from './pages/Journal';
 import JournalEntryDetail from './pages/JournalEntryDetail';
-import Settings from './pages/Settings';
 import Profile from './pages/Profile';
+import Settings from './pages/Settings';
+import Support from './pages/Support';
 import __Layout from './Layout.jsx';
 
 
@@ -63,8 +64,9 @@ export const PAGES = {
     "HeartCheck": HeartCheck,
     "Journal": Journal,
     "JournalEntryDetail": JournalEntryDetail,
-    "Settings": Settings,
     "Profile": Profile,
+    "Settings": Settings,
+    "Support": Support,
 }
 
 export const pagesConfig = {
