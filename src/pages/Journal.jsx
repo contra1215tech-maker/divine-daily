@@ -184,7 +184,7 @@ export default function Journal() {
                    key={entry.id}
                    initial={{ opacity: 0, scale: 0.9 }}
                    animate={{ opacity: 1, scale: 1 }}
-                   onClick={() => {}}
+                   onClick={() => navigate(createPageUrl('JournalEntryDetail') + `?id=${entry.id}`)}
                    className="relative overflow-hidden rounded-2xl aspect-square group"
                  >
                    <img 
