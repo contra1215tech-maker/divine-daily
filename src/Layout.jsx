@@ -8,7 +8,7 @@ import { base44 } from '@/api/base44Client';
 
 const navItems = [
   { id: 'BibleReader', icon: Book, label: 'Bible', useImage: true, imageUrl: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/29b034366_cross.jpg' },
-  { id: 'Journal', icon: BookOpen, label: 'Journal' },
+  { id: 'Journal', icon: BookOpen, label: 'Journal', useImage: true, imageUrl: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/78da09cbb_newbible.jpg' },
   { id: 'CaptureMoment', icon: Camera, label: 'Capture', useImage: true, imageUrl: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/b2b1b2e07_capture.jpg' },
   { id: 'Settings', icon: Settings, label: 'Settings', useImage: true, imageUrl: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/f67c4ee3a_settings.jpg' },
 ];
