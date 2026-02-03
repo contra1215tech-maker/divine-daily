@@ -455,7 +455,7 @@ export default function BibleReader() {
                                 </div>
                             ) : (
                                 <BookSelector
-                                    books={booksData?.books || []}
+                                    books={books}
                                     onSelectBook={handleBookSelect}
                                     onChapterSelect={handleChapterSelect}
                                 />
