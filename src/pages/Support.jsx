@@ -260,7 +260,13 @@ export default function Support() {
 
       {/* Cancel Confirmation Dialog */}
       <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
-        <AlertDialogContent className="max-w-[90%] rounded-2xl">
+        <AlertDialogContent 
+          className="max-w-[90%] rounded-2xl border-2" 
+          style={{ 
+            backgroundColor: 'var(--card-bg)',
+            borderColor: 'var(--border-color)'
+          }}
+        >
           <AlertDialogHeader>
             <AlertDialogTitle className="theme-text-primary">Cancel Subscription?</AlertDialogTitle>
             <AlertDialogDescription className="theme-text-secondary">
