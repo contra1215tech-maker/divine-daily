@@ -31,7 +31,7 @@ export default function BibleReader() {
             setUser(userData);
             
             // Load saved reading position
-            if (userData.reading_position) {
+            if (userData.reading_position && userData.reading_position.book_id) {
                 const { book_id, book_name, chapter, numberOfChapters } = userData.reading_position;
                 setSelectedBook({ id: book_id, name: book_name, numberOfChapters });
                 setSelectedChapter(chapter);
@@ -117,6 +117,7 @@ export default function BibleReader() {
 
     const handleBookSelect = (book) => {
         setSelectedBook(book);
+        // Don't auto-close book selector, wait for chapter selection
     };
 
     const handleChapterSelect = (chapter) => {
