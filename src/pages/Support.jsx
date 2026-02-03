@@ -129,7 +129,9 @@ export default function Support() {
     else {
       console.log('Native wrapper not detected. Simulating purchase for:', tier.productId);
       setTimeout(() => {
-        window.onPurchaseComplete(tier.productId, 'web_test_transaction_' + Date.now());
+        if (window.onPurchaseComplete) {
+          window.onPurchaseComplete(tier.productId, 'web_test_transaction_' + Date.now());
+        }
       }, 2000);
     }
   };
