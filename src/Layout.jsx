@@ -31,6 +31,9 @@ const getSettingsImageUrl = (theme) => {
   if (theme === 'still_waters') {
     return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/e719bac4e_settingsstillwaters.jpg';
   }
+  if (theme === 'morning_dew') {
+    return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/6fed27477_Screenshot2026-02-02at93112PM.png';
+  }
   return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/f67c4ee3a_settings.jpg';
 };
 
