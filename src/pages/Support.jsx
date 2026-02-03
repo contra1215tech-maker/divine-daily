@@ -196,12 +196,18 @@ export default function Support() {
 
           {currentSubscription && currentSubscription.status === 'active' ? (
             <div className="space-y-4">
-              <div className="p-4 rounded-2xl bg-gradient-to-br from-pink-50 to-purple-50 border-2 border-pink-200">
+              <div 
+                className="p-4 rounded-2xl border-2"
+                style={{
+                  background: `linear-gradient(to bottom right, var(--accent-primary), var(--accent-secondary))`,
+                  borderColor: 'var(--accent-primary)'
+                }}
+              >
                 <div className="flex items-center gap-2 mb-2">
-                  <Check className="w-5 h-5 text-green-600" />
-                  <span className="font-semibold text-slate-800">Active Supporter</span>
+                  <Check className="w-5 h-5" style={{ color: 'var(--text-primary)' }} />
+                  <span className="font-semibold theme-text-primary">Active Supporter</span>
                 </div>
-                <p className="text-sm text-slate-600">
+                <p className="text-sm theme-text-secondary">
                   Thank you for donating ${currentSubscription.amount}/month! Your support means the world to us.
                 </p>
               </div>
