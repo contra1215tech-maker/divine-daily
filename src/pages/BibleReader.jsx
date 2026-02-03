@@ -28,12 +28,13 @@ export default function BibleReader() {
 
     useEffect(() => {
         base44.auth.me().then(async (userData) => {
+            console.log('User data loaded:', userData);
             setUser(userData);
             
-            // Set translation ID from user's preferred version
-            if (userData.preferred_bible_version) {
-                setTranslationId(userData.preferred_bible_version);
-            }
+            // Set translation ID from user's preferred version, default to BSB
+            const translation = userData.preferred_bible_version || 'BSB';
+            console.log('Setting translation to:', translation);
+            setTranslationId(translation);
             
             // Load saved reading position
             if (userData.reading_position && userData.reading_position.book_id) {
@@ -42,16 +43,22 @@ export default function BibleReader() {
                 setSelectedChapter(chapter);
                 setShowBookSelector(false);
             }
-        }).catch(() => {});
+        }).catch((e) => {
+            console.error('Auth error:', e);
+        });
         
         // Load favorited verses
         base44.entities.FavoriteVerse.list().then(favs => {
             const favSet = new Set(favs.map(f => f.verse_reference));
             setFavoritedVerses(favSet);
-        }).catch(() => {});
+        }).catch((e) => {
+            console.error('Favorites error:', e);
+        });
 
         // Load bookmarks
-        base44.entities.Bookmark.list().then(setBookmarks).catch(() => {});
+        base44.entities.Bookmark.list().then(setBookmarks).catch((e) => {
+            console.error('Bookmarks error:', e);
+        });
     }, []);
 
     // Auto-save reading position whenever viewing a chapter
