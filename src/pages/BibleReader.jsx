@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, ChevronLeft, ChevronRight, Settings2, Loader2, MessageSquare, Database, Star, Copy, Palette, MessageCircle } from 'lucide-react';
+import { BookOpen, ChevronLeft, ChevronRight, Settings2, Loader2, MessageSquare, Database, Star, Copy, Palette, MessageCircle, Bookmark as BookmarkIcon, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -23,14 +23,30 @@ export default function BibleReader() {
     const [showCommentInput, setShowCommentInput] = useState(false);
     const [commentText, setCommentText] = useState('');
     const [favoritedVerses, setFavoritedVerses] = useState(new Set());
+    const [showBookmarks, setShowBookmarks] = useState(false);
+    const [bookmarks, setBookmarks] = useState([]);
 
     useEffect(() => {
-        base44.auth.me().then(setUser).catch(() => {});
+        base44.auth.me().then(async (userData) => {
+            setUser(userData);
+            
+            // Load saved reading position
+            if (userData.reading_position) {
+                const { book_id, book_name, chapter, numberOfChapters } = userData.reading_position;
+                setSelectedBook({ id: book_id, name: book_name, numberOfChapters });
+                setSelectedChapter(chapter);
+                setShowBookSelector(false);
+            }
+        }).catch(() => {});
+        
         // Load favorited verses
         base44.entities.FavoriteVerse.list().then(favs => {
             const favSet = new Set(favs.map(f => f.verse_reference));
             setFavoritedVerses(favSet);
         }).catch(() => {});
+
+        // Load bookmarks
+        base44.entities.Bookmark.list().then(setBookmarks).catch(() => {});
     }, []);
 
     // Fetch books for selected translation
@@ -107,17 +123,34 @@ export default function BibleReader() {
         setSelectedChapter(chapter);
         setActiveTab('text');
         setShowBookSelector(false);
+        saveReadingPosition(selectedBook, chapter);
+    };
+
+    const saveReadingPosition = async (book, chapter) => {
+        if (!book || !chapter) return;
+        await base44.auth.updateMe({
+            reading_position: {
+                book_id: book.id,
+                book_name: book.name,
+                chapter: chapter,
+                numberOfChapters: book.numberOfChapters
+            }
+        });
     };
 
     const handlePrevChapter = () => {
         if (selectedChapter > 1) {
-            setSelectedChapter(selectedChapter - 1);
+            const newChapter = selectedChapter - 1;
+            setSelectedChapter(newChapter);
+            saveReadingPosition(selectedBook, newChapter);
         }
     };
 
     const handleNextChapter = () => {
         if (selectedChapter < selectedBook?.numberOfChapters) {
-            setSelectedChapter(selectedChapter + 1);
+            const newChapter = selectedChapter + 1;
+            setSelectedChapter(newChapter);
+            saveReadingPosition(selectedBook, newChapter);
         }
     };
 
@@ -217,6 +250,39 @@ export default function BibleReader() {
         setSelectedVerse(null);
     };
 
+    const handleAddBookmark = async () => {
+        const existing = bookmarks.find(b => 
+            b.book_id === selectedBook.id && b.chapter === selectedChapter
+        );
+        
+        if (existing) return; // Already bookmarked
+
+        const newBookmark = await base44.entities.Bookmark.create({
+            book_id: selectedBook.id,
+            book_name: selectedBook.name,
+            chapter: selectedChapter
+        });
+
+        setBookmarks([...bookmarks, newBookmark]);
+    };
+
+    const handleDeleteBookmark = async (bookmarkId) => {
+        await base44.entities.Bookmark.delete(bookmarkId);
+        setBookmarks(bookmarks.filter(b => b.id !== bookmarkId));
+    };
+
+    const handleGoToBookmark = (bookmark) => {
+        setSelectedBook({
+            id: bookmark.book_id,
+            name: bookmark.book_name,
+            numberOfChapters: selectedBook?.numberOfChapters || 150
+        });
+        setSelectedChapter(bookmark.chapter);
+        setShowBookSelector(false);
+        setShowBookmarks(false);
+        saveReadingPosition({ id: bookmark.book_id, name: bookmark.book_name }, bookmark.chapter);
+    };
+
     if (!user || booksLoading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-50 to-white">
@@ -269,10 +335,22 @@ export default function BibleReader() {
                     </div>
 
                     {selectedBook && !showBookSelector && (
-                        <div className="mt-4">
+                        <div className="mt-4 flex items-center justify-between">
                             <h2 className="text-lg font-semibold theme-text-primary">
                                 {selectedBook.name} {selectedChapter}
                             </h2>
+                            <button
+                                onClick={handleAddBookmark}
+                                disabled={bookmarks.some(b => b.book_id === selectedBook.id && b.chapter === selectedChapter)}
+                                className="p-2 rounded-xl theme-text-primary disabled:opacity-30"
+                            >
+                                <BookmarkIcon 
+                                    className={cn(
+                                        "w-5 h-5",
+                                        bookmarks.some(b => b.book_id === selectedBook.id && b.chapter === selectedChapter) && "fill-current"
+                                    )}
+                                />
+                            </button>
                         </div>
                     )}
                 </div>
@@ -600,6 +678,80 @@ export default function BibleReader() {
                     ) : null}
                 </AnimatePresence>
             </div>
+
+            {/* Bookmarks Bar - Above Footer */}
+            {!showBookSelector && (
+                <div 
+                    className="fixed bottom-20 left-0 right-0 z-30 max-w-md mx-auto px-4"
+                >
+                    <button
+                        onClick={() => setShowBookmarks(!showBookmarks)}
+                        className="w-full py-2 rounded-xl backdrop-blur-lg border flex items-center justify-center gap-2 theme-text-primary"
+                        style={{ 
+                            backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                            borderColor: 'var(--border-color)'
+                        }}
+                    >
+                        <BookmarkIcon className="w-4 h-4" />
+                        <span className="text-sm font-medium">Bookmarks ({bookmarks.length})</span>
+                    </button>
+                </div>
+            )}
+
+            {/* Bookmarks Sheet */}
+            <AnimatePresence>
+                {showBookmarks && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 bg-black/50 z-50"
+                        onClick={() => setShowBookmarks(false)}
+                    >
+                        <motion.div
+                            initial={{ y: '100%' }}
+                            animate={{ y: 0 }}
+                            exit={{ y: '100%' }}
+                            onClick={(e) => e.stopPropagation()}
+                            className="absolute bottom-0 left-0 right-0 rounded-t-3xl p-6 max-h-[70vh] overflow-y-auto"
+                            style={{ backgroundColor: 'var(--bg-secondary)' }}
+                        >
+                            <div className="w-12 h-1 rounded-full mx-auto mb-4" style={{ backgroundColor: 'var(--border-color)' }} />
+                            <h3 className="text-lg font-bold theme-text-primary mb-4">Bookmarks</h3>
+                            
+                            {bookmarks.length === 0 ? (
+                                <p className="text-center theme-text-secondary py-8">
+                                    No bookmarks yet. Tap the bookmark icon to save your current chapter.
+                                </p>
+                            ) : (
+                                <div className="space-y-2">
+                                    {bookmarks.map((bookmark) => (
+                                        <div
+                                            key={bookmark.id}
+                                            className="p-4 rounded-2xl theme-card flex items-center justify-between"
+                                        >
+                                            <button
+                                                onClick={() => handleGoToBookmark(bookmark)}
+                                                className="flex-1 text-left"
+                                            >
+                                                <p className="font-semibold theme-text-primary">
+                                                    {bookmark.book_name} {bookmark.chapter}
+                                                </p>
+                                            </button>
+                                            <button
+                                                onClick={() => handleDeleteBookmark(bookmark.id)}
+                                                className="p-2 rounded-lg opacity-40 hover:opacity-100 transition-opacity"
+                                            >
+                                                <X className="w-4 h-4 theme-text-secondary" />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }

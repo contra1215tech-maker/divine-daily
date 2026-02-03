@@ -53,10 +53,10 @@ import HeartCheck from './pages/HeartCheck';
 import Journal from './pages/Journal';
 import JournalEntryDetail from './pages/JournalEntryDetail';
 import License from './pages/License';
+import Privacy from './pages/Privacy';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Support from './pages/Support';
-import Privacy from './pages/Privacy';
 import __Layout from './Layout.jsx';
 
 
@@ -67,10 +67,10 @@ export const PAGES = {
     "Journal": Journal,
     "JournalEntryDetail": JournalEntryDetail,
     "License": License,
+    "Privacy": Privacy,
     "Profile": Profile,
     "Settings": Settings,
     "Support": Support,
-    "Privacy": Privacy,
 }
 
 export const pagesConfig = {
