@@ -4,6 +4,19 @@ import { ArrowLeft, Shield, Lock, Eye, Database, Camera, BookOpen } from 'lucide
 import { useNavigate } from 'react-router-dom';
 import { base44 } from '@/api/base44Client';
 
+const getJournalImageUrl = (theme) => {
+  if (theme === 'still_waters') {
+    return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/142b3a4d7_journal.jpg';
+  }
+  if (theme === 'morning_dew') {
+    return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/d11c8bb51_Screenshot2026-02-02at93119PM.png';
+  }
+  if (theme === 'eternal_hope') {
+    return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/9822eaa28_Screenshot2026-02-02at94202PM.png';
+  }
+  return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/78da09cbb_newbible.jpg';
+};
+
 export default function Privacy() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -87,6 +100,9 @@ export default function Privacy() {
         <div className="space-y-3">
           {privacyItems.map((item, index) => {
             const Icon = item.icon;
+            const isJournalItem = index === 1; // Journal Entries item
+            const theme = user?.theme || 'morning_dew';
+            
             return (
               <motion.div
                 key={index}
@@ -96,8 +112,18 @@ export default function Privacy() {
                 className="p-5 rounded-2xl theme-card"
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl theme-accent flex items-center justify-center flex-shrink-0">
-                    <Icon className="w-5 h-5 theme-text-primary" />
+                  <div className="w-10 h-10 rounded-xl overflow-hidden flex items-center justify-center flex-shrink-0">
+                    {isJournalItem ? (
+                      <img 
+                        src={getJournalImageUrl(theme)}
+                        alt="Journal"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-full theme-accent flex items-center justify-center rounded-xl">
+                        <Icon className="w-5 h-5 theme-text-primary" />
+                      </div>
+                    )}
                   </div>
                   <div className="flex-1">
                     <h3 className="font-semibold theme-text-primary mb-2">{item.title}</h3>
