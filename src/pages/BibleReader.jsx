@@ -460,6 +460,14 @@ export default function BibleReader() {
                                 <div className="flex items-center justify-center py-12">
                                     <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
                                 </div>
+                            ) : booksError ? (
+                                <div className="flex items-center justify-center py-12 text-red-500">
+                                    <p>Error loading books: {booksError?.message || 'Unknown error'}</p>
+                                </div>
+                            ) : !books || books.length === 0 ? (
+                                <div className="flex items-center justify-center py-12 text-slate-500">
+                                    <p>No books found</p>
+                                </div>
                             ) : (
                                 <BookSelector
                                     books={books}
