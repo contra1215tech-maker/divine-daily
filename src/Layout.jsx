@@ -10,6 +10,9 @@ const getBibleImageUrl = (theme) => {
   if (theme === 'still_waters') {
     return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/d797acdae_bible.jpg';
   }
+  if (theme === 'morning_dew') {
+    return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/9db0b6a60_Screenshot2026-02-02at93125PM.png';
+  }
   return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/29b034366_cross.jpg';
 };
 
