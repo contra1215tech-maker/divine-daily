@@ -13,10 +13,17 @@ const getBibleImageUrl = (theme) => {
   return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/29b034366_cross.jpg';
 };
 
+const getCaptureImageUrl = (theme) => {
+  if (theme === 'still_waters') {
+    return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/972571cf8_land.jpg';
+  }
+  return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/b2b1b2e07_capture.jpg';
+};
+
 const getNavItems = (theme) => [
   { id: 'BibleReader', icon: Book, label: 'Bible', useImage: true, imageUrl: getBibleImageUrl(theme) },
   { id: 'Journal', icon: BookOpen, label: 'Journal', useImage: true, imageUrl: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/78da09cbb_newbible.jpg' },
-  { id: 'CaptureMoment', icon: Camera, label: 'Capture', useImage: true, imageUrl: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/b2b1b2e07_capture.jpg' },
+  { id: 'CaptureMoment', icon: Camera, label: 'Capture', useImage: true, imageUrl: getCaptureImageUrl(theme) },
   { id: 'Settings', icon: Settings, label: 'Settings', useImage: true, imageUrl: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/f67c4ee3a_settings.jpg' },
 ];
 
