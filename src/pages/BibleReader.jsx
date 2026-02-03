@@ -81,6 +81,9 @@ export default function BibleReader() {
         enabled: !!translationId,
     });
 
+    // Map to books array if available
+    const books = booksData?.books || [];
+
     // Fetch chapter content
     const { data: chapterData, isLoading: chapterLoading } = useQuery({
         queryKey: ['bible-chapter', translationId, selectedBook?.id, selectedChapter],
