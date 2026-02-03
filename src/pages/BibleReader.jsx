@@ -246,7 +246,15 @@ export default function BibleReader() {
                             </Button>
                         ) : (
                             <div className="flex items-center gap-2">
-                                <BookOpen className="w-5 h-5 theme-text-primary" />
+                                {user?.theme === 'morning_dew' ? (
+                                    <img 
+                                        src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/9db0b6a60_Screenshot2026-02-02at93125PM.png"
+                                        alt="Bible"
+                                        className="w-5 h-5 object-cover rounded"
+                                    />
+                                ) : (
+                                    <BookOpen className="w-5 h-5 theme-text-primary" />
+                                )}
                                 <h1 className="text-xl font-bold theme-text-primary">Bible</h1>
                             </div>
                         )}
