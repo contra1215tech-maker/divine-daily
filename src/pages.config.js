@@ -56,6 +56,7 @@ import License from './pages/License';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Support from './pages/Support';
+import Privacy from './pages/Privacy';
 import __Layout from './Layout.jsx';
 
 
@@ -69,6 +70,7 @@ export const PAGES = {
     "Profile": Profile,
     "Settings": Settings,
     "Support": Support,
+    "Privacy": Privacy,
 }
 
 export const pagesConfig = {
