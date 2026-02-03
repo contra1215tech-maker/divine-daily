@@ -12,14 +12,9 @@ import AnimatedButton from '@/components/ui/AnimatedButton';
 import { cn } from "@/lib/utils";
 
 const bibleVersions = [
-  { id: 'NIV', name: 'NIV', desc: 'New International Version' },
-  { id: 'ESV', name: 'ESV', desc: 'English Standard Version' },
-  { id: 'KJV', name: 'KJV', desc: 'King James Version' },
-  { id: 'NLT', name: 'NLT', desc: 'New Living Translation' },
-  { id: 'CSB', name: 'CSB', desc: 'Christian Standard Bible' },
-  { id: 'NKJV', name: 'NKJV', desc: 'New King James Version' },
-  { id: 'NASB', name: 'NASB', desc: 'New American Standard' },
-  { id: 'MSG', name: 'MSG', desc: 'The Message' },
+  { id: 'BSB', name: 'BSB', desc: 'Berean Study Bible' },
+  { id: 'WEB', name: 'WEB', desc: 'World English Bible' },
+  { id: 'NET', name: 'NET', desc: 'New English Translation' },
 ];
 
 const themes = [
@@ -202,7 +197,7 @@ export default function Settings() {
             )}
             <div className="text-left">
               <p className="font-medium theme-text-primary">Bible Version</p>
-              <p className="text-sm theme-text-secondary">{user?.preferred_bible_version || 'NIV'}</p>
+              <p className="text-sm theme-text-secondary">{user?.preferred_bible_version || 'BSB'}</p>
             </div>
           </div>
           <ChevronRight className="w-5 h-5 theme-text-secondary" />
