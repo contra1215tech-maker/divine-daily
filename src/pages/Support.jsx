@@ -280,10 +280,11 @@ export default function Support() {
             </AlertDialogCancel>
             <AlertDialogAction 
               onClick={handleCancelSubscription}
-              className="w-full sm:w-auto font-semibold text-white"
+              className="w-full sm:w-auto font-bold"
               style={{ 
                 backgroundColor: 'var(--accent-primary)',
-                borderColor: 'var(--accent-primary)'
+                borderColor: 'var(--accent-primary)',
+                color: 'var(--text-primary)'
               }}
             >
               Yes, Cancel
