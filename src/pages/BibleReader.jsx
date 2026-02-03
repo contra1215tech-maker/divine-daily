@@ -30,6 +30,11 @@ export default function BibleReader() {
         base44.auth.me().then(async (userData) => {
             setUser(userData);
             
+            // Set translation ID from user's preferred version
+            if (userData.preferred_bible_version) {
+                setTranslationId(userData.preferred_bible_version);
+            }
+            
             // Load saved reading position
             if (userData.reading_position && userData.reading_position.book_id) {
                 const { book_id, book_name, chapter, numberOfChapters } = userData.reading_position;
