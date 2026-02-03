@@ -172,9 +172,12 @@ export default function Support() {
           <div className="flex items-center gap-3 mb-4">
             <div className="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center">
               <img 
-                src={user?.theme === 'morning_dew' 
-                  ? 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/4edf95547_Screenshot2026-02-02at93444PM.png'
-                  : 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/2d764fa06_heart.jpg'
+                src={
+                  user?.theme === 'morning_dew' 
+                    ? 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/4edf95547_Screenshot2026-02-02at93444PM.png'
+                    : user?.theme === 'still_waters'
+                    ? 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/1008cbbe3_Screenshot2026-02-02at93835PM.png'
+                    : 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/2d764fa06_heart.jpg'
                 }
                 alt="Support"
                 className="w-full h-full object-cover"
