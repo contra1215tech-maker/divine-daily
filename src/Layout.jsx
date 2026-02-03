@@ -223,13 +223,13 @@ export default function Layout({ children, currentPageName }) {
         <motion.nav
           initial={{ y: 100 }}
           animate={{ y: 0 }}
-          className="fixed bottom-0 left-0 right-0 z-40 max-w-md mx-auto backdrop-blur-xl"
+          className="fixed bottom-2 left-3 right-3 z-40 max-w-md mx-auto backdrop-blur-xl rounded-2xl border"
           style={{ 
             backgroundColor: currentTheme['--nav-bg'],
-            borderTop: `1px solid ${currentTheme['--border-color']}`
+            borderColor: currentTheme['--border-color']
           }}
         >
-          <div className="flex items-center justify-around py-1">
+          <div className="flex items-center justify-around py-0.5">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = currentPageName === item.id;
