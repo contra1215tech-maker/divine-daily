@@ -55,19 +55,6 @@ export default function Profile() {
       </div>
 
       <div className="px-6 py-6 space-y-4">
-        {/* Profile Picture */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="flex justify-center"
-        >
-          <div className="w-24 h-24 rounded-full bg-gradient-to-br from-sky-400 to-sky-600 flex items-center justify-center shadow-lg">
-            <span className="text-4xl font-bold text-white">
-              {user?.full_name?.[0]?.toUpperCase() || 'U'}
-            </span>
-          </div>
-        </motion.div>
-
         {/* User Info Cards */}
         <div className="space-y-3 mt-8">
           <motion.div
