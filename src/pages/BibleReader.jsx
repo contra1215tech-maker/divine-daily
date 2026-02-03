@@ -438,11 +438,17 @@ export default function BibleReader() {
                             animate={{ opacity: 1, x: 0 }}
                             exit={{ opacity: 0, x: -20 }}
                         >
-                            <BookSelector
-                                books={booksData?.books || []}
-                                onSelectBook={handleBookSelect}
-                                onChapterSelect={handleChapterSelect}
-                            />
+                            {booksLoading ? (
+                                <div className="flex items-center justify-center py-12">
+                                    <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
+                                </div>
+                            ) : (
+                                <BookSelector
+                                    books={booksData?.books || []}
+                                    onSelectBook={handleBookSelect}
+                                    onChapterSelect={handleChapterSelect}
+                                />
+                            )}
                         </motion.div>
                     ) : selectedBook ? (
                         <motion.div
