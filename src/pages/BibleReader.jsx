@@ -363,8 +363,8 @@ export default function BibleReader() {
                                                 initial={{ opacity: 0, y: -10 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0, y: -10 }}
-                                                className="absolute right-0 top-full mt-2 w-72 rounded-2xl p-4 shadow-2xl z-50 max-h-96 overflow-y-auto"
-                                                style={{ backgroundColor: 'var(--bg-secondary)', border: '2px solid var(--border-color)' }}
+                                                className="absolute right-0 top-full mt-2 w-72 rounded-2xl p-4 shadow-2xl z-50 max-h-96 overflow-y-auto bg-white"
+                                                style={{ border: '2px solid var(--border-color)' }}
                                                 onClick={(e) => e.stopPropagation()}
                                             >
                                                 <div className="flex items-center justify-between mb-3">
