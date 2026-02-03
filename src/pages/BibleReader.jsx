@@ -356,7 +356,7 @@ export default function BibleReader() {
                                                 initial={{ opacity: 0 }}
                                                 animate={{ opacity: 1 }}
                                                 exit={{ opacity: 0 }}
-                                                className="fixed inset-0 z-40 bg-black/10"
+                                                className="fixed inset-0 z-40 bg-black/50"
                                                 onClick={() => setShowBookmarks(false)}
                                             />
                                             <motion.div
