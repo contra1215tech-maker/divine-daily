@@ -296,7 +296,7 @@ export default function BibleReader() {
         saveReadingPosition({ id: bookmark.book_id, name: bookmark.book_name }, bookmark.chapter);
     };
 
-    if (!user || booksLoading) {
+    if (!user) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-50 to-white">
                 <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
