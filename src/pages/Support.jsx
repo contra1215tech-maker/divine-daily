@@ -4,16 +4,6 @@ import { Heart, Check, Loader2, ArrowLeft } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 
 // Donation tiers with their product IDs for the native app stores
 const donationTiers = [
@@ -28,7 +18,6 @@ export default function Support() {
   const [user, setUser] = useState(null);
   const [selectedTier, setSelectedTier] = useState(null);
   const [isPurchasing, setIsPurchasing] = useState(false);
-  const [showCancelDialog, setShowCancelDialog] = useState(false);
   const queryClient = useQueryClient();
 
   const currentSubscription = user?.donation_subscription;
@@ -134,24 +123,25 @@ export default function Support() {
   };
 
   const handleCancelSubscription = () => {
-    // Check if running in iOS wrapper
-    if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.cancelSubscription) {
-      window.webkit.messageHandlers.cancelSubscription.postMessage({
-        productId: currentSubscription.product_id
-      });
+    if (window.confirm('Are you sure you want to cancel your monthly donation?')) {
+      // Check if running in iOS wrapper
+      if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.cancelSubscription) {
+        window.webkit.messageHandlers.cancelSubscription.postMessage({
+          productId: currentSubscription.product_id
+        });
+      }
+      // Check if running in Android wrapper
+      else if (window.Android && window.Android.cancelSubscription) {
+        window.Android.cancelSubscription(currentSubscription.product_id);
+      }
+      // Fallback for web/testing
+      else {
+        console.log('Native wrapper not detected. Simulating cancellation');
+        setTimeout(() => {
+          window.onCancellationComplete();
+        }, 1000);
+      }
     }
-    // Check if running in Android wrapper
-    else if (window.Android && window.Android.cancelSubscription) {
-      window.Android.cancelSubscription(currentSubscription.product_id);
-    }
-    // Fallback for web/testing
-    else {
-      console.log('Native wrapper not detected. Simulating cancellation');
-      setTimeout(() => {
-        window.onCancellationComplete();
-      }, 1000);
-    }
-    setShowCancelDialog(false);
   };
 
   return (
@@ -182,15 +172,7 @@ export default function Support() {
           <div className="flex items-center gap-3 mb-4">
             <div className="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center">
               <img 
-                src={
-                  user?.theme === 'morning_dew' 
-                    ? 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/4edf95547_Screenshot2026-02-02at93444PM.png'
-                    : user?.theme === 'still_waters'
-                    ? 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/1008cbbe3_Screenshot2026-02-02at93835PM.png'
-                    : user?.theme === 'eternal_hope'
-                    ? 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/fb9aa3b04_Screenshot2026-02-02at94137PM.png'
-                    : 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/2d764fa06_heart.jpg'
-                }
+                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/2d764fa06_heart.jpg" 
                 alt="Support"
                 className="w-full h-full object-cover"
               />
@@ -216,13 +198,9 @@ export default function Support() {
 
               <motion.button
                 whileTap={{ scale: 0.98 }}
-                onClick={() => setShowCancelDialog(true)}
-                className="w-full py-3 px-4 rounded-xl font-semibold border-2 hover:opacity-80 transition-colors"
-                style={{ 
-                  borderColor: 'var(--text-primary)',
-                  color: 'var(--text-primary)',
-                  backgroundColor: 'rgba(255, 255, 255, 0.5)'
-                }}
+                onClick={handleCancelSubscription}
+                className="w-full py-3 px-4 rounded-xl font-medium theme-text-secondary border-2 hover:bg-red-50 transition-colors"
+                style={{ borderColor: 'var(--border-color)' }}
               >
                 Cancel Subscription
               </motion.button>
@@ -265,40 +243,6 @@ export default function Support() {
           )}
         </motion.div>
       </div>
-
-      {/* Cancel Confirmation Dialog */}
-      <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
-        <AlertDialogContent className="max-w-[90%] rounded-2xl">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="theme-text-primary">Cancel Subscription?</AlertDialogTitle>
-            <AlertDialogDescription className="theme-text-secondary">
-              Are you sure you want to cancel your monthly donation? You can always resubscribe later.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="flex-col sm:flex-row gap-2">
-            <AlertDialogCancel 
-              className="w-full sm:w-auto font-semibold border-2"
-              style={{ 
-                borderColor: 'var(--text-light)',
-                color: 'var(--text-primary)',
-                backgroundColor: 'transparent'
-              }}
-            >
-              Keep Subscription
-            </AlertDialogCancel>
-            <AlertDialogAction 
-              onClick={handleCancelSubscription}
-              className="w-full sm:w-auto font-semibold text-white"
-              style={{ 
-                backgroundColor: 'var(--accent-primary)',
-                borderColor: 'var(--accent-primary)'
-              }}
-            >
-              Yes, Cancel
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 }
