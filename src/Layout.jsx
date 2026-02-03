@@ -17,6 +17,9 @@ const getCaptureImageUrl = (theme) => {
   if (theme === 'still_waters') {
     return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/972571cf8_land.jpg';
   }
+  if (theme === 'morning_dew') {
+    return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/a863b2e59_Screenshot2026-02-02at93131PM.png';
+  }
   return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/b2b1b2e07_capture.jpg';
 };
 
