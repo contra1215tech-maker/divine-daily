@@ -159,7 +159,7 @@ export default function JournalEntryDetail() {
               <Heart className="w-4 h-4" />
               Reflection
             </h2>
-            <p className="leading-relaxed theme-text-primary whitespace-pre-wrap">
+            <p className="leading-relaxed theme-text-primary whitespace-pre-wrap break-words overflow-wrap-anywhere">
               {entry.reflection}
             </p>
           </motion.div>
@@ -176,7 +176,7 @@ export default function JournalEntryDetail() {
               <BookOpen className="w-4 h-4 theme-text-secondary" />
               <h2 className="text-sm font-semibold theme-text-secondary">Scripture</h2>
             </div>
-            <p className="leading-relaxed font-serif theme-text-primary mb-3">
+            <p className="leading-relaxed font-serif theme-text-primary mb-3 break-words overflow-wrap-anywhere">
               {entry.verse_text}
             </p>
             <p className="text-sm theme-text-secondary">
