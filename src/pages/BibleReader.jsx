@@ -252,6 +252,12 @@ export default function BibleReader() {
                                         alt="Bible"
                                         className="w-5 h-5 object-cover rounded"
                                     />
+                                ) : user?.theme === 'eternal_hope' ? (
+                                    <img 
+                                        src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/eb2f5728e_Screenshot2026-02-02at94127PM.png"
+                                        alt="Bible"
+                                        className="w-5 h-5 object-cover rounded"
+                                    />
                                 ) : (
                                     <BookOpen className="w-5 h-5 theme-text-primary" />
                                 )}
