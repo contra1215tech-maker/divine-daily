@@ -269,7 +269,7 @@ export default function Support() {
         <AlertDialogContent 
           className="max-w-[90%] rounded-2xl border-2" 
           style={{ 
-            backgroundColor: 'var(--card-bg)',
+            backgroundColor: 'var(--bg-secondary)',
             borderColor: 'var(--border-color)'
           }}
         >
