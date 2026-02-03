@@ -62,12 +62,13 @@ export default function BibleReader() {
     }, [selectedBook, selectedChapter, showBookSelector]);
 
     // Fetch books for selected translation
-    const { data: booksData, isLoading: booksLoading } = useQuery({
+    const { data: booksData, isLoading: booksLoading, error: booksError } = useQuery({
         queryKey: ['bible-books', translationId],
         queryFn: async () => {
             const response = await base44.functions.invoke('getBibleBooks', { 
                 translation_id: translationId 
             });
+            console.log('Books response:', response.data);
             return response.data;
         },
         enabled: !!translationId,
