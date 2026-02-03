@@ -229,7 +229,7 @@ export default function Layout({ children, currentPageName }) {
             borderColor: currentTheme['--border-color']
           }}
         >
-          <div className="flex items-center justify-around py-0.5">
+          <div className="flex items-center justify-around py-1">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = currentPageName === item.id;
@@ -238,21 +238,21 @@ export default function Layout({ children, currentPageName }) {
                 <Link
                   key={item.id}
                   to={createPageUrl(item.id)}
-                  className="flex flex-col items-center py-1.5 px-1 rounded-xl transition-all"
+                  className="flex flex-col items-center py-1 px-1 rounded-xl transition-all"
                 >
                   <div className={cn(
-                    "p-2 rounded-lg transition-colors",
+                    "p-1 rounded-lg transition-colors",
                     isActive && "theme-accent"
                   )}>
                     {item.useImage ? (
                       <img 
                         src={item.imageUrl}
                         alt={item.label}
-                        className="w-7 h-7 object-cover rounded"
+                        className="w-9 h-9 object-cover rounded"
                       />
                     ) : (
                       <Icon 
-                        className="w-7 h-7 transition-colors"
+                        className="w-9 h-9 transition-colors"
                         style={{ color: isActive ? currentTheme['--text-primary'] : currentTheme['--text-light'] }}
                       />
                     )}
