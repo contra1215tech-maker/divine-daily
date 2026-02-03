@@ -23,6 +23,9 @@ const getCaptureImageUrl = (theme) => {
   if (theme === 'morning_dew') {
     return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/a863b2e59_Screenshot2026-02-02at93131PM.png';
   }
+  if (theme === 'eternal_hope') {
+    return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/eb94b036e_Screenshot2026-02-02at94150PM.png';
+  }
   return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/b2b1b2e07_capture.jpg';
 };
 
