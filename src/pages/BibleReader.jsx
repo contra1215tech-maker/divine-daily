@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 
 export default function BibleReader() {
     const [user, setUser] = useState(null);
-    const [translationId, setTranslationId] = useState('BSB');
+    const [translationId, setTranslationId] = useState('NIV');
     const [selectedBook, setSelectedBook] = useState(null);
     const [selectedChapter, setSelectedChapter] = useState(1);
     const [showBookSelector, setShowBookSelector] = useState(true);
