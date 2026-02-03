@@ -238,21 +238,21 @@ export default function Layout({ children, currentPageName }) {
                 <Link
                   key={item.id}
                   to={createPageUrl(item.id)}
-                  className="flex flex-col items-center py-2 px-2 rounded-xl transition-all"
+                  className="flex flex-col items-center py-1.5 px-1 rounded-xl transition-all"
                 >
                   <div className={cn(
-                    "p-1.5 rounded-lg transition-colors",
+                    "p-2 rounded-lg transition-colors",
                     isActive && "theme-accent"
                   )}>
                     {item.useImage ? (
                       <img 
                         src={item.imageUrl}
                         alt={item.label}
-                        className="w-5 h-5 object-cover rounded"
+                        className="w-7 h-7 object-cover rounded"
                       />
                     ) : (
                       <Icon 
-                        className="w-5 h-5 transition-colors"
+                        className="w-7 h-7 transition-colors"
                         style={{ color: isActive ? currentTheme['--text-primary'] : currentTheme['--text-light'] }}
                       />
                     )}
