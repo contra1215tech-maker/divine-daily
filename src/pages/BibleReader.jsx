@@ -31,8 +31,8 @@ export default function BibleReader() {
             console.log('User data loaded:', userData);
             setUser(userData);
             
-            // Set translation ID from user's preferred version, default to BSB
-            const translation = userData.preferred_bible_version || 'BSB';
+            // Set translation ID - only use BSB (ESV API is unavailable)
+            const translation = 'BSB';
             console.log('Setting translation to:', translation);
             setTranslationId(translation);
             
