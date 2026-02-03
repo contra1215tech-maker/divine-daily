@@ -181,6 +181,13 @@ export default function Layout({ children, currentPageName }) {
             body::-webkit-scrollbar {
               display: none; /* Chrome, Safari, Opera */
             }
+            * {
+              scrollbar-width: none; /* Firefox */
+              -ms-overflow-style: none; /* IE and Edge */
+            }
+            *::-webkit-scrollbar {
+              display: none; /* Chrome, Safari, Opera */
+            }
             
         .theme-card {
           background-color: ${currentTheme['--card-bg']} !important;
