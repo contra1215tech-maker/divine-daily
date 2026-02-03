@@ -217,8 +217,12 @@ export default function Support() {
               <motion.button
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setShowCancelDialog(true)}
-                className="w-full py-3 px-4 rounded-xl font-medium theme-text-secondary border-2 hover:bg-red-50 transition-colors"
-                style={{ borderColor: 'var(--border-color)' }}
+                className="w-full py-3 px-4 rounded-xl font-semibold border-2 hover:opacity-80 transition-colors"
+                style={{ 
+                  borderColor: 'var(--text-primary)',
+                  color: 'var(--text-primary)',
+                  backgroundColor: 'rgba(255, 255, 255, 0.5)'
+                }}
               >
                 Cancel Subscription
               </motion.button>
@@ -272,10 +276,23 @@ export default function Support() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="flex-col sm:flex-row gap-2">
-            <AlertDialogCancel className="w-full sm:w-auto">Keep Subscription</AlertDialogCancel>
+            <AlertDialogCancel 
+              className="w-full sm:w-auto font-semibold border-2"
+              style={{ 
+                borderColor: 'var(--text-light)',
+                color: 'var(--text-primary)',
+                backgroundColor: 'transparent'
+              }}
+            >
+              Keep Subscription
+            </AlertDialogCancel>
             <AlertDialogAction 
               onClick={handleCancelSubscription}
-              className="w-full sm:w-auto bg-red-500 hover:bg-red-600 text-white"
+              className="w-full sm:w-auto font-semibold text-white"
+              style={{ 
+                backgroundColor: 'var(--accent-primary)',
+                borderColor: 'var(--accent-primary)'
+              }}
             >
               Yes, Cancel
             </AlertDialogAction>
