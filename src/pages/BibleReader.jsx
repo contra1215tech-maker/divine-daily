@@ -83,6 +83,13 @@ export default function BibleReader() {
 
     // Map to books array if available
     const books = booksData?.books || [];
+    
+    useEffect(() => {
+        console.log('booksData updated:', booksData);
+        console.log('books array:', books);
+        console.log('booksLoading:', booksLoading);
+        console.log('booksError:', booksError);
+    }, [booksData, books, booksLoading, booksError]);
 
     // Fetch chapter content
     const { data: chapterData, isLoading: chapterLoading } = useQuery({
