@@ -49,6 +49,13 @@ export default function BibleReader() {
         base44.entities.Bookmark.list().then(setBookmarks).catch(() => {});
     }, []);
 
+    // Auto-save reading position whenever viewing a chapter
+    useEffect(() => {
+        if (selectedBook && selectedChapter && !showBookSelector) {
+            saveReadingPosition(selectedBook, selectedChapter);
+        }
+    }, [selectedBook, selectedChapter, showBookSelector]);
+
     // Fetch books for selected translation
     const { data: booksData, isLoading: booksLoading } = useQuery({
         queryKey: ['bible-books', translationId],
