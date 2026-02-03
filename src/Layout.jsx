@@ -43,6 +43,9 @@ const getSettingsImageUrl = (theme) => {
   if (theme === 'morning_dew') {
     return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/6fed27477_Screenshot2026-02-02at93112PM.png';
   }
+  if (theme === 'eternal_hope') {
+    return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/d801e7c55_Screenshot2026-02-02at94156PM.png';
+  }
   return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/f67c4ee3a_settings.jpg';
 };
 
