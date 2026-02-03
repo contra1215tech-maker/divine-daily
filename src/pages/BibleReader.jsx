@@ -339,18 +339,78 @@ export default function BibleReader() {
                             <h2 className="text-lg font-semibold theme-text-primary">
                                 {selectedBook.name} {selectedChapter}
                             </h2>
-                            <button
-                                onClick={handleAddBookmark}
-                                disabled={bookmarks.some(b => b.book_id === selectedBook.id && b.chapter === selectedChapter)}
-                                className="p-2 rounded-xl theme-text-primary disabled:opacity-30"
-                            >
-                                <BookmarkIcon 
-                                    className={cn(
-                                        "w-5 h-5",
-                                        bookmarks.some(b => b.book_id === selectedBook.id && b.chapter === selectedChapter) && "fill-current"
+                            <div className="relative">
+                                <button
+                                    onClick={() => setShowBookmarks(!showBookmarks)}
+                                    className="p-2 rounded-xl theme-text-primary"
+                                >
+                                    <BookmarkIcon className="w-5 h-5" />
+                                </button>
+
+                                {/* Bookmarks Dropdown */}
+                                <AnimatePresence>
+                                    {showBookmarks && (
+                                        <>
+                                            <motion.div
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={{ opacity: 0 }}
+                                                className="fixed inset-0 z-40"
+                                                onClick={() => setShowBookmarks(false)}
+                                            />
+                                            <motion.div
+                                                initial={{ opacity: 0, y: -10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -10 }}
+                                                className="absolute right-0 top-full mt-2 w-72 rounded-2xl p-4 shadow-2xl z-50 max-h-96 overflow-y-auto"
+                                                style={{ backgroundColor: 'var(--bg-secondary)', border: '2px solid var(--border-color)' }}
+                                                onClick={(e) => e.stopPropagation()}
+                                            >
+                                                <div className="flex items-center justify-between mb-3">
+                                                    <h3 className="text-sm font-bold theme-text-primary">Bookmarks</h3>
+                                                    <button
+                                                        onClick={handleAddBookmark}
+                                                        disabled={bookmarks.some(b => b.book_id === selectedBook.id && b.chapter === selectedChapter)}
+                                                        className="text-xs theme-text-secondary hover:theme-text-primary disabled:opacity-30"
+                                                    >
+                                                        + Add Current
+                                                    </button>
+                                                </div>
+                                                
+                                                {bookmarks.length === 0 ? (
+                                                    <p className="text-xs text-center theme-text-secondary py-4">
+                                                        No bookmarks yet
+                                                    </p>
+                                                ) : (
+                                                    <div className="space-y-2">
+                                                        {bookmarks.map((bookmark) => (
+                                                            <div
+                                                                key={bookmark.id}
+                                                                className="p-3 rounded-xl theme-card flex items-center justify-between"
+                                                            >
+                                                                <button
+                                                                    onClick={() => handleGoToBookmark(bookmark)}
+                                                                    className="flex-1 text-left"
+                                                                >
+                                                                    <p className="text-sm font-medium theme-text-primary">
+                                                                        {bookmark.book_name} {bookmark.chapter}
+                                                                    </p>
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => handleDeleteBookmark(bookmark.id)}
+                                                                    className="p-1 rounded opacity-30 hover:opacity-100 transition-opacity"
+                                                                >
+                                                                    <X className="w-3 h-3 theme-text-secondary" />
+                                                                </button>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </motion.div>
+                                        </>
                                     )}
-                                />
-                            </button>
+                                </AnimatePresence>
+                            </div>
                         </div>
                     )}
                 </div>
@@ -678,80 +738,6 @@ export default function BibleReader() {
                     ) : null}
                 </AnimatePresence>
             </div>
-
-            {/* Bookmarks Bar - Above Footer */}
-            {!showBookSelector && (
-                <div 
-                    className="fixed bottom-20 left-0 right-0 z-30 max-w-md mx-auto px-4"
-                >
-                    <button
-                        onClick={() => setShowBookmarks(!showBookmarks)}
-                        className="w-full py-2 rounded-xl backdrop-blur-lg border flex items-center justify-center gap-2 theme-text-primary"
-                        style={{ 
-                            backgroundColor: 'rgba(255, 255, 255, 0.5)',
-                            borderColor: 'var(--border-color)'
-                        }}
-                    >
-                        <BookmarkIcon className="w-4 h-4" />
-                        <span className="text-sm font-medium">Bookmarks ({bookmarks.length})</span>
-                    </button>
-                </div>
-            )}
-
-            {/* Bookmarks Sheet */}
-            <AnimatePresence>
-                {showBookmarks && (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="fixed inset-0 bg-black/50 z-50"
-                        onClick={() => setShowBookmarks(false)}
-                    >
-                        <motion.div
-                            initial={{ y: '100%' }}
-                            animate={{ y: 0 }}
-                            exit={{ y: '100%' }}
-                            onClick={(e) => e.stopPropagation()}
-                            className="absolute bottom-0 left-0 right-0 rounded-t-3xl p-6 max-h-[70vh] overflow-y-auto"
-                            style={{ backgroundColor: 'var(--bg-secondary)' }}
-                        >
-                            <div className="w-12 h-1 rounded-full mx-auto mb-4" style={{ backgroundColor: 'var(--border-color)' }} />
-                            <h3 className="text-lg font-bold theme-text-primary mb-4">Bookmarks</h3>
-                            
-                            {bookmarks.length === 0 ? (
-                                <p className="text-center theme-text-secondary py-8">
-                                    No bookmarks yet. Tap the bookmark icon to save your current chapter.
-                                </p>
-                            ) : (
-                                <div className="space-y-2">
-                                    {bookmarks.map((bookmark) => (
-                                        <div
-                                            key={bookmark.id}
-                                            className="p-4 rounded-2xl theme-card flex items-center justify-between"
-                                        >
-                                            <button
-                                                onClick={() => handleGoToBookmark(bookmark)}
-                                                className="flex-1 text-left"
-                                            >
-                                                <p className="font-semibold theme-text-primary">
-                                                    {bookmark.book_name} {bookmark.chapter}
-                                                </p>
-                                            </button>
-                                            <button
-                                                onClick={() => handleDeleteBookmark(bookmark.id)}
-                                                className="p-2 rounded-lg opacity-40 hover:opacity-100 transition-opacity"
-                                            >
-                                                <X className="w-4 h-4 theme-text-secondary" />
-                                            </button>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
         </div>
     );
 }
