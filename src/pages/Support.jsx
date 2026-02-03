@@ -261,6 +261,27 @@ export default function Support() {
           )}
         </motion.div>
       </div>
+
+      {/* Cancel Confirmation Dialog */}
+      <AlertDialog open={showCancelDialog} onOpenChange={setShowCancelDialog}>
+        <AlertDialogContent className="max-w-[90%] rounded-2xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="theme-text-primary">Cancel Subscription?</AlertDialogTitle>
+            <AlertDialogDescription className="theme-text-secondary">
+              Are you sure you want to cancel your monthly donation? You can always resubscribe later.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex-col sm:flex-row gap-2">
+            <AlertDialogCancel className="w-full sm:w-auto">Keep Subscription</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleCancelSubscription}
+              className="w-full sm:w-auto bg-red-500 hover:bg-red-600 text-white"
+            >
+              Yes, Cancel
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
