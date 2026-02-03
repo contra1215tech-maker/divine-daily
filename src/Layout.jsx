@@ -36,6 +36,9 @@ const getJournalImageUrl = (theme) => {
   if (theme === 'morning_dew') {
     return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/d11c8bb51_Screenshot2026-02-02at93119PM.png';
   }
+  if (theme === 'eternal_hope') {
+    return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/9822eaa28_Screenshot2026-02-02at94202PM.png';
+  }
   return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/78da09cbb_newbible.jpg';
 };
 
