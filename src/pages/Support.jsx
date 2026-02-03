@@ -177,6 +177,8 @@ export default function Support() {
                     ? 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/4edf95547_Screenshot2026-02-02at93444PM.png'
                     : user?.theme === 'still_waters'
                     ? 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/1008cbbe3_Screenshot2026-02-02at93835PM.png'
+                    : user?.theme === 'eternal_hope'
+                    ? 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/fb9aa3b04_Screenshot2026-02-02at94137PM.png'
                     : 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/2d764fa06_heart.jpg'
                 }
                 alt="Support"
