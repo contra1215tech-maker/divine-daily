@@ -153,7 +153,14 @@ export default function Privacy() {
           <h3 className="font-semibold theme-text-primary mb-3">Questions?</h3>
           <p className="text-sm theme-text-secondary leading-relaxed">
             If you have any questions about our privacy practices or how we handle your data, 
-            please don't hesitate to reach out to us through the Settings page.
+            please contact us at{' '}
+            <a 
+              href="mailto:divinedailytech@gmail.com" 
+              className="font-medium underline"
+              style={{ color: 'var(--text-primary)' }}
+            >
+              divinedailytech@gmail.com
+            </a>
           </p>
         </motion.div>
 
