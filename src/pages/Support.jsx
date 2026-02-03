@@ -4,6 +4,7 @@ import { Heart, Check, Loader2, ArrowLeft } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { createPageUrl } from '@/utils';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -230,7 +231,10 @@ export default function Support() {
               {donationTiers.map((tier) => (
                 <button
                   key={tier.productId}
-                  onClick={() => handleDonationSelect(tier)}
+                  onClick={() => {
+                    handleDonationSelect(tier);
+                    navigate(createPageUrl('Settings'));
+                  }}
                   disabled={isPurchasing}
                   className="w-full p-4 rounded-2xl border-2 transition-all hover:scale-[1.02] disabled:opacity-50"
                   style={{ 
