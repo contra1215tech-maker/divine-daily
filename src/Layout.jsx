@@ -58,9 +58,16 @@ const getSettingsImageUrl = (theme) => {
   return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/f67c4ee3a_settings.jpg';
 };
 
+const getSearchImageUrl = (theme) => {
+  if (theme === 'morning_dew') {
+    return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/971026b6d_Screenshot2026-02-04at95411AM.png';
+  }
+  return null;
+};
+
 const getNavItems = (theme) => [
   { id: 'BibleReader', icon: Book, label: 'Bible', useImage: true, imageUrl: getBibleImageUrl(theme) },
-  { id: 'Search', icon: BookOpen, label: 'Search', useImage: false },
+  { id: 'Search', icon: BookOpen, label: 'Search', useImage: theme === 'morning_dew', imageUrl: getSearchImageUrl(theme) },
   { id: 'Journal', icon: BookOpen, label: 'Journal', useImage: true, imageUrl: getJournalImageUrl(theme) },
   { id: 'CaptureMoment', icon: Camera, label: 'Capture', useImage: true, imageUrl: getCaptureImageUrl(theme) },
   { id: 'Settings', icon: Settings, label: 'Settings', useImage: true, imageUrl: getSettingsImageUrl(theme) },
