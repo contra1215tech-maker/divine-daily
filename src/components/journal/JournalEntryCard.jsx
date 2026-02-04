@@ -1,11 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { format } from 'date-fns';
-import { Camera, Heart, BookOpen, ChevronRight } from 'lucide-react';
+import { Camera, Heart, BookOpen, ChevronRight, Star } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { moods } from '../ui/MoodSelector';
 
-export default function JournalEntryCard({ entry, onClick }) {
+export default function JournalEntryCard({ entry, onClick, showFavorite, onFavoriteToggle }) {
   const moodData = moods.find(m => m.id === entry.mood);
   const isMoment = entry.type === 'moment';
 
@@ -19,6 +19,21 @@ export default function JournalEntryCard({ entry, onClick }) {
       onClick={onClick}
       className="group relative overflow-hidden rounded-3xl cursor-pointer theme-card shadow-sm hover:shadow-md transition-shadow"
     >
+      {/* Favorite Button */}
+      {showFavorite && onFavoriteToggle && (
+        <button
+          onClick={onFavoriteToggle}
+          className="absolute top-3 right-3 p-1.5 rounded-full hover:bg-black/5 transition-colors z-10"
+        >
+          <Star 
+            className={cn(
+              "w-4 h-4",
+              entry.is_favorite ? "fill-amber-500 text-amber-500" : "text-slate-400"
+            )}
+          />
+        </button>
+      )}
+
       <div className={cn("flex gap-3 items-center w-full", hasNoPhoto && "flex-col")}>
         {/* Image, Mood, or Photo Preview */}
         {!hasNoPhoto && (
