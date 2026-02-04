@@ -751,16 +751,41 @@ export default function BibleReader() {
                                                         My Comments
                                                     </h3>
                                                     <div className="space-y-4">
-                                                        {userComments.map((comment) => (
-                                                            <div key={comment.id} className="space-y-2 pb-4 border-b last:border-b-0" style={{ borderColor: 'var(--border-color)' }}>
-                                                                <span className="text-sm font-bold text-sky-600">
-                                                                    Verse {comment.verse_number}
-                                                                </span>
-                                                                <p className="text-slate-700 leading-relaxed">
-                                                                    {comment.comment}
-                                                                </p>
-                                                            </div>
-                                                        ))}
+                                                        {userComments.map((comment) => {
+                                                            const verse = chapterData?.chapter?.content?.find(
+                                                                v => v.type === 'verse' && v.number === comment.verse_number
+                                                            );
+                                                            const verseText = verse ? (
+                                                                Array.isArray(verse.content) 
+                                                                    ? verse.content.map(item => 
+                                                                        typeof item === 'string' ? item : item.text || ''
+                                                                    ).join(' ')
+                                                                    : verse.content
+                                                            ) : '';
+
+                                                            return (
+                                                                <div key={comment.id} className="space-y-2 pb-4 border-b last:border-b-0 relative group" style={{ borderColor: 'var(--border-color)' }}>
+                                                                    <span className="text-sm font-bold text-sky-600">
+                                                                        Verse {comment.verse_number}
+                                                                    </span>
+                                                                    {verseText && (
+                                                                        <p className="text-sm italic theme-text-secondary leading-relaxed">
+                                                                            "{verseText}"
+                                                                        </p>
+                                                                    )}
+                                                                    <p className="text-slate-700 leading-relaxed pr-6">
+                                                                        {comment.comment}
+                                                                    </p>
+                                                                    <button
+                                                                        onClick={() => handleDeleteComment(comment.id)}
+                                                                        className="absolute top-0 right-0 p-1 rounded opacity-0 group-hover:opacity-60 hover:opacity-100 transition-opacity"
+                                                                        style={{ color: 'var(--text-light)' }}
+                                                                    >
+                                                                        <X className="w-3 h-3" />
+                                                                    </button>
+                                                                </div>
+                                                            );
+                                                        })}
                                                     </div>
                                                 </div>
                                             )}

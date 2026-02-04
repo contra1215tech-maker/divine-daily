@@ -55,9 +55,9 @@ import JournalEntryDetail from './pages/JournalEntryDetail';
 import License from './pages/License';
 import Privacy from './pages/Privacy';
 import Profile from './pages/Profile';
+import Search from './pages/Search';
 import Settings from './pages/Settings';
 import Support from './pages/Support';
-import Search from './pages/Search';
 import __Layout from './Layout.jsx';
 
 
@@ -70,9 +70,9 @@ export const PAGES = {
     "License": License,
     "Privacy": Privacy,
     "Profile": Profile,
+    "Search": Search,
     "Settings": Settings,
     "Support": Support,
-    "Search": Search,
 }
 
 export const pagesConfig = {
