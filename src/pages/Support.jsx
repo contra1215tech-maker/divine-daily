@@ -57,8 +57,10 @@ export default function Support() {
     window.onPurchaseComplete = async (productId, transactionId) => {
       console.log('Purchase completed:', productId, transactionId);
       
-      // Find which tier was purchased
+      // Check if it's a monthly subscription
       const tier = donationTiers.find(t => t.productId === productId);
+      // Check if it's a one-time donation
+      const oneTime = oneTimeDonations.find(t => t.productId === productId);
       
       if (tier) {
         // Update user data with subscription info
@@ -77,6 +79,28 @@ export default function Support() {
         // Reload user data
         const userData = await base44.auth.me();
         setUser(userData);
+      } else if (oneTime) {
+        // Track one-time donation
+        const donations = user?.one_time_donations || [];
+        await base44.auth.updateMe({
+          one_time_donations: [
+            ...donations,
+            {
+              product_id: productId,
+              amount: oneTime.amount,
+              transaction_id: transactionId,
+              date: new Date().toISOString()
+            }
+          ]
+        });
+        
+        queryClient.invalidateQueries({ queryKey: ['user'] });
+        
+        // Reload user data
+        const userData = await base44.auth.me();
+        setUser(userData);
+        
+        alert(`Thank you for your ${oneTime.label} donation! 🙏`);
       }
       
       setIsPurchasing(false);
