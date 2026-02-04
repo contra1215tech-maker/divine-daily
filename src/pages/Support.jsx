@@ -71,50 +71,62 @@ export default function Support() {
     window.onPurchaseComplete = async (productId, transactionId) => {
       console.log('Purchase completed:', productId, transactionId);
       
-      // Check if it's a monthly subscription
-      const tier = donationTiers.find(t => t.productId === productId);
-      // Check if it's a one-time donation
-      const oneTime = oneTimeDonations.find(t => t.productId === productId);
+      // Clear timeout
+      if (window.purchaseTimeout) {
+        clearTimeout(window.purchaseTimeout);
+      }
       
-      if (tier) {
-        // Update user data with subscription info
-        await base44.auth.updateMe({
-          donation_subscription: {
-            product_id: productId,
-            amount: tier.amount,
-            transaction_id: transactionId,
-            started_date: new Date().toISOString(),
-            status: 'active'
-          }
-        });
+      try {
+        // Check if it's a monthly subscription
+        const tier = donationTiers.find(t => t.productId === productId);
+        // Check if it's a one-time donation
+        const oneTime = oneTimeDonations.find(t => t.productId === productId);
         
-        queryClient.invalidateQueries({ queryKey: ['user'] });
-        
-        // Reload user data
-        const userData = await base44.auth.me();
-        setUser(userData);
-      } else if (oneTime) {
-        // Track one-time donation
-        const donations = user?.one_time_donations || [];
-        await base44.auth.updateMe({
-          one_time_donations: [
-            ...donations,
-            {
+        if (tier) {
+          // Update user data with subscription info
+          await base44.auth.updateMe({
+            donation_subscription: {
               product_id: productId,
-              amount: oneTime.amount,
+              amount: tier.amount,
               transaction_id: transactionId,
-              date: new Date().toISOString()
+              started_date: new Date().toISOString(),
+              status: 'active'
             }
-          ]
-        });
-        
-        queryClient.invalidateQueries({ queryKey: ['user'] });
-        
-        // Reload user data
-        const userData = await base44.auth.me();
-        setUser(userData);
-        
-        alert(`Thank you for your ${oneTime.label} donation! 🙏`);
+          });
+          
+          queryClient.invalidateQueries({ queryKey: ['user'] });
+          
+          // Reload user data
+          const userData = await base44.auth.me();
+          setUser(userData);
+          
+          alert(`Thank you for your support! 🙏`);
+        } else if (oneTime) {
+          // Track one-time donation
+          const donations = user?.one_time_donations || [];
+          await base44.auth.updateMe({
+            one_time_donations: [
+              ...donations,
+              {
+                product_id: productId,
+                amount: oneTime.amount,
+                transaction_id: transactionId,
+                date: new Date().toISOString()
+              }
+            ]
+          });
+          
+          queryClient.invalidateQueries({ queryKey: ['user'] });
+          
+          // Reload user data
+          const userData = await base44.auth.me();
+          setUser(userData);
+          
+          alert(`Thank you for your ${oneTime.label} donation! 🙏`);
+        }
+      } catch (error) {
+        console.error('Error processing purchase:', error);
+        alert('Purchase completed but there was an error saving it. Please contact support.');
       }
       
       setIsPurchasing(false);
@@ -123,6 +135,12 @@ export default function Support() {
     // Set up callback for purchase failure
     window.onPurchaseFailed = (productId, error) => {
       console.error('Purchase failed:', productId, error);
+      
+      // Clear timeout
+      if (window.purchaseTimeout) {
+        clearTimeout(window.purchaseTimeout);
+      }
+      
       setIsPurchasing(false);
       alert('Purchase could not be completed. Please try again.');
     };
@@ -131,20 +149,27 @@ export default function Support() {
     window.onCancellationComplete = async () => {
       console.log('Subscription cancelled');
       
-      // Update user data to reflect cancelled subscription
-      await base44.auth.updateMe({
-        donation_subscription: {
-          ...user?.donation_subscription,
-          status: 'cancelled',
-          cancelled_date: new Date().toISOString()
-        }
-      });
-      
-      queryClient.invalidateQueries({ queryKey: ['user'] });
-      
-      // Reload user data
-      const userData = await base44.auth.me();
-      setUser(userData);
+      try {
+        // Update user data to reflect cancelled subscription
+        await base44.auth.updateMe({
+          donation_subscription: {
+            ...user?.donation_subscription,
+            status: 'cancelled',
+            cancelled_date: new Date().toISOString()
+          }
+        });
+        
+        queryClient.invalidateQueries({ queryKey: ['user'] });
+        
+        // Reload user data
+        const userData = await base44.auth.me();
+        setUser(userData);
+        
+        alert('Subscription cancelled successfully.');
+      } catch (error) {
+        console.error('Error cancelling subscription:', error);
+        alert('There was an error cancelling your subscription. Please try again.');
+      }
     };
 
     return () => {
@@ -157,6 +182,15 @@ export default function Support() {
   const handleDonationSelect = (tier) => {
     setSelectedTier(tier);
     setIsPurchasing(true);
+
+    // Set timeout to reset if wrapper doesn't respond
+    const timeout = setTimeout(() => {
+      setIsPurchasing(false);
+      alert('Purchase timed out. Please try again.');
+    }, 30000);
+
+    // Store timeout ID to clear it on success/failure
+    window.purchaseTimeout = timeout;
 
     // Check if running in iOS wrapper
     if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.purchaseProduct) {
@@ -277,10 +311,7 @@ export default function Support() {
               {donationTiers.map((tier) => (
                 <button
                   key={tier.productId}
-                  onClick={() => {
-                    handleDonationSelect(tier);
-                    navigate(createPageUrl('Settings'));
-                  }}
+                  onClick={() => handleDonationSelect(tier)}
                   disabled={isPurchasing}
                   className="w-full p-4 rounded-2xl border-2 transition-all hover:scale-[1.02] disabled:opacity-50"
                   style={{ 
@@ -346,10 +377,7 @@ export default function Support() {
                   {oneTimeDonations.map((donation) => (
                     <button
                       key={donation.productId}
-                      onClick={() => {
-                        handleDonationSelect(donation);
-                        navigate(createPageUrl('Settings'));
-                      }}
+                      onClick={() => handleDonationSelect(donation)}
                       disabled={isPurchasing}
                       className="w-full p-4 rounded-2xl border-2 transition-all hover:scale-[1.02] disabled:opacity-50"
                       style={{ 
