@@ -128,8 +128,8 @@ export default function BibleReader() {
         enabled: !!selectedBook && !!selectedChapter && activeTab === 'commentary',
     });
 
-    // Fetch user comments
-    const { data: userComments } = useQuery({
+    // Fetch user comments for chapter
+    const { data: userComments, refetch: refetchComments } = useQuery({
         queryKey: ['verse-comments', selectedBook?.id, selectedChapter],
         queryFn: async () => {
             return await base44.entities.VerseComment.filter({
@@ -137,8 +137,14 @@ export default function BibleReader() {
                 chapter: selectedChapter
             });
         },
-        enabled: !!selectedBook && !!selectedChapter && activeTab === 'commentary',
+        enabled: !!selectedBook && !!selectedChapter,
     });
+
+    // Get comments for a specific verse
+    const getVerseComments = (verseNumber) => {
+        if (!userComments) return [];
+        return userComments.filter(c => c.verse_number === verseNumber);
+    };
 
     // Fetch dataset (cross-references)
     const { data: datasetData, isLoading: datasetLoading } = useQuery({
@@ -255,6 +261,12 @@ export default function BibleReader() {
         setCommentText('');
         setShowCommentInput(false);
         setSelectedVerse(null);
+        refetchComments();
+    };
+
+    const handleDeleteComment = async (commentId) => {
+        await base44.entities.VerseComment.delete(commentId);
+        refetchComments();
     };
 
     const handleAddBookmark = async () => {
@@ -583,10 +595,34 @@ export default function BibleReader() {
                                                </>
                                            ) : (
                                                <>
+                                                   {/* Existing Comments */}
+                                                   {getVerseComments(selectedVerse.number).length > 0 && (
+                                                       <div className="space-y-2 mb-3">
+                                                           <p className="text-xs font-medium theme-text-secondary">Your Comments:</p>
+                                                           {getVerseComments(selectedVerse.number).map((comment) => (
+                                                               <div 
+                                                                   key={comment.id}
+                                                                   className="p-3 rounded-2xl theme-card relative group"
+                                                               >
+                                                                   <p className="text-sm theme-text-primary pr-6">
+                                                                       {comment.comment}
+                                                                   </p>
+                                                                   <button
+                                                                       onClick={() => handleDeleteComment(comment.id)}
+                                                                       className="absolute top-2 right-2 p-1 rounded opacity-0 group-hover:opacity-60 hover:opacity-100 transition-opacity"
+                                                                       style={{ color: 'var(--text-light)' }}
+                                                                   >
+                                                                       <X className="w-3 h-3" />
+                                                                   </button>
+                                                               </div>
+                                                           ))}
+                                                       </div>
+                                                   )}
+
                                                    <textarea
                                                        value={commentText}
                                                        onChange={(e) => setCommentText(e.target.value)}
-                                                       placeholder="Write your comment..."
+                                                       placeholder="Add another comment..."
                                                        className="w-full p-4 rounded-2xl border resize-none theme-text-primary"
                                                        rows={4}
                                                        style={{ borderColor: 'var(--border-color)', backgroundColor: 'var(--card-overlay)' }}
@@ -655,16 +691,25 @@ export default function BibleReader() {
                                                         const verseKey = `${selectedBook.id}-${selectedChapter}-${verse.number}`;
                                                         const highlightColor = verseHighlights[verseKey];
                                                         const isSelected = selectedVerse?.key === verseKey;
-                                                        
+                                                        const hasComments = getVerseComments(verse.number).length > 0;
+
                                                         return (
                                                             <div 
                                                                 key={verse.number} 
                                                                 className="flex gap-3 cursor-pointer"
                                                                 onClick={(e) => handleVerseClick(verse, e)}
                                                             >
-                                                                <span className="text-sm font-bold text-sky-500 mt-1 flex-shrink-0">
-                                                                    {verse.number}
-                                                                </span>
+                                                                <div className="flex items-start gap-1 flex-shrink-0">
+                                                                    <span className="text-sm font-bold text-sky-500 mt-1">
+                                                                        {verse.number}
+                                                                    </span>
+                                                                    {hasComments && (
+                                                                        <div 
+                                                                            className="w-1.5 h-1.5 rounded-full mt-2"
+                                                                            style={{ backgroundColor: 'var(--accent-primary)' }}
+                                                                        />
+                                                                    )}
+                                                                </div>
                                                                 <p 
                                                                         className={cn(
                                                                             "text-slate-800 leading-relaxed transition-all",
