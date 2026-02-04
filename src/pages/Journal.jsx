@@ -5,7 +5,7 @@ import { base44 } from '@/api/base44Client';
 import { format, startOfWeek, endOfWeek, isWithinInterval, subWeeks } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { Search, Filter, Calendar, Camera, Heart, TrendingUp, Star, Plus, ChevronDown, Image } from 'lucide-react';
+import { Search, Calendar, Camera, Heart, TrendingUp, Star, Plus, Image } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import JournalEntryCard from '@/components/journal/JournalEntryCard';
 import { cn } from "@/lib/utils";
@@ -21,7 +21,6 @@ export default function Journal() {
     const [searchQuery, setSearchQuery] = useState('');
     const [activeFilter, setActiveFilter] = useState('entries');
     const [user, setUser] = useState(null);
-    const [showFilters, setShowFilters] = useState(false);
 
     useEffect(() => {
         base44.auth.me().then(setUser).catch(console.error);
@@ -103,47 +102,27 @@ export default function Journal() {
             />
           </div>
 
-          {/* Filters Toggle */}
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium theme-card theme-text-secondary"
-          >
-            <Filter className="w-3.5 h-3.5" />
-            Filters
-            <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", showFilters && "rotate-180")} />
-          </button>
-
-          <AnimatePresence>
-            {showFilters && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                className="overflow-hidden"
-              >
-                <div className="flex gap-2 mt-3 justify-start">
-                   {filters.map((filter) => {
-                     const Icon = filter.icon;
-                     return (
-                       <button
-                         key={filter.id}
-                         onClick={() => setActiveFilter(filter.id)}
-                         className={cn(
-                           "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all border-2",
-                           activeFilter === filter.id
-                             ? "border-current theme-text-primary"
-                             : "border-transparent theme-card theme-text-secondary hover:shadow-md"
-                         )}
-                       >
-                         {Icon && <Icon className="w-3.5 h-3.5" />}
-                         {filter.label}
-                       </button>
-                     );
-                   })}
-                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          {/* Filters */}
+          <div className="flex gap-2 mt-3 justify-start">
+             {filters.map((filter) => {
+               const Icon = filter.icon;
+               return (
+                 <button
+                   key={filter.id}
+                   onClick={() => setActiveFilter(filter.id)}
+                   className={cn(
+                     "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all border-2",
+                     activeFilter === filter.id
+                       ? "border-current theme-text-primary"
+                       : "border-transparent theme-card theme-text-secondary hover:shadow-md"
+                   )}
+                 >
+                   {Icon && <Icon className="w-3.5 h-3.5" />}
+                   {filter.label}
+                 </button>
+               );
+             })}
+           </div>
         </div>
         </div>
 
