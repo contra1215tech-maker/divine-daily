@@ -58,6 +58,7 @@ import Profile from './pages/Profile';
 import Search from './pages/Search';
 import Settings from './pages/Settings';
 import Support from './pages/Support';
+import Home from './pages/Home';
 import __Layout from './Layout.jsx';
 
 
@@ -73,6 +74,7 @@ export const PAGES = {
     "Search": Search,
     "Settings": Settings,
     "Support": Support,
+    "Home": Home,
 }
 
 export const pagesConfig = {
