@@ -618,8 +618,8 @@ export default function BibleReader() {
                             </AnimatePresence>
 
                             {/* Chapter Content with Tabs */}
-                            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                                <TabsList className="grid w-full grid-cols-3 border rounded-3xl p-1 mx-4" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--border-color)' }}>
+                            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full px-4">
+                                <TabsList className="grid w-full grid-cols-3 border rounded-3xl p-1" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--border-color)' }}>
                                     <TabsTrigger value="text" className="rounded-2xl data-[state=active]:shadow-sm text-xs px-2 py-2">
                                         <BookOpen className="w-3 h-3 mr-1" />
                                         <span className="hidden sm:inline">Text</span>
