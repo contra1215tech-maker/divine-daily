@@ -39,6 +39,14 @@ export default function Support() {
   const queryClient = useQueryClient();
 
   const currentSubscription = user?.donation_subscription;
+  const theme = user?.theme || 'morning_dew';
+  
+  const getHeartImageUrl = () => {
+    if (theme === 'eternal_hope') {
+      return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/e27901977_Screenshot2026-02-02at94137PM.png';
+    }
+    return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/2d764fa06_heart.jpg';
+  };
 
   useEffect(() => {
     const loadUser = async () => {
@@ -215,7 +223,7 @@ export default function Support() {
           <div className="flex items-center gap-3 mb-4">
             <div className="w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center">
               <img 
-                src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/2d764fa06_heart.jpg" 
+                src={getHeartImageUrl()} 
                 alt="Support"
                 className="w-full h-full object-cover"
               />
