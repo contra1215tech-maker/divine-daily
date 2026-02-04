@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
-import { BookOpen, Camera, Settings, Book } from 'lucide-react';
+import { BookOpen, Camera, Settings, Book, Search } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import { base44 } from '@/api/base44Client';
 
@@ -60,6 +60,7 @@ const getSettingsImageUrl = (theme) => {
 
 const getNavItems = (theme) => [
   { id: 'BibleReader', icon: Book, label: 'Bible', useImage: true, imageUrl: getBibleImageUrl(theme) },
+  { id: 'Search', icon: BookOpen, label: 'Search', useImage: false },
   { id: 'Journal', icon: BookOpen, label: 'Journal', useImage: true, imageUrl: getJournalImageUrl(theme) },
   { id: 'CaptureMoment', icon: Camera, label: 'Capture', useImage: true, imageUrl: getCaptureImageUrl(theme) },
   { id: 'Settings', icon: Settings, label: 'Settings', useImage: true, imageUrl: getSettingsImageUrl(theme) },

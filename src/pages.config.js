@@ -57,6 +57,7 @@ import Privacy from './pages/Privacy';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Support from './pages/Support';
+import Search from './pages/Search';
 import __Layout from './Layout.jsx';
 
 
@@ -71,6 +72,7 @@ export const PAGES = {
     "Profile": Profile,
     "Settings": Settings,
     "Support": Support,
+    "Search": Search,
 }
 
 export const pagesConfig = {
