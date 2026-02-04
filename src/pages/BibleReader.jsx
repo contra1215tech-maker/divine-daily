@@ -393,8 +393,11 @@ export default function BibleReader() {
                                                 initial={{ opacity: 0, y: -10 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0, y: -10 }}
-                                                className="absolute right-0 top-full mt-2 w-72 rounded-2xl p-4 shadow-2xl z-50 max-h-96 overflow-y-auto bg-white"
-                                                style={{ border: '2px solid var(--border-color)' }}
+                                                className="absolute right-0 top-full mt-2 w-72 rounded-3xl p-4 z-50 max-h-96 overflow-y-auto bg-white"
+                                                style={{ 
+                                                    border: '1px solid var(--border-color)',
+                                                    boxShadow: 'var(--shadow-lg)'
+                                                }}
                                                 onClick={(e) => e.stopPropagation()}
                                             >
                                                 <div className="flex items-center justify-between mb-3">
@@ -417,7 +420,7 @@ export default function BibleReader() {
                                                         {bookmarks.map((bookmark) => (
                                                             <div
                                                                 key={bookmark.id}
-                                                                className="p-3 rounded-xl theme-card flex items-center justify-between"
+                                                                className="p-3 rounded-2xl theme-card flex items-center justify-between"
                                                             >
                                                                 <button
                                                                     onClick={() => handleGoToBookmark(bookmark)}
@@ -447,7 +450,7 @@ export default function BibleReader() {
                 </div>
             </div>
 
-            <div className="px-2 py-2">
+            <div className="py-2">
                 <AnimatePresence mode="wait">
                     {showBookSelector ? (
                         <motion.div
@@ -498,8 +501,12 @@ export default function BibleReader() {
                                         {selectedChapter > 1 && (
                                            <button
                                                onClick={handlePrevChapter}
-                                               className="w-12 h-12 rounded-full border-2 theme-text-primary shadow-lg flex items-center justify-center backdrop-blur-lg"
-                                               style={{ borderColor: 'var(--text-light)', backgroundColor: 'rgba(255, 255, 255, 0.3)' }}
+                                               className="w-14 h-14 rounded-full border theme-text-primary flex items-center justify-center backdrop-blur-xl transition-all hover:scale-105"
+                                               style={{ 
+                                                   borderColor: 'var(--border-color)', 
+                                                   backgroundColor: 'var(--card-bg)',
+                                                   boxShadow: 'var(--shadow-lg)'
+                                               }}
                                            >
                                                <ChevronLeft className="w-5 h-5" />
                                            </button>
@@ -507,8 +514,12 @@ export default function BibleReader() {
                                         {selectedChapter < selectedBook.numberOfChapters && (
                                            <button
                                                onClick={handleNextChapter}
-                                               className="w-12 h-12 rounded-full border-2 theme-text-primary shadow-lg flex items-center justify-center backdrop-blur-lg"
-                                               style={{ borderColor: 'var(--text-light)', backgroundColor: 'rgba(255, 255, 255, 0.3)' }}
+                                               className="w-14 h-14 rounded-full border theme-text-primary flex items-center justify-center backdrop-blur-xl transition-all hover:scale-105"
+                                               style={{ 
+                                                   borderColor: 'var(--border-color)', 
+                                                   backgroundColor: 'var(--card-bg)',
+                                                   boxShadow: 'var(--shadow-lg)'
+                                               }}
                                            >
                                                <ChevronRight className="w-5 h-5" />
                                            </button>
@@ -524,10 +535,11 @@ export default function BibleReader() {
                                        initial={{ opacity: 0, y: 20 }}
                                        animate={{ opacity: 1, y: 0 }}
                                        exit={{ opacity: 0, y: 20 }}
-                                       className="fixed bottom-16 left-4 right-4 z-50 rounded-2xl shadow-2xl p-3 max-w-md mx-auto backdrop-blur-xl border-2"
+                                       className="fixed bottom-16 left-4 right-4 z-50 rounded-3xl p-4 max-w-md mx-auto backdrop-blur-xl border"
                                        style={{ 
                                            backgroundColor: 'var(--card-bg)',
-                                           borderColor: 'var(--border-color)'
+                                           borderColor: 'var(--border-color)',
+                                           boxShadow: 'var(--shadow-lg)'
                                        }}
                                        onClick={(e) => e.stopPropagation()}
                                     >
@@ -547,11 +559,11 @@ export default function BibleReader() {
                                                               <div
                                                                   key={color}
                                                                   onClick={() => handleHighlight(color)}
-                                                                  className="w-9 h-9 rounded-full shadow-md transition-all flex-shrink-0 cursor-pointer"
+                                                                  className="w-10 h-10 rounded-full shadow-md transition-all flex-shrink-0 cursor-pointer"
                                                                   style={{ 
                                                                       backgroundColor: color,
-                                                                      border: isActive ? '3px solid #1e293b' : '2px solid #64748b',
-                                                                      boxShadow: isActive ? '0 0 0 2px rgba(30, 41, 59, 0.2)' : 'none'
+                                                                      border: isActive ? '3px solid #1e293b' : '2px solid rgba(100, 116, 139, 0.3)',
+                                                                      boxShadow: isActive ? '0 0 0 3px rgba(30, 41, 59, 0.15)' : '0 4px 12px rgba(0, 0, 0, 0.08)'
                                                                   }}
                                                               />
                                                           );
@@ -562,7 +574,7 @@ export default function BibleReader() {
                                                    <div className="grid grid-cols-3 gap-1.5">
                                                        <button
                                                            onClick={handleFavorite}
-                                                           className="flex flex-col items-center justify-center gap-0.5 py-1.5 rounded-lg font-medium border theme-text-primary"
+                                                           className="flex flex-col items-center justify-center gap-0.5 py-2 rounded-2xl font-medium border theme-text-primary"
                                                            style={{ 
                                                                borderColor: favoritedVerses.has(`${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`) ? '#f59e0b' : 'var(--text-light)',
                                                                backgroundColor: favoritedVerses.has(`${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`) ? '#fef3c7' : 'transparent'
@@ -573,7 +585,7 @@ export default function BibleReader() {
                                                        </button>
                                                        <button
                                                            onClick={handleCopy}
-                                                           className="flex flex-col items-center justify-center gap-0.5 py-1.5 rounded-lg font-medium theme-text-primary border"
+                                                           className="flex flex-col items-center justify-center gap-0.5 py-2 rounded-2xl font-medium theme-text-primary border"
                                                            style={{ borderColor: 'var(--text-light)', backgroundColor: 'transparent' }}
                                                        >
                                                            <Copy className="w-4 h-4" />
@@ -581,7 +593,7 @@ export default function BibleReader() {
                                                        </button>
                                                        <button
                                                            onClick={handleComment}
-                                                           className="flex flex-col items-center justify-center gap-0.5 py-1.5 rounded-lg font-medium theme-text-primary border"
+                                                           className="flex flex-col items-center justify-center gap-0.5 py-2 rounded-2xl font-medium theme-text-primary border"
                                                            style={{ borderColor: 'var(--text-light)', backgroundColor: 'transparent' }}
                                                        >
                                                            <MessageCircle className="w-4 h-4" />
@@ -602,14 +614,14 @@ export default function BibleReader() {
                                                        value={commentText}
                                                        onChange={(e) => setCommentText(e.target.value)}
                                                        placeholder="Write your comment..."
-                                                       className="w-full p-3 rounded-xl border-2 resize-none theme-text-primary"
+                                                       className="w-full p-4 rounded-2xl border resize-none theme-text-primary"
                                                        rows={4}
                                                        style={{ borderColor: 'var(--border-color)', backgroundColor: 'var(--card-overlay)' }}
                                                    />
                                                    <div className="flex gap-2">
                                                        <button
                                                            onClick={handleSaveComment}
-                                                           className="flex-1 py-2 rounded-xl font-medium border-2 theme-text-primary"
+                                                           className="flex-1 py-2.5 rounded-2xl font-medium border theme-text-primary"
                                                            style={{ borderColor: 'var(--text-light)', backgroundColor: 'transparent' }}
                                                        >
                                                            Save Comment
@@ -619,7 +631,7 @@ export default function BibleReader() {
                                                                setShowCommentInput(false);
                                                                setCommentText('');
                                                            }}
-                                                           className="flex-1 py-2 rounded-xl font-medium theme-text-secondary border-2"
+                                                           className="flex-1 py-2.5 rounded-2xl font-medium theme-text-secondary border"
                                                            style={{ borderColor: 'var(--border-color)', backgroundColor: 'transparent' }}
                                                        >
                                                            Cancel
@@ -634,16 +646,16 @@ export default function BibleReader() {
 
                             {/* Chapter Content with Tabs */}
                             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                                <TabsList className="grid w-full grid-cols-3 border border-slate-200 rounded-2xl p-1" style={{ backgroundColor: 'transparent' }}>
-                                    <TabsTrigger value="text" className="rounded-xl">
+                                <TabsList className="grid w-full grid-cols-3 border rounded-3xl p-1.5 mx-4" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--border-color)' }}>
+                                    <TabsTrigger value="text" className="rounded-2xl data-[state=active]:shadow-sm">
                                         <BookOpen className="w-4 h-4 mr-2" />
                                         Text
                                     </TabsTrigger>
-                                    <TabsTrigger value="commentary" className="rounded-xl">
+                                    <TabsTrigger value="commentary" className="rounded-2xl data-[state=active]:shadow-sm">
                                         <MessageSquare className="w-4 h-4 mr-2" />
                                         Commentary
                                     </TabsTrigger>
-                                    <TabsTrigger value="references" className="rounded-xl">
+                                    <TabsTrigger value="references" className="rounded-2xl data-[state=active]:shadow-sm">
                                         <Database className="w-4 h-4 mr-2" />
                                         References
                                     </TabsTrigger>
@@ -655,7 +667,7 @@ export default function BibleReader() {
                                             <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
                                         </div>
                                     ) : chapterData?.chapter?.content ? (
-                                        <div className="rounded-3xl p-6">
+                                        <div className="px-4 py-6">
                                             <div className="space-y-4">
                                                 {chapterData.chapter.content
                                                     .filter(item => item.type === 'verse')
@@ -704,7 +716,7 @@ export default function BibleReader() {
                                         <div className="space-y-4">
                                             {/* User Comments */}
                                             {userComments && userComments.length > 0 && (
-                                                <div className="rounded-3xl p-6 theme-card">
+                                                <div className="rounded-3xl p-6 mx-4 theme-card">
                                                     <h3 className="text-sm font-bold theme-text-primary mb-4 flex items-center gap-2">
                                                         <MessageCircle className="w-4 h-4" />
                                                         My Comments
@@ -726,7 +738,7 @@ export default function BibleReader() {
 
                                             {/* Bible Commentary */}
                                             {commentaryData && (
-                                                <div className="rounded-3xl p-6 border border-slate-200 theme-card">
+                                                <div className="rounded-3xl p-6 mx-4 theme-card">
                                                     <h3 className="text-sm font-bold text-amber-600 mb-4">Bible Commentary</h3>
                                                     <div className="space-y-4">
                                                         {commentaryData.verses?.map((verse) => (
@@ -744,7 +756,7 @@ export default function BibleReader() {
                                             )}
 
                                             {!commentaryData && (!userComments || userComments.length === 0) && (
-                                                <div className="rounded-3xl p-6 border border-slate-200 theme-card text-center text-slate-500">
+                                                <div className="rounded-3xl p-6 mx-4 theme-card text-center text-slate-500">
                                                     No commentary available for this chapter
                                                 </div>
                                             )}
@@ -758,7 +770,7 @@ export default function BibleReader() {
                                             <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
                                         </div>
                                     ) : datasetData ? (
-                                        <div className="rounded-3xl p-6 border border-slate-200 theme-card">
+                                        <div className="rounded-3xl p-6 mx-4 theme-card">
                                             <div className="space-y-4">
                                                 {datasetData.verses?.map((verse) => (
                                                     <div key={verse.verse} className="space-y-2">
@@ -773,7 +785,7 @@ export default function BibleReader() {
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="rounded-3xl p-6 border border-slate-200 theme-card text-center text-slate-500">
+                                        <div className="rounded-3xl p-6 mx-4 theme-card text-center text-slate-500">
                                             No cross-references available for this chapter
                                         </div>
                                     )}

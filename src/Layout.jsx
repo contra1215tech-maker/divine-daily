@@ -87,12 +87,14 @@ export default function Layout({ children, currentPageName }) {
       '--text-primary': '#1E3A5F',
       '--text-secondary': '#475569',
       '--text-light': '#64748B',
-      '--card-bg': 'rgba(240, 255, 254, 0.4)',
-      '--card-overlay': 'rgba(229, 247, 246, 0.4)',
+      '--card-bg': 'rgba(240, 255, 254, 0.3)',
+      '--card-overlay': 'rgba(229, 247, 246, 0.3)',
       '--button-primary': 'transparent',
       '--button-secondary': 'transparent',
-      '--border-color': 'rgba(184, 230, 227, 0.3)',
-      '--nav-bg': 'rgba(240, 255, 254, 0.7)',
+      '--border-color': 'rgba(184, 230, 227, 0.15)',
+      '--nav-bg': 'rgba(240, 255, 254, 0.5)',
+      '--shadow': '0 8px 32px rgba(0, 0, 0, 0.06)',
+      '--shadow-lg': '0 20px 60px rgba(0, 0, 0, 0.08)',
     },
     still_waters: {
       '--bg-primary': '#E0F7FA',
@@ -105,12 +107,14 @@ export default function Layout({ children, currentPageName }) {
       '--text-primary': '#37474F',
       '--text-secondary': '#546E7A',
       '--text-light': '#78909C',
-      '--card-bg': 'rgba(243, 240, 248, 0.4)',
-      '--card-overlay': 'rgba(237, 231, 246, 0.4)',
+      '--card-bg': 'rgba(243, 240, 248, 0.3)',
+      '--card-overlay': 'rgba(237, 231, 246, 0.3)',
       '--button-primary': 'transparent',
       '--button-secondary': 'transparent',
-      '--border-color': 'rgba(217, 209, 227, 0.3)',
-      '--nav-bg': 'rgba(243, 240, 248, 0.7)',
+      '--border-color': 'rgba(217, 209, 227, 0.15)',
+      '--nav-bg': 'rgba(243, 240, 248, 0.5)',
+      '--shadow': '0 8px 32px rgba(0, 0, 0, 0.06)',
+      '--shadow-lg': '0 20px 60px rgba(0, 0, 0, 0.08)',
     },
     eternal_hope: {
       '--bg-primary': '#FFF8E8',
@@ -123,12 +127,14 @@ export default function Layout({ children, currentPageName }) {
       '--text-primary': '#3E2723',
       '--text-secondary': '#5D4037',
       '--text-light': '#795548',
-      '--card-bg': 'rgba(255, 249, 240, 0.4)',
-      '--card-overlay': 'rgba(255, 244, 230, 0.4)',
+      '--card-bg': 'rgba(255, 249, 240, 0.3)',
+      '--card-overlay': 'rgba(255, 244, 230, 0.3)',
       '--button-primary': 'transparent',
       '--button-secondary': 'transparent',
-      '--border-color': 'rgba(232, 212, 196, 0.3)',
-      '--nav-bg': 'rgba(255, 249, 240, 0.7)',
+      '--border-color': 'rgba(232, 212, 196, 0.15)',
+      '--nav-bg': 'rgba(255, 249, 240, 0.5)',
+      '--shadow': '0 8px 32px rgba(0, 0, 0, 0.06)',
+      '--shadow-lg': '0 20px 60px rgba(0, 0, 0, 0.08)',
     },
     dark_mode: {
       '--bg-primary': '#2A1F14',
@@ -141,13 +147,15 @@ export default function Layout({ children, currentPageName }) {
       '--text-primary': '#E8E3F0',
       '--text-secondary': '#C8B8A8',
       '--text-light': '#A89888',
-      '--card-bg': 'rgba(58, 42, 26, 0.4)',
-      '--card-overlay': 'rgba(58, 42, 26, 0.4)',
+      '--card-bg': 'rgba(58, 42, 26, 0.3)',
+      '--card-overlay': 'rgba(58, 42, 26, 0.3)',
       '--button-primary': 'transparent',
       '--button-secondary': 'transparent',
-      '--border-color': 'rgba(90, 74, 58, 0.3)',
-      '--nav-bg': 'rgba(58, 42, 26, 0.7)',
+      '--border-color': 'rgba(90, 74, 58, 0.15)',
+      '--nav-bg': 'rgba(58, 42, 26, 0.5)',
       '--bible-text': '#F5F1E8',
+      '--shadow': '0 8px 32px rgba(0, 0, 0, 0.2)',
+      '--shadow-lg': '0 20px 60px rgba(0, 0, 0, 0.3)',
     },
   };
 
@@ -192,6 +200,8 @@ export default function Layout({ children, currentPageName }) {
         .theme-card {
           background-color: ${currentTheme['--card-bg']} !important;
           border-color: ${currentTheme['--border-color']} !important;
+          border-radius: 24px !important;
+          box-shadow: ${currentTheme['--shadow']} !important;
         }
         .theme-text-primary {
           color: ${currentTheme['--text-primary']} !important;
@@ -210,9 +220,12 @@ export default function Layout({ children, currentPageName }) {
         background: transparent !important;
         background-image: none !important;
         border-color: ${currentTheme['--text-light']} !important;
+        border-radius: 16px !important;
+        transition: all 0.3s ease !important;
       }
       button:hover, .theme-button:hover {
         background: rgba(255, 255, 255, 0.1) !important;
+        transform: translateY(-1px);
       }
       ${theme === 'dark_mode' ? `
         p, span, .dark-mode-text {
@@ -230,10 +243,11 @@ export default function Layout({ children, currentPageName }) {
         <motion.nav
           initial={{ y: 100 }}
           animate={{ y: 0 }}
-          className="fixed bottom-2 left-3 right-3 z-40 max-w-md mx-auto backdrop-blur-xl rounded-2xl border"
+          className="fixed bottom-2 left-3 right-3 z-40 max-w-md mx-auto backdrop-blur-xl rounded-3xl border"
           style={{ 
             backgroundColor: currentTheme['--nav-bg'],
-            borderColor: currentTheme['--border-color']
+            borderColor: currentTheme['--border-color'],
+            boxShadow: currentTheme['--shadow-lg']
           }}
         >
           <div className="flex items-center justify-around py-1">
