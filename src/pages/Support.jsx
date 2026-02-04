@@ -45,6 +45,9 @@ export default function Support() {
     if (theme === 'eternal_hope') {
       return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/e27901977_Screenshot2026-02-02at94137PM.png';
     }
+    if (theme === 'still_waters') {
+      return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/f2bc2d22d_Screenshot2026-02-02at93835PM.png';
+    }
     return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/2d764fa06_heart.jpg';
   };
 
