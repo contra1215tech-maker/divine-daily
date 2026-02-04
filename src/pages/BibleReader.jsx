@@ -27,6 +27,12 @@ export default function BibleReader() {
     const [bookmarks, setBookmarks] = useState([]);
 
     useEffect(() => {
+        // Check for URL params (from favorites navigation)
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlBookId = urlParams.get('book_id');
+        const urlBookName = urlParams.get('book_name');
+        const urlChapter = urlParams.get('chapter');
+
         base44.auth.me().then(async (userData) => {
             console.log('User data loaded:', userData);
             setUser(userData);
@@ -36,8 +42,14 @@ export default function BibleReader() {
             console.log('Setting translation to:', translation);
             setTranslationId(translation);
             
-            // Load saved reading position
-            if (userData.reading_position && userData.reading_position.book_id) {
+            // Priority 1: URL params (from favorites)
+            if (urlBookId && urlBookName && urlChapter) {
+                setSelectedBook({ id: urlBookId, name: decodeURIComponent(urlBookName), numberOfChapters: 150 });
+                setSelectedChapter(parseInt(urlChapter));
+                setShowBookSelector(false);
+            }
+            // Priority 2: Load saved reading position
+            else if (userData.reading_position && userData.reading_position.book_id) {
                 const { book_id, book_name, chapter, numberOfChapters } = userData.reading_position;
                 setSelectedBook({ id: book_id, name: book_name, numberOfChapters });
                 setSelectedChapter(chapter);
