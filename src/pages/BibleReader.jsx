@@ -619,18 +619,21 @@ export default function BibleReader() {
 
                             {/* Chapter Content with Tabs */}
                             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                                <TabsList className="grid w-full grid-cols-3 border rounded-3xl p-1.5 mx-4" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--border-color)' }}>
-                                    <TabsTrigger value="text" className="rounded-2xl data-[state=active]:shadow-sm">
-                                        <BookOpen className="w-4 h-4 mr-2" />
-                                        Text
+                                <TabsList className="grid w-full grid-cols-3 border rounded-3xl p-1 mx-4" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--border-color)' }}>
+                                    <TabsTrigger value="text" className="rounded-2xl data-[state=active]:shadow-sm text-xs px-2 py-2">
+                                        <BookOpen className="w-3 h-3 mr-1" />
+                                        <span className="hidden sm:inline">Text</span>
+                                        <span className="sm:hidden">Text</span>
                                     </TabsTrigger>
-                                    <TabsTrigger value="commentary" className="rounded-2xl data-[state=active]:shadow-sm">
-                                        <MessageSquare className="w-4 h-4 mr-2" />
-                                        Commentary
+                                    <TabsTrigger value="commentary" className="rounded-2xl data-[state=active]:shadow-sm text-xs px-2 py-2">
+                                        <MessageSquare className="w-3 h-3 mr-1" />
+                                        <span className="hidden sm:inline">Commentary</span>
+                                        <span className="sm:hidden">Notes</span>
                                     </TabsTrigger>
-                                    <TabsTrigger value="references" className="rounded-2xl data-[state=active]:shadow-sm">
-                                        <Database className="w-4 h-4 mr-2" />
-                                        References
+                                    <TabsTrigger value="references" className="rounded-2xl data-[state=active]:shadow-sm text-xs px-2 py-2">
+                                        <Database className="w-3 h-3 mr-1" />
+                                        <span className="hidden sm:inline">References</span>
+                                        <span className="sm:hidden">Refs</span>
                                     </TabsTrigger>
                                 </TabsList>
 
