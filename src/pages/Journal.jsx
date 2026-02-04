@@ -177,17 +177,9 @@ export default function Journal() {
                    key={fav.id}
                    initial={{ opacity: 0, y: 20 }}
                    animate={{ opacity: 1, y: 0 }}
-                   onClick={async () => {
-                     if (fav.book_id) {
-                       await base44.auth.updateMe({
-                         reading_position: {
-                           book_id: fav.book_id,
-                           book_name: fav.book_name,
-                           chapter: fav.chapter,
-                           numberOfChapters: 150
-                         }
-                       });
-                       navigate(createPageUrl('BibleReader'));
+                   onClick={() => {
+                     if (fav.book_id && fav.chapter) {
+                       navigate(createPageUrl('BibleReader') + `?book_id=${fav.book_id}&book_name=${encodeURIComponent(fav.book_name)}&chapter=${fav.chapter}`);
                      }
                    }}
                    className="w-full rounded-2xl p-4 theme-card text-left hover:opacity-80 transition-opacity"
