@@ -27,12 +27,6 @@ export default function BibleReader() {
     const [bookmarks, setBookmarks] = useState([]);
 
     useEffect(() => {
-        // Check for URL params (from favorites navigation)
-        const urlParams = new URLSearchParams(window.location.search);
-        const urlBookId = urlParams.get('book_id');
-        const urlBookName = urlParams.get('book_name');
-        const urlChapter = urlParams.get('chapter');
-
         base44.auth.me().then(async (userData) => {
             console.log('User data loaded:', userData);
             setUser(userData);
@@ -42,14 +36,11 @@ export default function BibleReader() {
             console.log('Setting translation to:', translation);
             setTranslationId(translation);
             
-            // Priority 1: URL params (from favorites)
-            if (urlBookId && urlBookName && urlChapter) {
-                setSelectedBook({ id: urlBookId, name: decodeURIComponent(urlBookName), numberOfChapters: 150 });
-                setSelectedChapter(parseInt(urlChapter));
-                setShowBookSelector(false);
-            }
-            // Priority 2: Load saved reading position
-            else if (userData.reading_position && userData.reading_position.book_id) {
+            // Load saved reading position if no URL params
+            const urlParams = new URLSearchParams(window.location.search);
+            const hasUrlParams = urlParams.get('book_id');
+            
+            if (!hasUrlParams && userData.reading_position && userData.reading_position.book_id) {
                 const { book_id, book_name, chapter, numberOfChapters } = userData.reading_position;
                 setSelectedBook({ id: book_id, name: book_name, numberOfChapters });
                 setSelectedChapter(chapter);
@@ -72,6 +63,21 @@ export default function BibleReader() {
             console.error('Bookmarks error:', e);
         });
     }, []);
+
+    // Separate effect to handle URL params navigation from favorites
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlBookId = urlParams.get('book_id');
+        const urlBookName = urlParams.get('book_name');
+        const urlChapter = urlParams.get('chapter');
+
+        if (urlBookId && urlBookName && urlChapter) {
+            setSelectedBook({ id: urlBookId, name: decodeURIComponent(urlBookName), numberOfChapters: 150 });
+            setSelectedChapter(parseInt(urlChapter));
+            setShowBookSelector(false);
+            setActiveTab('text');
+        }
+    }, [window.location.search]);
 
     // Auto-save reading position whenever viewing a chapter
     useEffect(() => {
