@@ -234,6 +234,7 @@ export default function BibleReader() {
             await base44.entities.FavoriteVerse.create({
                 verse_reference: verseRef,
                 verse_text: verseText,
+                book_id: selectedBook.id,
                 book_name: selectedBook.name,
                 chapter: selectedChapter,
                 verse_number: selectedVerse.number,

@@ -173,11 +173,24 @@ export default function Journal() {
            filteredFavorites.length > 0 ? (
              <div className="space-y-3">
                {filteredFavorites.map((fav) => (
-                 <motion.div
+                 <motion.button
                    key={fav.id}
                    initial={{ opacity: 0, y: 20 }}
                    animate={{ opacity: 1, y: 0 }}
-                   className="rounded-2xl p-4 theme-card"
+                   onClick={async () => {
+                     if (fav.book_id) {
+                       await base44.auth.updateMe({
+                         reading_position: {
+                           book_id: fav.book_id,
+                           book_name: fav.book_name,
+                           chapter: fav.chapter,
+                           numberOfChapters: 150
+                         }
+                       });
+                       navigate(createPageUrl('BibleReader'));
+                     }
+                   }}
+                   className="w-full rounded-2xl p-4 theme-card text-left hover:opacity-80 transition-opacity"
                  >
                    <div className="flex items-start gap-3">
                      <Star className="w-5 h-5 theme-text-primary flex-shrink-0 mt-1" />
@@ -196,7 +209,7 @@ export default function Journal() {
                        <p className="text-xs theme-text-secondary mt-2">{fav.bible_version}</p>
                      </div>
                    </div>
-                 </motion.div>
+                 </motion.button>
                ))}
              </div>
            ) : (
