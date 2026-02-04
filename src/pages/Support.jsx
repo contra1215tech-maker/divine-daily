@@ -48,6 +48,9 @@ export default function Support() {
     if (theme === 'still_waters') {
       return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/f2bc2d22d_Screenshot2026-02-02at93835PM.png';
     }
+    if (theme === 'morning_dew') {
+      return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/8b9f16105_Screenshot2026-02-02at93444PM.png';
+    }
     return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/2d764fa06_heart.jpg';
   };
 
