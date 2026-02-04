@@ -292,8 +292,12 @@ export default function BibleReader() {
 
     if (!user) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-50 to-white">
-                <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
+            <div className="min-h-screen flex items-center justify-center" style={{ background: 'transparent' }}>
+                <div className="flex gap-2">
+                    <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '0ms' }} />
+                    <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '150ms' }} />
+                    <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '300ms' }} />
+                </div>
             </div>
         );
     }
@@ -437,7 +441,11 @@ export default function BibleReader() {
                         >
                             {booksLoading ? (
                                 <div className="flex items-center justify-center py-12">
-                                    <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
+                                    <div className="flex gap-2">
+                                        <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '0ms' }} />
+                                        <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '150ms' }} />
+                                        <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '300ms' }} />
+                                    </div>
                                 </div>
                             ) : booksError ? (
                                 <div className="flex items-center justify-center py-12 text-red-500">
@@ -629,7 +637,11 @@ export default function BibleReader() {
                                 <TabsContent value="text" className="mt-4">
                                     {chapterLoading ? (
                                         <div className="flex items-center justify-center py-12">
-                                            <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
+                                            <div className="flex gap-2">
+                                                <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '0ms' }} />
+                                                <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '150ms' }} />
+                                                <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '300ms' }} />
+                                            </div>
                                         </div>
                                     ) : chapterData?.chapter?.content ? (
                                         <div className="px-4 py-6">
@@ -675,7 +687,11 @@ export default function BibleReader() {
                                 <TabsContent value="commentary" className="mt-4">
                                     {commentaryLoading ? (
                                         <div className="flex items-center justify-center py-12">
-                                            <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
+                                            <div className="flex gap-2">
+                                                <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '0ms' }} />
+                                                <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '150ms' }} />
+                                                <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '300ms' }} />
+                                            </div>
                                         </div>
                                     ) : (
                                         <div className="space-y-4">
@@ -732,7 +748,11 @@ export default function BibleReader() {
                                 <TabsContent value="references" className="mt-4">
                                     {datasetLoading ? (
                                         <div className="flex items-center justify-center py-12">
-                                            <Loader2 className="w-8 h-8 text-sky-500 animate-spin" />
+                                            <div className="flex gap-2">
+                                                <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '0ms' }} />
+                                                <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '150ms' }} />
+                                                <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '300ms' }} />
+                                            </div>
                                         </div>
                                     ) : datasetData ? (
                                         <div className="rounded-3xl p-6 mx-4 theme-card">
