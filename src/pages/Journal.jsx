@@ -26,14 +26,9 @@ export default function Journal() {
         base44.auth.me().then(setUser).catch(console.error);
     }, []);
 
-  const { data: entries = [], isLoading } = useQuery({
+  const { data: entries = [], isLoading, refetch } = useQuery({
     queryKey: ['journal-entries'],
     queryFn: () => base44.entities.JournalEntry.list('-created_date'),
-  });
-
-  const { data: favorites = [] } = useQuery({
-    queryKey: ['favorite-verses'],
-    queryFn: () => base44.entities.FavoriteVerse.list('-created_date'),
   });
 
   // Filter entries
@@ -45,11 +40,13 @@ export default function Journal() {
       return matchesSearch;
   });
 
-  const filteredFavorites = activeFilter === 'favorites' ? favorites.filter(fav => {
+  const filteredFavorites = activeFilter === 'favorites' ? entries.filter(entry => {
+    const isFavorite = entry.is_favorite === true;
     const matchesSearch = !searchQuery ||
-      fav.verse_text?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      fav.verse_reference?.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesSearch;
+      entry.reflection?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      entry.verse_reference?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      entry.tags?.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
+    return isFavorite && matchesSearch;
   }) : [];
 
   const pictureEntries = activeFilter === 'pictures' ? entries.filter(entry => {
@@ -172,36 +169,20 @@ export default function Journal() {
         ) : activeFilter === 'favorites' ? (
            filteredFavorites.length > 0 ? (
              <div className="space-y-3">
-               {filteredFavorites.map((fav) => (
-                 <motion.button
-                   key={fav.id}
-                   initial={{ opacity: 0, y: 20 }}
-                   animate={{ opacity: 1, y: 0 }}
-                   onClick={() => {
-                     if (fav.book_id && fav.chapter) {
-                       navigate(createPageUrl('BibleReader') + `?book_id=${fav.book_id}&book_name=${encodeURIComponent(fav.book_name)}&chapter=${fav.chapter}`);
-                     }
+               {filteredFavorites.map((entry) => (
+                 <JournalEntryCard 
+                   key={entry.id} 
+                   entry={entry}
+                   onClick={() => navigate(createPageUrl('JournalEntryDetail') + `?id=${entry.id}`)}
+                   showFavorite={true}
+                   onFavoriteToggle={async (e) => {
+                     e.stopPropagation();
+                     await base44.entities.JournalEntry.update(entry.id, {
+                       is_favorite: !entry.is_favorite
+                     });
+                     refetch();
                    }}
-                   className="w-full rounded-2xl p-4 theme-card text-left hover:opacity-80 transition-opacity"
-                 >
-                   <div className="flex items-start gap-3">
-                     <Star className="w-5 h-5 theme-text-primary flex-shrink-0 mt-1" />
-                     <div className="flex-1">
-                       <h3 className="font-semibold theme-text-primary mb-2">{fav.verse_reference}</h3>
-                       <p 
-                         className="leading-relaxed font-serif theme-text-primary"
-                         style={fav.highlight_color ? { 
-                           backgroundColor: fav.highlight_color,
-                           padding: '2px 4px',
-                           borderRadius: '4px'
-                         } : {}}
-                       >
-                         {fav.verse_text}
-                       </p>
-                       <p className="text-xs theme-text-secondary mt-2">{fav.bible_version}</p>
-                     </div>
-                   </div>
-                 </motion.button>
+                 />
                ))}
              </div>
            ) : (
@@ -211,8 +192,8 @@ export default function Journal() {
                className="text-center py-16"
              >
                <Star className="w-16 h-16 theme-text-secondary mx-auto mb-3" />
-               <h3 className="font-semibold theme-text-primary mb-1">No favorite verses yet</h3>
-               <p className="text-sm theme-text-secondary">Tap verses in the Bible to save favorites</p>
+               <h3 className="font-semibold theme-text-primary mb-1">No favorite entries yet</h3>
+               <p className="text-sm theme-text-secondary">Tap the star on journal entries to save favorites</p>
              </motion.div>
            )
         ) : Object.keys(groupedEntries).length > 0 ? (
@@ -231,6 +212,14 @@ export default function Journal() {
                       key={entry.id} 
                       entry={entry}
                       onClick={() => navigate(createPageUrl('JournalEntryDetail') + `?id=${entry.id}`)}
+                      showFavorite={true}
+                      onFavoriteToggle={async (e) => {
+                        e.stopPropagation();
+                        await base44.entities.JournalEntry.update(entry.id, {
+                          is_favorite: !entry.is_favorite
+                        });
+                        refetch();
+                      }}
                     />
                   ))}
                 </div>

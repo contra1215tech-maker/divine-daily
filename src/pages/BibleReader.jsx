@@ -22,7 +22,6 @@ export default function BibleReader() {
     const [verseHighlights, setVerseHighlights] = useState({});
     const [showCommentInput, setShowCommentInput] = useState(false);
     const [commentText, setCommentText] = useState('');
-    const [favoritedVerses, setFavoritedVerses] = useState(new Set());
     const [showBookmarks, setShowBookmarks] = useState(false);
     const [bookmarks, setBookmarks] = useState([]);
 
@@ -50,14 +49,6 @@ export default function BibleReader() {
             console.error('Auth error:', e);
         });
         
-        // Load favorited verses
-        base44.entities.FavoriteVerse.list().then(favs => {
-            const favSet = new Set(favs.map(f => f.verse_reference));
-            setFavoritedVerses(favSet);
-        }).catch((e) => {
-            console.error('Favorites error:', e);
-        });
-
         // Load bookmarks
         base44.entities.Bookmark.list().then(setBookmarks).catch((e) => {
             console.error('Bookmarks error:', e);
@@ -232,41 +223,7 @@ export default function BibleReader() {
         setSelectedVerse(null);
     };
 
-    const handleFavorite = async () => {
-        const verseRef = `${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`;
-        
-        // Toggle: if already favorited, unfavorite
-        if (favoritedVerses.has(verseRef)) {
-            const favorites = await base44.entities.FavoriteVerse.filter({ verse_reference: verseRef });
-            if (favorites.length > 0) {
-                await base44.entities.FavoriteVerse.delete(favorites[0].id);
-            }
-            const newFavs = new Set(favoritedVerses);
-            newFavs.delete(verseRef);
-            setFavoritedVerses(newFavs);
-        } else {
-            const verseText = Array.isArray(selectedVerse.content)
-                ? selectedVerse.content.map(item => typeof item === 'string' ? item : item.text || '').join(' ')
-                : selectedVerse.content;
 
-            await base44.entities.FavoriteVerse.create({
-                verse_reference: verseRef,
-                verse_text: verseText,
-                book_id: selectedBook.id,
-                book_name: selectedBook.name,
-                chapter: selectedChapter,
-                verse_number: selectedVerse.number,
-                bible_version: translationId,
-                highlight_color: verseHighlights[selectedVerse.key] || null
-            });
-            
-            const newFavs = new Set(favoritedVerses);
-            newFavs.add(verseRef);
-            setFavoritedVerses(newFavs);
-        }
-        
-        setSelectedVerse(null);
-    };
 
     const handleCopy = () => {
         const verseText = Array.isArray(selectedVerse.content)
@@ -590,18 +547,7 @@ export default function BibleReader() {
                                                   </div>
 
                                                    {/* Action Buttons */}
-                                                   <div className="grid grid-cols-3 gap-1.5">
-                                                       <button
-                                                           onClick={handleFavorite}
-                                                           className="flex flex-col items-center justify-center gap-0.5 py-2 rounded-2xl font-medium border theme-text-primary"
-                                                           style={{ 
-                                                               borderColor: favoritedVerses.has(`${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`) ? '#f59e0b' : 'var(--text-light)',
-                                                               backgroundColor: favoritedVerses.has(`${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`) ? '#fef3c7' : 'transparent'
-                                                           }}
-                                                       >
-                                                           <Star className={cn("w-4 h-4", favoritedVerses.has(`${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`) && "fill-amber-500 text-amber-500")} />
-                                                           <span className="text-[10px]">{favoritedVerses.has(`${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`) ? 'Unfavorite' : 'Favorite'}</span>
-                                                       </button>
+                                                   <div className="grid grid-cols-2 gap-1.5">
                                                        <button
                                                            onClick={handleCopy}
                                                            className="flex flex-col items-center justify-center gap-0.5 py-2 rounded-2xl font-medium theme-text-primary border"
