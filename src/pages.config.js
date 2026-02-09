@@ -50,7 +50,6 @@
 import BibleReader from './pages/BibleReader';
 import CaptureMoment from './pages/CaptureMoment';
 import HeartCheck from './pages/HeartCheck';
-import Home from './pages/Home';
 import Journal from './pages/Journal';
 import JournalEntryDetail from './pages/JournalEntryDetail';
 import License from './pages/License';
@@ -59,6 +58,7 @@ import Profile from './pages/Profile';
 import Search from './pages/Search';
 import Settings from './pages/Settings';
 import Support from './pages/Support';
+import Home from './pages/Home';
 import __Layout from './Layout.jsx';
 
 
@@ -66,7 +66,6 @@ export const PAGES = {
     "BibleReader": BibleReader,
     "CaptureMoment": CaptureMoment,
     "HeartCheck": HeartCheck,
-    "Home": Home,
     "Journal": Journal,
     "JournalEntryDetail": JournalEntryDetail,
     "License": License,
@@ -75,6 +74,7 @@ export const PAGES = {
     "Search": Search,
     "Settings": Settings,
     "Support": Support,
+    "Home": Home,
 }
 
 export const pagesConfig = {

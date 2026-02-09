@@ -1,15 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, ChevronLeft, ChevronRight, Settings2, Loader2, MessageSquare, Database, Star, Copy, Palette, MessageCircle, Bookmark as BookmarkIcon, X, Share2 } from 'lucide-react';
+import { BookOpen, ChevronLeft, ChevronRight, Settings2, Loader2, MessageSquare, Database, Star, Copy, Palette, MessageCircle, Bookmark as BookmarkIcon, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import BookSelector from '../components/bible/BookSelector';
 import ChapterSelector from '../components/bible/ChapterSelector';
 import { cn } from "@/lib/utils";
-import { haptic, nativeShare, chapterCache } from '../components/lib/nativeFeatures';
 
 export default function BibleReader() {
     const [user, setUser] = useState(null);
@@ -25,8 +24,6 @@ export default function BibleReader() {
     const [commentText, setCommentText] = useState('');
     const [showBookmarks, setShowBookmarks] = useState(false);
     const [bookmarks, setBookmarks] = useState([]);
-    const touchStartX = useRef(0);
-    const touchEndX = useRef(0);
 
     useEffect(() => {
         base44.auth.me().then(async (userData) => {
@@ -103,32 +100,18 @@ export default function BibleReader() {
         console.log('booksError:', booksError);
     }, [booksData, books, booksLoading, booksError]);
 
-    // Fetch chapter content with caching
+    // Fetch chapter content
     const { data: chapterData, isLoading: chapterLoading } = useQuery({
         queryKey: ['bible-chapter', translationId, selectedBook?.id, selectedChapter],
         queryFn: async () => {
-            const cacheKey = `${translationId}_${selectedBook.id}_${selectedChapter}`;
-            
-            // Try to get from cache first
-            const cached = await chapterCache.get(cacheKey);
-            if (cached) {
-                return cached;
-            }
-            
-            // Fetch from API
             const response = await base44.functions.invoke('getBibleChapter', {
                 translation_id: translationId,
                 book_id: selectedBook.id,
                 chapter: selectedChapter
             });
-            
-            // Cache the result
-            await chapterCache.set(cacheKey, response.data);
-            
             return response.data;
         },
         enabled: !!selectedBook && !!selectedChapter && !showBookSelector,
-        staleTime: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
     // Fetch commentary
@@ -178,13 +161,11 @@ export default function BibleReader() {
     });
 
     const handleBookSelect = (book) => {
-        haptic('light');
         setSelectedBook(book);
         // Don't auto-close book selector, wait for chapter selection
     };
 
     const handleChapterSelect = (chapter) => {
-        haptic('medium');
         setSelectedChapter(chapter);
         setActiveTab('text');
         setShowBookSelector(false);
@@ -205,7 +186,6 @@ export default function BibleReader() {
 
     const handlePrevChapter = () => {
         if (selectedChapter > 1) {
-            haptic('medium');
             const newChapter = selectedChapter - 1;
             setSelectedChapter(newChapter);
             saveReadingPosition(selectedBook, newChapter);
@@ -214,34 +194,9 @@ export default function BibleReader() {
 
     const handleNextChapter = () => {
         if (selectedChapter < selectedBook?.numberOfChapters) {
-            haptic('medium');
             const newChapter = selectedChapter + 1;
             setSelectedChapter(newChapter);
             saveReadingPosition(selectedBook, newChapter);
-        }
-    };
-    
-    // Swipe gesture handlers
-    const handleTouchStart = (e) => {
-        touchStartX.current = e.touches[0].clientX;
-    };
-    
-    const handleTouchMove = (e) => {
-        touchEndX.current = e.touches[0].clientX;
-    };
-    
-    const handleTouchEnd = () => {
-        const swipeThreshold = 75; // minimum distance for swipe
-        const diff = touchStartX.current - touchEndX.current;
-        
-        if (Math.abs(diff) > swipeThreshold) {
-            if (diff > 0) {
-                // Swiped left - next chapter
-                handleNextChapter();
-            } else {
-                // Swiped right - prev chapter
-                handlePrevChapter();
-            }
         }
     };
 
@@ -262,7 +217,6 @@ export default function BibleReader() {
     };
 
     const handleHighlight = async (color) => {
-        haptic('light');
         const verseKey = selectedVerse.key;
         // Toggle: if same color, remove highlight
         if (verseHighlights[verseKey] === color) {
@@ -278,7 +232,6 @@ export default function BibleReader() {
 
 
     const handleCopy = () => {
-        haptic('success');
         const verseText = Array.isArray(selectedVerse.content)
             ? selectedVerse.content.map(item => typeof item === 'string' ? item : item.text || '').join(' ')
             : selectedVerse.content;
@@ -287,30 +240,8 @@ export default function BibleReader() {
         navigator.clipboard.writeText(fullText);
         setSelectedVerse(null);
     };
-    
-    const handleShare = async () => {
-        haptic('light');
-        const verseText = Array.isArray(selectedVerse.content)
-            ? selectedVerse.content.map(item => typeof item === 'string' ? item : item.text || '').join(' ')
-            : selectedVerse.content;
-        
-        const reference = `${selectedBook.name} ${selectedChapter}:${selectedVerse.number}`;
-        const fullText = `${reference}\n\n"${verseText}"`;
-        
-        const shared = await nativeShare({
-            title: reference,
-            text: fullText
-        });
-        
-        if (shared) {
-            haptic('success');
-        }
-        
-        setSelectedVerse(null);
-    };
 
     const handleComment = () => {
-        haptic('light');
         setShowCommentInput(true);
     };
 
@@ -327,7 +258,6 @@ export default function BibleReader() {
             bible_version: translationId
         });
 
-        haptic('success');
         setCommentText('');
         setShowCommentInput(false);
         setSelectedVerse(null);
@@ -352,7 +282,6 @@ export default function BibleReader() {
             chapter: selectedChapter
         });
 
-        haptic('success');
         setBookmarks([...bookmarks, newBookmark]);
     };
 
@@ -554,9 +483,6 @@ export default function BibleReader() {
                             exit={{ opacity: 0, x: 20 }}
                             className="relative"
                             onClick={toggleNavControls}
-                            onTouchStart={handleTouchStart}
-                            onTouchMove={handleTouchMove}
-                            onTouchEnd={handleTouchEnd}
                         >
                             {/* Navigation Controls */}
                             <AnimatePresence>
@@ -641,15 +567,7 @@ export default function BibleReader() {
                                                   </div>
 
                                                    {/* Action Buttons */}
-                                                   <div className="grid grid-cols-3 gap-1.5">
-                                                       <button
-                                                           onClick={handleShare}
-                                                           className="flex flex-col items-center justify-center gap-0.5 py-2 rounded-2xl font-medium theme-text-primary border"
-                                                           style={{ borderColor: 'var(--text-light)', backgroundColor: 'transparent' }}
-                                                       >
-                                                           <Share2 className="w-4 h-4" />
-                                                           <span className="text-[10px]">Share</span>
-                                                       </button>
+                                                   <div className="grid grid-cols-2 gap-1.5">
                                                        <button
                                                            onClick={handleCopy}
                                                            className="flex flex-col items-center justify-center gap-0.5 py-2 rounded-2xl font-medium theme-text-primary border"
