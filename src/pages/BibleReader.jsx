@@ -9,7 +9,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import BookSelector from '../components/bible/BookSelector';
 import ChapterSelector from '../components/bible/ChapterSelector';
 import { cn } from "@/lib/utils";
-import { haptic, nativeShare, chapterCache } from '@/lib/nativeFeatures';
+import { haptic, nativeShare, chapterCache } from '../components/lib/nativeFeatures';
 
 export default function BibleReader() {
     const [user, setUser] = useState(null);
