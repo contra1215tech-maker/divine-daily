@@ -28,33 +28,33 @@ export default function Privacy() {
   const privacyItems = [
     {
       icon: Camera,
-      title: 'Your Photos',
-      description: 'All photos you capture are stored securely in your personal account. Only you can access your photos. We never share, sell, or use your photos for any purpose other than displaying them to you in the app.'
+      title: 'Camera Access',
+      description: 'The app requests camera permission to let you capture photos for your journal entries. This is the only sensitive device feature we access. You can deny or revoke camera permission in your device settings at any time and still use text-only journaling and Bible reading features.'
     },
     {
       icon: BookOpen,
-      title: 'Journal Entries',
-      description: 'Your journal entries, reflections, and notes are completely private. They are encrypted and stored in your personal database. No one else can read your journal entries, not even app administrators.'
+      title: 'Journal Entries & Photos',
+      description: 'Your journal entries, reflections, and photos are stored securely on Base44\'s protected servers and are completely private to your account. They are encrypted during transmission and storage. No one else can access your journal entries or photos, not even app administrators. This server storage enables backup and sync features.'
     },
     {
       icon: Database,
-      title: 'Data Storage',
-      description: 'All your data is stored securely on protected servers. Your information is backed up regularly to prevent data loss, but remains completely private to your account.'
+      title: 'Bible Content & Reading History',
+      description: 'Bible texts are fetched in real-time from a third-party public Bible API (Bolls Life). These fetches are anonymous and we do not log or store your reading history on our servers. Your saved favorites, bookmarks, and personal comments are stored privately in your Base44 account for your personalized experience.'
     },
     {
       icon: Lock,
-      title: 'Bible Reading History',
-      description: 'Your Bible reading history, favorite verses, and comments are private to your account. We use this data only to provide you with a personalized experience within the app.'
+      title: 'Minimal Data Collection',
+      description: 'We collect only what\'s essential: your email (for account access), and your chosen content (journal entries, photos, Bible bookmarks). We do NOT collect analytics, tracking data, device identifiers, location, contacts, microphone access, health data, or any other sensitive information beyond camera access for photos.'
     },
     {
       icon: Shield,
-      title: 'Account Security',
-      description: 'Your account is protected with industry-standard security measures. We never store your password in plain text, and all data transmission is encrypted.'
+      title: 'Donation Processing',
+      description: 'If you make an optional monthly donation to support the app, the App Store (Apple/Google) processes the payment and collects necessary payment details. We receive only limited confirmation data (donation amount and date). Your name and email for donation receipts come from your existing app account, not the payment processor. We do not store payment card details.'
     },
     {
       icon: Eye,
       title: 'No Third-Party Sharing',
-      description: 'We do not share, sell, or distribute your personal information, photos, or journal entries to any third parties. Your privacy is our top priority.'
+      description: 'We do not sell, rent, share, or distribute your personal information, photos, or journal entries to any third parties for marketing or advertising. Data is shared only with: (1) the Bible API provider for fetching scripture text, (2) the App Store for processing donations, and (3) when required by law.'
     }
   ];
 
@@ -91,8 +91,9 @@ export default function Privacy() {
             <h2 className="text-lg font-bold theme-text-primary">Your Privacy Matters</h2>
           </div>
           <p className="text-sm theme-text-secondary leading-relaxed">
-            Divine Daily is designed with your privacy as a core principle. Your spiritual journey, 
-            journal entries, and photos are personal and sacred. Here's how we protect your privacy:
+            Divine Daily is a free Bible reading and personal journaling app designed with your privacy as a core principle. 
+            We collect as little personal information as possible - only what's essential for the app to function. 
+            Your spiritual journey, journal entries, and photos are personal and sacred. Here's how we protect your privacy:
           </p>
         </motion.div>
 
@@ -144,11 +145,23 @@ export default function Privacy() {
           transition={{ delay: 0.4 }}
           className="mt-6 p-5 rounded-2xl theme-card"
         >
-          <h3 className="font-semibold theme-text-primary mb-3">Data Deletion</h3>
+          <h3 className="font-semibold theme-text-primary mb-3">Your Rights & Data Deletion</h3>
           <p className="text-sm theme-text-secondary leading-relaxed mb-3">
-            You have the right to delete your account and all associated data at any time. 
-            If you wish to delete your account, please contact support and we will permanently 
-            remove all your data from our servers within 30 days.
+            You have full control over your data. You can delete individual journal entries and photos anytime within the app. 
+            To delete your entire account and all associated data, please contact us and we will permanently remove 
+            everything from our servers within 30 days. Under laws like GDPR and CCPA, you may have additional rights 
+            to access, restrict, or port your data - contact us to exercise these rights.
+          </p>
+          <h3 className="font-semibold theme-text-primary mb-3">Security</h3>
+          <p className="text-sm theme-text-secondary leading-relaxed mb-3">
+            We use industry-standard security measures to protect your data, including encryption during transmission 
+            and storage. Your account is password-protected (we never store passwords in plain text). While no method 
+            of transmission over the internet is 100% secure, we continuously work to protect your information.
+          </p>
+          <h3 className="font-semibold theme-text-primary mb-3">Children's Privacy</h3>
+          <p className="text-sm theme-text-secondary leading-relaxed mb-3">
+            The app is not directed to children under 13 (or 16 in some regions). We do not knowingly collect 
+            data from children. If we learn of such data, we will delete it immediately.
           </p>
           <h3 className="font-semibold theme-text-primary mb-3">Questions?</h3>
           <p className="text-sm theme-text-secondary leading-relaxed">
@@ -166,7 +179,11 @@ export default function Privacy() {
 
         {/* Last Updated */}
         <p className="text-xs text-center theme-text-secondary mt-6 mb-4">
-          Last updated: February 3, 2026
+          Effective Date: February 10, 2026
+        </p>
+        <p className="text-xs text-center theme-text-secondary mb-4">
+          By using Divine Daily, you agree to this Privacy Policy. We may update this policy occasionally - 
+          changes will be posted here with a new effective date.
         </p>
       </div>
     </div>
