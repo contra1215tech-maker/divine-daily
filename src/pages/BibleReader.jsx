@@ -177,6 +177,15 @@ export default function BibleReader() {
             const newChapter = selectedChapter - 1;
             setSelectedChapter(newChapter);
             saveReadingPosition(selectedBook, newChapter);
+        } else if (selectedChapter === 1 && books.length > 0) {
+            // At first chapter - go to previous book's last chapter
+            const currentBookIndex = books.findIndex(b => b.id === selectedBook.id);
+            if (currentBookIndex > 0) {
+                const prevBook = books[currentBookIndex - 1];
+                setSelectedBook(prevBook);
+                setSelectedChapter(prevBook.numberOfChapters);
+                saveReadingPosition(prevBook, prevBook.numberOfChapters);
+            }
         }
     };
 
@@ -185,6 +194,15 @@ export default function BibleReader() {
             const newChapter = selectedChapter + 1;
             setSelectedChapter(newChapter);
             saveReadingPosition(selectedBook, newChapter);
+        } else if (selectedChapter === selectedBook?.numberOfChapters && books.length > 0) {
+            // At last chapter - go to next book's first chapter
+            const currentBookIndex = books.findIndex(b => b.id === selectedBook.id);
+            if (currentBookIndex < books.length - 1) {
+                const nextBook = books[currentBookIndex + 1];
+                setSelectedBook(nextBook);
+                setSelectedChapter(1);
+                saveReadingPosition(nextBook, 1);
+            }
         }
     };
 
@@ -482,7 +500,7 @@ export default function BibleReader() {
                                         className="fixed bottom-16 left-0 right-0 z-40 flex justify-center gap-4 px-4 max-w-md mx-auto"
                                         onClick={(e) => e.stopPropagation()}
                                     >
-                                        {selectedChapter > 1 && (
+                                        {(selectedChapter > 1 || (selectedChapter === 1 && books.findIndex(b => b.id === selectedBook.id) > 0)) && (
                                            <button
                                                onClick={handlePrevChapter}
                                                className="w-14 h-14 rounded-full border theme-text-primary flex items-center justify-center backdrop-blur-xl transition-all hover:scale-105"
@@ -495,7 +513,7 @@ export default function BibleReader() {
                                                <ChevronLeft className="w-5 h-5" />
                                            </button>
                                         )}
-                                        {selectedChapter < selectedBook.numberOfChapters && (
+                                        {(selectedChapter < selectedBook.numberOfChapters || (selectedChapter === selectedBook.numberOfChapters && books.findIndex(b => b.id === selectedBook.id) < books.length - 1)) && (
                                            <button
                                                onClick={handleNextChapter}
                                                className="w-14 h-14 rounded-full border theme-text-primary flex items-center justify-center backdrop-blur-xl transition-all hover:scale-105"
