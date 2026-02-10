@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, Calendar, BookOpen, Tag, Heart, Trash2 } from 'lucide-react';
+import { ArrowLeft, Calendar, BookOpen, Tag, Heart, Trash2, Folder } from 'lucide-react';
 import { format } from 'date-fns';
 import { moods } from '../components/ui/MoodSelector';
 import {
@@ -23,8 +23,13 @@ export default function JournalEntryDetail() {
   const queryClient = useQueryClient();
   const urlParams = new URLSearchParams(window.location.search);
   const entryId = urlParams.get('id');
+  const [folders, setFolders] = useState([]);
 
-  const { data: entry, isLoading } = useQuery({
+  useEffect(() => {
+    base44.entities.JournalFolder.list('name').then(setFolders).catch(console.error);
+  }, []);
+
+  const { data: entry, isLoading, refetch } = useQuery({
     queryKey: ['journal-entry', entryId],
     queryFn: async () => {
       const entries = await base44.entities.JournalEntry.filter({ id: entryId });
@@ -38,6 +43,14 @@ export default function JournalEntryDetail() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['journal-entries'] });
       navigate(-1);
+    },
+  });
+
+  const updateFolderMutation = useMutation({
+    mutationFn: (folderId) => base44.entities.JournalEntry.update(entryId, { folder_id: folderId }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['journal-entries'] });
+      refetch();
     },
   });
 
@@ -116,6 +129,33 @@ export default function JournalEntryDetail() {
       </div>
 
       <div className="px-6 py-6 space-y-6">
+        {/* Folder Selection */}
+        {folders.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-4 rounded-2xl theme-card"
+          >
+            <div className="flex items-center gap-2 mb-2">
+              <Folder className="w-4 h-4 theme-text-secondary" />
+              <label className="text-sm font-medium theme-text-primary">Folder</label>
+            </div>
+            <select
+              value={entry.folder_id || ''}
+              onChange={(e) => updateFolderMutation.mutate(e.target.value || null)}
+              className="w-full p-2 rounded-xl theme-card theme-text-primary border text-sm"
+              style={{ borderColor: 'var(--border-color)', backgroundColor: 'var(--card-bg)' }}
+            >
+              <option value="">Unfiled</option>
+              {folders.map((folder) => (
+                <option key={folder.id} value={folder.id}>
+                  {folder.name}
+                </option>
+              ))}
+            </select>
+          </motion.div>
+        )}
+
         {/* Photo */}
         {entry.photo_url && (
           <motion.div

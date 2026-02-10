@@ -27,9 +27,12 @@ export default function CaptureMoment() {
   const [loadingVerse, setLoadingVerse] = useState(false);
   const [showCelebration, setShowCelebration] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [selectedFolder, setSelectedFolder] = useState(null);
+  const [folders, setFolders] = useState([]);
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(console.error);
+    base44.entities.JournalFolder.list('name').then(setFolders).catch(console.error);
   }, []);
 
   const createEntryMutation = useMutation({
@@ -125,6 +128,7 @@ export default function CaptureMoment() {
       verse_reference: verse?.reference,
       bible_version: verse?.version || user?.preferred_bible_version || 'NIV',
       tags,
+      folder_id: selectedFolder,
     });
     setSaving(false);
   };
@@ -187,6 +191,28 @@ export default function CaptureMoment() {
             onRefresh={fetchVerse}
             loading={loadingVerse}
           />
+        )}
+
+        {/* Folder Selection */}
+        {folders.length > 0 && (
+          <div className="space-y-2">
+            <label className="text-sm font-medium theme-text-secondary">
+              Save to folder (optional)
+            </label>
+            <select
+              value={selectedFolder || ''}
+              onChange={(e) => setSelectedFolder(e.target.value || null)}
+              className="w-full p-3 rounded-xl theme-card theme-text-primary border"
+              style={{ borderColor: 'var(--border-color)', backgroundColor: 'var(--card-bg)' }}
+            >
+              <option value="">Unfiled</option>
+              {folders.map((folder) => (
+                <option key={folder.id} value={folder.id}>
+                  {folder.name}
+                </option>
+              ))}
+            </select>
+          </div>
         )}
 
         {/* Tags */}
