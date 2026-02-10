@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, ChevronLeft, ChevronRight, Settings2, Loader2, MessageSquare, Database, Star, Copy, Palette, MessageCircle, Bookmark as BookmarkIcon, X } from 'lucide-react';
+import { BookOpen, ChevronLeft, ChevronRight, Settings2, Loader2, MessageSquare, Star, Copy, Palette, MessageCircle, Bookmark as BookmarkIcon, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -146,19 +146,7 @@ export default function BibleReader() {
         return userComments.filter(c => c.verse_number === verseNumber);
     };
 
-    // Fetch dataset (cross-references)
-    const { data: datasetData, isLoading: datasetLoading } = useQuery({
-        queryKey: ['bible-dataset', 'cross_references', selectedBook?.id, selectedChapter],
-        queryFn: async () => {
-            const response = await base44.functions.invoke('getBibleDataset', {
-                dataset_id: 'cross_references',
-                book_id: selectedBook.id,
-                chapter: selectedChapter
-            });
-            return response.data;
-        },
-        enabled: !!selectedBook && !!selectedChapter && activeTab === 'references',
-    });
+
 
     const handleBookSelect = (book) => {
         setSelectedBook(book);
@@ -655,7 +643,7 @@ export default function BibleReader() {
 
                             {/* Chapter Content with Tabs */}
                             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full px-4">
-                                <TabsList className="grid w-full grid-cols-3 border rounded-3xl p-1" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--border-color)' }}>
+                                <TabsList className="grid w-full grid-cols-2 border rounded-3xl p-1" style={{ backgroundColor: 'var(--card-bg)', borderColor: 'var(--border-color)' }}>
                                     <TabsTrigger value="text" className="rounded-2xl data-[state=active]:shadow-sm text-xs px-2 py-2">
                                         <BookOpen className="w-3 h-3 mr-1" />
                                         <span className="hidden sm:inline">Text</span>
@@ -665,11 +653,6 @@ export default function BibleReader() {
                                         <MessageSquare className="w-3 h-3 mr-1" />
                                         <span className="hidden sm:inline">Commentary</span>
                                         <span className="sm:hidden">Notes</span>
-                                    </TabsTrigger>
-                                    <TabsTrigger value="references" className="rounded-2xl data-[state=active]:shadow-sm text-xs px-2 py-2">
-                                        <Database className="w-3 h-3 mr-1" />
-                                        <span className="hidden sm:inline">References</span>
-                                        <span className="sm:hidden">Refs</span>
                                     </TabsTrigger>
                                 </TabsList>
 
@@ -818,36 +801,7 @@ export default function BibleReader() {
                                     )}
                                 </TabsContent>
 
-                                <TabsContent value="references" className="mt-4">
-                                    {datasetLoading ? (
-                                        <div className="flex items-center justify-center py-12">
-                                            <div className="flex gap-2">
-                                                <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '0ms' }} />
-                                                <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '150ms' }} />
-                                                <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '300ms' }} />
-                                            </div>
-                                        </div>
-                                    ) : datasetData ? (
-                                        <div className="rounded-3xl p-6 mx-4 theme-card">
-                                            <div className="space-y-4">
-                                                {datasetData.verses?.map((verse) => (
-                                                    <div key={verse.verse} className="space-y-2">
-                                                        <span className="text-sm font-bold text-purple-600">
-                                                            Verse {verse.verse}
-                                                        </span>
-                                                        <div className="text-slate-700 leading-relaxed">
-                                                            {verse.text}
-                                                        </div>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div className="rounded-3xl p-6 mx-4 theme-card text-center text-slate-500">
-                                            No cross-references available for this chapter
-                                        </div>
-                                    )}
-                                </TabsContent>
+
                             </Tabs>
                         </motion.div>
                     ) : null}
