@@ -56,9 +56,6 @@ export default function JournalEntryCard({ entry, onClick, showFavorite, onFavor
         {/* Content */}
         <div className={cn("flex-1 py-2 flex flex-col justify-center min-w-0 w-full overflow-hidden", hasNoPhoto && "px-4")}>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full flex-shrink-0 theme-text-primary" style={{ backgroundColor: 'var(--accent-primary)' }}>
-              {isMoment ? 'Moment' : moodData?.label || 'Mood'}
-            </span>
             <span className="text-xs theme-text-secondary flex-shrink-0">
               {format(new Date(entry.created_date), 'MMM d')}
             </span>
