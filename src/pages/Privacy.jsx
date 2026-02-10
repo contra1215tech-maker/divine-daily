@@ -34,7 +34,7 @@ export default function Privacy() {
     {
       icon: BookOpen,
       title: 'Journal Entries & Photos',
-      description: 'Your journal entries, reflections, and photos are stored securely on Base44\'s protected servers and are completely private to your account. They are encrypted during transmission and storage. No one else can access your journal entries or photos, not even app administrators. This server storage enables backup and sync features.'
+      description: 'Your journal entries, reflections, and photos are transmitted to and stored on Base44\'s secure servers (our backend service provider) to enable backup and sync across devices. Data is encrypted during transmission (HTTPS). While we implement strict access controls and do not actively monitor or view your content, limited administrative access may exist for technical support or debugging purposes. Your data is linked to your account (via email) and used solely for app functionality.'
     },
     {
       icon: Database,
