@@ -5,10 +5,18 @@ import { base44 } from '@/api/base44Client';
 import { format, startOfWeek, endOfWeek, isWithinInterval, subWeeks } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { Search, Calendar, Camera, Heart, TrendingUp, Star, Plus, Image } from 'lucide-react';
+import { Search, Calendar, Camera, Heart, TrendingUp, Star, Plus, Image, Folder, FolderOpen, Edit2, Trash2 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import JournalEntryCard from '@/components/journal/JournalEntryCard';
 import { cn } from "@/lib/utils";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from '@/components/ui/button';
 
 const filters = [
   { id: 'entries', label: 'Entries', icon: Camera },
@@ -20,6 +28,9 @@ export default function Journal() {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [activeFilter, setActiveFilter] = useState('entries');
+    const [selectedFolder, setSelectedFolder] = useState(null);
+    const [showCreateFolder, setShowCreateFolder] = useState(false);
+    const [newFolderName, setNewFolderName] = useState('');
     const [user, setUser] = useState(null);
 
     useEffect(() => {
@@ -31,13 +42,22 @@ export default function Journal() {
     queryFn: () => base44.entities.JournalEntry.list('-created_date'),
   });
 
+  const { data: folders = [], refetch: refetchFolders } = useQuery({
+    queryKey: ['journal-folders'],
+    queryFn: () => base44.entities.JournalFolder.list('name'),
+  });
+
   // Filter entries
   const filteredEntries = (activeFilter === 'favorites' || activeFilter === 'pictures') ? [] : entries.filter(entry => {
       const matchesSearch = !searchQuery || 
           entry.reflection?.toLowerCase().includes(searchQuery.toLowerCase()) ||
           entry.verse_reference?.toLowerCase().includes(searchQuery.toLowerCase()) ||
           entry.tags?.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
-      return matchesSearch;
+      
+      const matchesFolder = selectedFolder === null || 
+        (selectedFolder === 'unfiled' ? !entry.folder_id : entry.folder_id === selectedFolder);
+      
+      return matchesSearch && matchesFolder;
   });
 
   const filteredFavorites = activeFilter === 'favorites' ? entries.filter(entry => {
@@ -46,7 +66,9 @@ export default function Journal() {
       entry.reflection?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       entry.verse_reference?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       entry.tags?.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
-    return isFavorite && matchesSearch;
+    const matchesFolder = selectedFolder === null || 
+      (selectedFolder === 'unfiled' ? !entry.folder_id : entry.folder_id === selectedFolder);
+    return isFavorite && matchesSearch && matchesFolder;
   }) : [];
 
   const pictureEntries = activeFilter === 'pictures' ? entries.filter(entry => {
@@ -54,7 +76,9 @@ export default function Journal() {
     const matchesSearch = !searchQuery ||
       entry.reflection?.toLowerCase().includes(searchQuery.toLowerCase()) ||
       entry.tags?.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
-    return hasPicture && matchesSearch;
+    const matchesFolder = selectedFolder === null || 
+      (selectedFolder === 'unfiled' ? !entry.folder_id : entry.folder_id === selectedFolder);
+    return hasPicture && matchesSearch && matchesFolder;
   }) : [];
 
   // Group by date
@@ -65,17 +89,23 @@ export default function Journal() {
     return groups;
   }, {});
 
-  // Weekly stats
-  const thisWeek = {
-    start: startOfWeek(new Date()),
-    end: endOfWeek(new Date())
+  const handleCreateFolder = async () => {
+    if (!newFolderName.trim()) return;
+    await base44.entities.JournalFolder.create({ name: newFolderName });
+    setNewFolderName('');
+    setShowCreateFolder(false);
+    refetchFolders();
   };
-  
-  const weeklyEntries = entries.filter(e => 
-    isWithinInterval(new Date(e.created_date), thisWeek)
-  );
-  
-  const weeklyMoments = weeklyEntries.filter(e => e.type === 'moment').length;
+
+  const handleDeleteFolder = async (folderId) => {
+    if (window.confirm('Delete this folder? Entries inside will become unfiled.')) {
+      await base44.entities.JournalFolder.delete(folderId);
+      if (selectedFolder === folderId) setSelectedFolder(null);
+      refetchFolders();
+    }
+  };
+
+  const unfiledCount = entries.filter(e => !e.folder_id).length;
 
   return (
       <div className="min-h-screen" style={{ background: 'transparent' }}>
@@ -85,7 +115,15 @@ export default function Journal() {
         borderBottom: '1px solid var(--border-color)'
       }}>
         <div className="px-6 py-3">
-          <h1 className="text-xl font-bold theme-text-primary mb-3">Journal</h1>
+          <div className="flex items-center justify-between mb-3">
+            <h1 className="text-xl font-bold theme-text-primary">Journal</h1>
+            <button
+              onClick={() => setShowCreateFolder(true)}
+              className="p-2 rounded-xl theme-card hover:shadow-md transition-all"
+            >
+              <Plus className="w-4 h-4 theme-text-primary" />
+            </button>
+          </div>
 
           {/* Search */}
           <div className="relative mb-2">
@@ -97,6 +135,62 @@ export default function Journal() {
               className="pl-9 h-9 text-sm rounded-xl theme-card"
               style={{ borderColor: 'var(--border-color)' }}
             />
+          </div>
+
+          {/* Folders */}
+          <div className="flex gap-2 overflow-x-auto pb-2 mb-2">
+            <button
+              onClick={() => setSelectedFolder(null)}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all border-2",
+                selectedFolder === null
+                  ? "border-current theme-text-primary"
+                  : "border-transparent theme-card theme-text-secondary hover:shadow-md"
+              )}
+            >
+              <Folder className="w-3.5 h-3.5" />
+              All
+            </button>
+            <button
+              onClick={() => setSelectedFolder('unfiled')}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all border-2",
+                selectedFolder === 'unfiled'
+                  ? "border-current theme-text-primary"
+                  : "border-transparent theme-card theme-text-secondary hover:shadow-md"
+              )}
+            >
+              <FolderOpen className="w-3.5 h-3.5" />
+              Unfiled ({unfiledCount})
+            </button>
+            {folders.map((folder) => {
+              const count = entries.filter(e => e.folder_id === folder.id).length;
+              return (
+                <div key={folder.id} className="relative group">
+                  <button
+                    onClick={() => setSelectedFolder(folder.id)}
+                    className={cn(
+                      "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all border-2",
+                      selectedFolder === folder.id
+                        ? "border-current theme-text-primary"
+                        : "border-transparent theme-card theme-text-secondary hover:shadow-md"
+                    )}
+                  >
+                    <Folder className="w-3.5 h-3.5" />
+                    {folder.name} ({count})
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteFolder(folder.id);
+                    }}
+                    className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                  </button>
+                </div>
+              );
+            })}
           </div>
 
           {/* Filters */}
@@ -242,6 +336,28 @@ export default function Journal() {
           </motion.div>
         )}
       </div>
+
+      {/* Create Folder Dialog */}
+      <Dialog open={showCreateFolder} onOpenChange={setShowCreateFolder}>
+        <DialogContent className="theme-card">
+          <DialogHeader>
+            <DialogTitle className="theme-text-primary">Create New Folder</DialogTitle>
+          </DialogHeader>
+          <Input
+            value={newFolderName}
+            onChange={(e) => setNewFolderName(e.target.value)}
+            placeholder="Folder name"
+            className="theme-card"
+            onKeyPress={(e) => e.key === 'Enter' && handleCreateFolder()}
+          />
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setShowCreateFolder(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleCreateFolder}>Create</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
