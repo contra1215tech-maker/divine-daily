@@ -198,6 +198,23 @@ export default function Settings() {
         </motion.button>
       </div>
 
+      {/* Terms of Service Button */}
+      <div className="px-6 mt-3">
+        <motion.button
+          whileTap={{ scale: 0.98 }}
+          onClick={() => navigate(createPageUrl('Terms'))}
+          className="w-full p-4 rounded-2xl theme-card flex items-center justify-between"
+        >
+          <div className="flex items-center gap-3">
+            <div className="text-left">
+              <p className="font-medium theme-text-primary">Terms of Service</p>
+              <p className="text-sm theme-text-secondary">Usage terms and conditions</p>
+            </div>
+          </div>
+          <ChevronRight className="w-5 h-5 theme-text-secondary" />
+        </motion.button>
+      </div>
+
       {/* License Button */}
       <div className="px-6 mt-3">
         <motion.button
