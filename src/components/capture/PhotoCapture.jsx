@@ -9,6 +9,65 @@ export default function PhotoCapture({ onPhotoCapture, photo, onRemove }) {
   const [uploading, setUploading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
 
+  React.useEffect(() => {
+    // Set up callback for native camera capture
+    window.onCameraCaptureComplete = async (imageData) => {
+      setUploading(true);
+      try {
+        // Convert base64 to blob if needed, or use the provided URL directly
+        let fileUrl;
+        
+        if (imageData.startsWith('data:') || imageData.startsWith('blob:')) {
+          // If native wrapper returns base64 or blob URL, convert to file and upload
+          const response = await fetch(imageData);
+          const blob = await response.blob();
+          const file = new File([blob], 'camera-capture.jpg', { type: 'image/jpeg' });
+          const { file_url } = await base44.integrations.Core.UploadFile({ file });
+          fileUrl = file_url;
+        } else {
+          // If native wrapper already uploaded and returns URL
+          fileUrl = imageData;
+        }
+        
+        onPhotoCapture(fileUrl);
+      } catch (error) {
+        console.error('Camera capture upload failed:', error);
+        alert('Failed to save photo. Please try again.');
+      } finally {
+        setUploading(false);
+      }
+    };
+
+    window.onCameraCaptureFailed = (error) => {
+      console.error('Camera capture failed:', error);
+      setUploading(false);
+      alert('Failed to capture photo. Please try again.');
+    };
+
+    return () => {
+      delete window.onCameraCaptureComplete;
+      delete window.onCameraCaptureFailed;
+    };
+  }, [onPhotoCapture]);
+
+  const handleCameraCapture = () => {
+    setUploading(true);
+    
+    // Check if running in iOS wrapper
+    if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.openCamera) {
+      window.webkit.messageHandlers.openCamera.postMessage({});
+    }
+    // Check if running in Android wrapper
+    else if (window.Android && window.Android.openCamera) {
+      window.Android.openCamera();
+    }
+    // Fallback for web - use file input with camera capture
+    else {
+      setUploading(false);
+      fileInputRef.current?.click();
+    }
+  };
+
   const handleFileSelect = async (file) => {
     if (!file || !file.type.startsWith('image/')) return;
     
@@ -60,7 +119,7 @@ export default function PhotoCapture({ onPhotoCapture, photo, onRemove }) {
           </motion.div>
         ) : (
           <button
-            onClick={() => fileInputRef.current?.click()}
+            onClick={handleCameraCapture}
             disabled={uploading}
             className="w-full py-2 px-4 rounded-xl border theme-text-secondary text-sm flex items-center justify-center gap-2 transition-opacity hover:opacity-70"
             style={{ 
@@ -80,7 +139,7 @@ export default function PhotoCapture({ onPhotoCapture, photo, onRemove }) {
             ) : (
               <>
                 <Camera className="w-4 h-4" />
-                <span>Add photo</span>
+                <span>Take photo</span>
               </>
             )}
             
@@ -88,7 +147,7 @@ export default function PhotoCapture({ onPhotoCapture, photo, onRemove }) {
               ref={fileInputRef}
               type="file"
               accept="image/*"
-              capture={undefined}
+              capture="environment"
               onChange={(e) => handleFileSelect(e.target.files[0])}
               className="hidden"
             />
