@@ -39,7 +39,7 @@ export default function Privacy() {
     {
       icon: Database,
       title: 'Bible Content & Reading History',
-      description: 'Bible texts are fetched in real-time from a third-party public Bible API (Bolls Life). These fetches are anonymous and we do not log or store your reading history on our servers. Your saved favorites, bookmarks, and personal comments are stored privately in your Base44 account for your personalized experience.'
+      description: 'Bible texts are fetched in real-time from a third-party public Bible API (Bolls Life, privacy policy: bolls.life/static/privacy_policy.html). The API provider may log anonymous request data per their own policy—we do not receive or control this. We do not log or store your reading history on our servers. Your saved favorites, bookmarks, and personal comments are stored privately in your Base44 account for your personalized experience.'
     },
     {
       icon: Lock,
@@ -49,7 +49,7 @@ export default function Privacy() {
     {
       icon: Shield,
       title: 'Donation Processing',
-      description: 'If you make an optional monthly donation to support the app, the App Store (Apple/Google) processes the payment and collects necessary payment details. We receive only limited confirmation data (donation amount and date). Your name and email for donation receipts come from your existing app account, not the payment processor. We do not store payment card details.'
+      description: 'If you make an optional monthly donation to support the app, it is processed through Apple/Google In-App Purchases (IAP). The App Store collects and processes payment details directly—we never see or store your payment card information. We receive only limited confirmation data (donation amount, transaction ID, and date). Your email comes from your existing app account. Donations are voluntary and do not unlock features.'
     },
     {
       icon: Eye,
@@ -148,20 +148,20 @@ export default function Privacy() {
           <h3 className="font-semibold theme-text-primary mb-3">Your Rights & Data Deletion</h3>
           <p className="text-sm theme-text-secondary leading-relaxed mb-3">
             You have full control over your data. You can delete individual journal entries and photos anytime within the app. 
-            To delete your entire account and all associated data, please contact us and we will permanently remove 
-            everything from our servers within 30 days. Under laws like GDPR and CCPA, you may have additional rights 
-            to access, restrict, or port your data - contact us to exercise these rights.
+            To delete your entire account and all associated data, please contact us at divinedailytech@gmail.com and we will permanently remove 
+            everything from our servers within 30 days. (Note: Apple recommends in-app account deletion—we're working on adding this feature.) 
+            Under laws like GDPR and CCPA, you may have additional rights to access, restrict, or port your data—contact us to exercise these rights.
           </p>
           <h3 className="font-semibold theme-text-primary mb-3">Security</h3>
           <p className="text-sm theme-text-secondary leading-relaxed mb-3">
-            We use industry-standard security measures to protect your data, including encryption during transmission 
-            and storage. Your account is password-protected (we never store passwords in plain text). While no method 
+            We implement reasonable administrative, technical, and physical safeguards to protect your data, including encryption during transmission 
+            (HTTPS) and storage. Your account is password-protected (we never store passwords in plain text). While no method 
             of transmission over the internet is 100% secure, we continuously work to protect your information.
           </p>
           <h3 className="font-semibold theme-text-primary mb-3">Children's Privacy</h3>
           <p className="text-sm theme-text-secondary leading-relaxed mb-3">
-            The app is not directed to children under 13 (or 16 in some regions). We do not knowingly collect 
-            data from children. If we learn of such data, we will delete it immediately.
+            Divine Daily is not directed to or intended for children under 13 (or 16 in certain regions). We do not knowingly collect 
+            personal information from children. If you believe we have inadvertently collected such data, please contact us immediately and we will delete it.
           </p>
           <h3 className="font-semibold theme-text-primary mb-3">Questions?</h3>
           <p className="text-sm theme-text-secondary leading-relaxed">
