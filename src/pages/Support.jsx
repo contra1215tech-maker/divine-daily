@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Heart, Check, Loader2, ArrowLeft, ChevronDown } from 'lucide-react';
+import { Heart, Check, Loader2, ArrowLeft } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import { useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
@@ -24,10 +24,7 @@ const donationTiers = [
   { amount: 10, label: '$10/month', productId: 'monthly_donation_10' },
 ];
 
-const oneTimeDonations = [
-  { amount: 25, label: '$25', productId: 'one_time_donation_25' },
-  { amount: 50, label: '$50', productId: 'one_time_donation_50' },
-];
+
 
 export default function Support() {
   const navigate = useNavigate();
@@ -35,7 +32,7 @@ export default function Support() {
   const [selectedTier, setSelectedTier] = useState(null);
   const [isPurchasing, setIsPurchasing] = useState(false);
   const [showCancelDialog, setShowCancelDialog] = useState(false);
-  const [showOneTime, setShowOneTime] = useState(false);
+
   const queryClient = useQueryClient();
 
   const currentSubscription = user?.donation_subscription;
@@ -79,8 +76,6 @@ export default function Support() {
       try {
         // Check if it's a monthly subscription
         const tier = donationTiers.find(t => t.productId === productId);
-        // Check if it's a one-time donation
-        const oneTime = oneTimeDonations.find(t => t.productId === productId);
         
         if (tier) {
           // Update user data with subscription info
@@ -100,29 +95,7 @@ export default function Support() {
           const userData = await base44.auth.me();
           setUser(userData);
           
-          alert(`Thank you for your support! 🙏`);
-        } else if (oneTime) {
-          // Track one-time donation
-          const donations = user?.one_time_donations || [];
-          await base44.auth.updateMe({
-            one_time_donations: [
-              ...donations,
-              {
-                product_id: productId,
-                amount: oneTime.amount,
-                transaction_id: transactionId,
-                date: new Date().toISOString()
-              }
-            ]
-          });
-          
-          queryClient.invalidateQueries({ queryKey: ['user'] });
-          
-          // Reload user data
-          const userData = await base44.auth.me();
-          setUser(userData);
-          
-          alert(`Thank you for your ${oneTime.label} donation! 🙏`);
+          alert(`Thank you for your ${tier.label} monthly support! 🙏`);
         }
       } catch (error) {
         console.error('Error processing purchase:', error);
@@ -344,67 +317,7 @@ export default function Support() {
           )}
         </motion.div>
 
-        {/* One-Time Donation Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="mt-4 rounded-3xl overflow-hidden theme-card"
-        >
-          <button
-            onClick={() => setShowOneTime(!showOneTime)}
-            className="w-full p-4 flex items-center justify-between hover:opacity-80 transition-opacity"
-          >
-            <div className="text-left">
-              <h3 className="font-semibold theme-text-primary">One-Time Donation</h3>
-              <p className="text-xs theme-text-secondary">Make a single contribution</p>
-            </div>
-            <ChevronDown 
-              className={`w-5 h-5 theme-text-secondary transition-transform ${showOneTime ? 'rotate-180' : ''}`}
-            />
-          </button>
 
-          <AnimatePresence>
-            {showOneTime && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="overflow-hidden"
-              >
-                <div className="px-4 pb-4 space-y-3">
-                  {oneTimeDonations.map((donation) => (
-                    <button
-                      key={donation.productId}
-                      onClick={() => handleDonationSelect(donation)}
-                      disabled={isPurchasing}
-                      className="w-full p-4 rounded-2xl border-2 transition-all hover:scale-[1.02] disabled:opacity-50"
-                      style={{ 
-                        borderColor: isPurchasing && selectedTier?.productId === donation.productId 
-                          ? '#ec4899' 
-                          : 'var(--border-color)',
-                        backgroundColor: isPurchasing && selectedTier?.productId === donation.productId
-                          ? 'rgba(236, 72, 153, 0.1)'
-                          : 'transparent'
-                      }}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="text-left">
-                          <p className="font-semibold theme-text-primary">{donation.label}</p>
-                          <p className="text-xs theme-text-secondary">One-time donation</p>
-                        </div>
-                        {isPurchasing && selectedTier?.productId === donation.productId && (
-                          <Loader2 className="w-5 h-5 animate-spin text-pink-600" />
-                        )}
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </motion.div>
       </div>
 
       {/* Cancel Confirmation Dialog */}
