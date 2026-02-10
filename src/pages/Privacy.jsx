@@ -34,7 +34,7 @@ export default function Privacy() {
     {
       icon: BookOpen,
       title: 'Journal Entries & Photos',
-      description: 'Your journal entries, reflections, and photos are transmitted to and stored on Base44\'s secure servers (our backend service provider) to enable backup and sync across devices. Data is encrypted during transmission (HTTPS). While we implement strict access controls and do not actively monitor or view your content, limited administrative access may exist for technical support or debugging purposes. Your data is linked to your account (via email) and used solely for app functionality.'
+      description: 'Your journal entries, reflections, and photos are transmitted to and stored on Base44\'s secure servers (our backend service provider; see their privacy policy at base44.com/privacy for details). Base44 maintains SOC 2 Type II certification and GDPR compliance with industry-standard encryption. Data is encrypted during transmission (HTTPS) to enable backup and sync across devices. While we implement strict access controls and do not actively monitor or view your content, limited administrative access may exist for technical support or debugging purposes. Your data is linked to your account (via email) and used solely for app functionality.'
     },
     {
       icon: Database,
