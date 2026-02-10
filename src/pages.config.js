@@ -59,6 +59,7 @@ import Profile from './pages/Profile';
 import Search from './pages/Search';
 import Settings from './pages/Settings';
 import Support from './pages/Support';
+import Terms from './pages/Terms';
 import __Layout from './Layout.jsx';
 
 
@@ -75,6 +76,7 @@ export const PAGES = {
     "Search": Search,
     "Settings": Settings,
     "Support": Support,
+    "Terms": Terms,
 }
 
 export const pagesConfig = {
