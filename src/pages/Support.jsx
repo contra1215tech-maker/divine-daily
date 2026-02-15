@@ -160,7 +160,7 @@ export default function Support() {
     // Set timeout to reset if wrapper doesn't respond
     const timeout = setTimeout(() => {
       setIsPurchasing(false);
-      alert('Purchase timed out. Please try again.');
+      toast.error('Purchase timed out. Please try again.');
     }, 30000);
 
     // Store timeout ID to clear it on success/failure
