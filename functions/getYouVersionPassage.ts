@@ -19,7 +19,7 @@ Deno.serve(async (req) => {
 
         const apiKey = Deno.env.get('YOUVERSION_API_KEY');
         const response = await fetch(
-            `https://api.youversion.com/v1/bibles/${bible_id}/passages/${passage_id}`,
+            `https://api.youversion.com/v1/bibles/${bible_id}/passages/${passage_id}?include_verse_numbers=true`,
             {
                 headers: {
                     'X-YVP-App-Key': apiKey
