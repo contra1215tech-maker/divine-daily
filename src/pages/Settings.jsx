@@ -67,9 +67,16 @@ export default function Settings() {
     // Fetch Bible versions from YouVersion
     base44.functions.invoke('getYouVersionBibles', { language: 'en' })
       .then(response => {
-        const filteredVersions = (response.data.bibles || []).filter(
-          bible => !bible.local_title?.includes('Orthodox Jewish') && !bible.title?.includes('Orthodox Jewish')
-        );
+        const excludedTitles = [
+          'Orthodox Jewish',
+          'World Messianic Bible British Edition',
+          'World English Bible, American English Edition, without Strong',
+          'World English Bible British Edition'
+        ];
+        const filteredVersions = (response.data.bibles || []).filter(bible => {
+          const title = bible.local_title || bible.title || '';
+          return !excludedTitles.some(excluded => title.includes(excluded));
+        });
         setBibleVersions(filteredVersions);
       })
       .catch(console.error);
