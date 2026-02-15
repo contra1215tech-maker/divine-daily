@@ -116,12 +116,15 @@ export default function VerseRenderer({
                                     initial={{ opacity: 0, y: -10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -10 }}
-                                    className="mt-2 p-3 rounded-lg bg-white shadow-lg border border-slate-200"
+                                    className="mt-2 p-3 rounded-lg shadow-lg border theme-card"
+                                    style={{
+                                        borderColor: 'var(--border-color)'
+                                    }}
                                 >
                                     <div className="space-y-2">
                                         <div className="flex items-center gap-2">
-                                            <Highlighter className="w-4 h-4 text-slate-600" />
-                                            <span className="text-sm font-medium text-slate-700">Highlight:</span>
+                                            <Highlighter className="w-4 h-4 theme-text-secondary" />
+                                            <span className="text-sm font-medium theme-text-primary">Highlight:</span>
                                             <div className="flex gap-1">
                                                 {HIGHLIGHT_COLORS.map(color => (
                                                     <div
@@ -130,24 +133,27 @@ export default function VerseRenderer({
                                                         className="w-8 h-8 rounded-full border-2 transition-all cursor-pointer"
                                                         style={{ 
                                                             backgroundColor: color.color,
-                                                            borderColor: highlight === color.id ? '#1e293b' : 'rgba(148, 163, 184, 0.3)',
-                                                            boxShadow: highlight === color.id ? '0 0 0 2px rgba(30, 41, 59, 0.15)' : 'none'
+                                                            borderColor: highlight === color.id ? 'var(--text-primary)' : 'var(--border-color)',
+                                                            boxShadow: highlight === color.id ? '0 0 0 2px var(--border-color)' : 'none'
                                                         }}
                                                     />
                                                 ))}
                                                 {highlight && (
                                                     <button
                                                         onClick={() => handleHighlight(verse.number, null)}
-                                                        className="w-8 h-8 rounded-full border-2 border-slate-300 bg-white flex items-center justify-center hover:bg-slate-50"
+                                                        className="w-8 h-8 rounded-full border-2 flex items-center justify-center theme-card"
+                                                        style={{
+                                                            borderColor: 'var(--border-color)'
+                                                        }}
                                                     >
-                                                        <X className="w-3 h-3" />
+                                                        <X className="w-3 h-3 theme-text-secondary" />
                                                     </button>
                                                 )}
                                             </div>
                                         </div>
                                         <button
                                             onClick={() => handleAddComment(verse.number)}
-                                            className="flex items-center gap-2 text-sm text-slate-600 hover:text-slate-900"
+                                            className="flex items-center gap-2 text-sm theme-text-secondary hover:theme-text-primary"
                                         >
                                             <MessageSquare className="w-4 h-4" />
                                             {hasComment ? 'Edit note' : 'Add note'}
@@ -162,20 +168,29 @@ export default function VerseRenderer({
                                     initial={{ opacity: 0, y: -10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -10 }}
-                                    className="mt-2 p-3 rounded-lg bg-white shadow-lg border border-slate-200"
+                                    className="mt-2 p-3 rounded-lg shadow-lg border theme-card"
+                                    style={{
+                                        borderColor: 'var(--border-color)'
+                                    }}
                                 >
                                     <textarea
                                         value={commentText}
                                         onChange={(e) => setCommentText(e.target.value)}
                                         placeholder="Add your note..."
-                                        className="w-full p-2 border border-slate-300 rounded text-sm"
+                                        className="w-full p-2 border rounded text-sm theme-card theme-text-primary"
+                                        style={{
+                                            borderColor: 'var(--border-color)'
+                                        }}
                                         rows={3}
                                         autoFocus
                                     />
                                     <div className="flex gap-2 mt-2">
                                         <button
                                             onClick={handleSaveComment}
-                                            className="px-3 py-1 bg-sky-500 text-white rounded text-sm"
+                                            className="px-3 py-1 rounded text-sm theme-text-primary"
+                                            style={{
+                                                backgroundColor: 'var(--accent-primary)'
+                                            }}
                                         >
                                             Save
                                         </button>
@@ -184,7 +199,10 @@ export default function VerseRenderer({
                                                 setShowCommentInput(false);
                                                 setSelectedVerse(null);
                                             }}
-                                            className="px-3 py-1 bg-slate-200 text-slate-700 rounded text-sm"
+                                            className="px-3 py-1 rounded text-sm theme-card theme-text-secondary"
+                                            style={{
+                                                borderColor: 'var(--border-color)'
+                                            }}
                                         >
                                             Cancel
                                         </button>
