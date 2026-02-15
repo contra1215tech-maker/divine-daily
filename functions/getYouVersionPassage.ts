@@ -9,7 +9,7 @@ Deno.serve(async (req) => {
             return Response.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const { bible_id, passage_id, format = 'json' } = await req.json();
+        const { bible_id, passage_id } = await req.json();
 
         if (!bible_id || !passage_id) {
             return Response.json({ 
@@ -19,7 +19,7 @@ Deno.serve(async (req) => {
 
         const apiKey = Deno.env.get('YOUVERSION_API_KEY');
         const response = await fetch(
-            `https://api.youversion.com/v1/bibles/${bible_id}/passages/${passage_id}?format=${format}`,
+            `https://api.youversion.com/v1/bibles/${bible_id}/passages/${passage_id}`,
             {
                 headers: {
                     'X-YVP-App-Key': apiKey
