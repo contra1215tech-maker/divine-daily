@@ -355,11 +355,11 @@ export default function BibleReader() {
                                                 initial={{ opacity: 0, y: -10 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0, y: -10 }}
-                                                className="absolute right-0 top-full mt-2 w-72 rounded-3xl p-4 z-50 max-h-96 overflow-y-auto"
+                                                className="absolute right-0 top-full mt-2 w-72 rounded-3xl p-4 z-50 max-h-96 overflow-y-auto bg-white"
                                                 style={{ 
-                                                    backgroundColor: 'var(--bg-primary)',
                                                     border: '1px solid var(--border-color)',
-                                                    boxShadow: 'var(--shadow-lg)'
+                                                    boxShadow: 'var(--shadow-lg)',
+                                                    opacity: 1
                                                 }}
                                                 onClick={(e) => e.stopPropagation()}
                                             >
