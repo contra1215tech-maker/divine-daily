@@ -708,7 +708,7 @@ export default function BibleReader() {
                                     ) : (chapterData?.passage?.content || chapterData?.content) ? (
                                         <div className="px-4 py-6">
                                             <div className="space-y-4">
-                                                {chapterData.passage.content
+                                                {(chapterData?.passage?.content || chapterData?.content)
                                                     ?.filter(item => item.type === 'verse')
                                                     ?.map((verse) => {
                                                         const verseKey = `${selectedBook.id}-${selectedChapter}-${verse.number}`;
