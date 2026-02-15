@@ -357,7 +357,7 @@ export default function BibleReader() {
                                                 exit={{ opacity: 0, y: -10 }}
                                                 className="absolute right-0 top-full mt-2 w-72 rounded-3xl p-4 z-50 max-h-96 overflow-y-auto"
                                                 style={{ 
-                                                    backgroundColor: 'var(--card-overlay)',
+                                                    backgroundColor: 'var(--bg-primary)',
                                                     border: '1px solid var(--border-color)',
                                                     boxShadow: 'var(--shadow-lg)'
                                                 }}
