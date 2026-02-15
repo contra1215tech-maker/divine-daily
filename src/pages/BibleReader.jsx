@@ -126,6 +126,7 @@ export default function BibleReader() {
                 bible_id: translationId,
                 passage_id: `${selectedBook.id}.${selectedChapter}`
             });
+            console.log('Chapter data response:', response.data);
             return response.data;
         },
         enabled: !!selectedBook && !!selectedChapter && !showBookSelector,
@@ -700,10 +701,10 @@ export default function BibleReader() {
                                                 <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '300ms' }} />
                                             </div>
                                         </div>
-                                    ) : chapterData?.content ? (
+                                    ) : chapterData?.passage?.content ? (
                                         <div className="px-4 py-6">
                                             <div className="space-y-4">
-                                                {chapterData.content
+                                                {chapterData.passage.content
                                                     ?.filter(item => item.type === 'verse')
                                                     ?.map((verse) => {
                                                         const verseKey = `${selectedBook.id}-${selectedChapter}-${verse.number}`;
@@ -770,9 +771,9 @@ export default function BibleReader() {
                                             </h3>
                                             <div className="space-y-4">
                                             {userComments.map((comment) => {
-                                            const verse = chapterData?.content?.find(
-                                                v => v.type === 'verse' && v.number === comment.verse_number
-                                            );
+                                                const verse = chapterData?.passage?.content?.find(
+                                                    v => v.type === 'verse' && v.number === comment.verse_number
+                                                );
                                                             const verseText = verse ? (
                                                                 Array.isArray(verse.content) 
                                                                     ? verse.content.map(item => 
