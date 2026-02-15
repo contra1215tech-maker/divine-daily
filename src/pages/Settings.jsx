@@ -71,7 +71,8 @@ export default function Settings() {
           'Orthodox Jewish',
           'World Messianic Bible British Edition',
           'World English Bible, American English Edition, without Strong',
-          'World English Bible British Edition'
+          'World English Bible British Edition',
+          'The Text-Critical English New Testament'
         ];
         const filteredVersions = (response.data.bibles || []).filter(bible => {
           const title = bible.local_title || bible.title || '';
