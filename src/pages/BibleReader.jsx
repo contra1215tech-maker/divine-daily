@@ -530,11 +530,19 @@ export default function BibleReader() {
                                                     [verseNum]: color
                                                 }));
                                             }}
-                                            onComment={(verseNum, comment) => {
-                                                setVerseComments(prev => ({
-                                                    ...prev,
-                                                    [verseNum]: comment
-                                                }));
+                                            onComment={async (verseNum, comment) => {
+                                                // Save comment to database
+                                                await base44.entities.VerseComment.create({
+                                                    book_id: selectedBook.id,
+                                                    book_name: selectedBook.name,
+                                                    chapter: selectedChapter,
+                                                    verse_number: parseInt(verseNum),
+                                                    verse_reference: `${selectedBook.name} ${selectedChapter}:${verseNum}`,
+                                                    comment: comment,
+                                                    bible_version: translationId.toString()
+                                                });
+                                                // Refetch comments to update the commentary tab
+                                                refetchComments();
                                             }}
                                         />
                                     ) : null}
