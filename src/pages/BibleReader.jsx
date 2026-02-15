@@ -19,10 +19,8 @@ export default function BibleReader() {
     const [showBookSelector, setShowBookSelector] = useState(true);
     const [activeTab, setActiveTab] = useState('text');
     const [showNavControls, setShowNavControls] = useState(false);
-    const [selectedVerse, setSelectedVerse] = useState(null);
     const [verseHighlights, setVerseHighlights] = useState({});
-    const [showCommentInput, setShowCommentInput] = useState(false);
-    const [commentText, setCommentText] = useState('');
+    const [verseComments, setVerseComments] = useState({});
     const [showBookmarks, setShowBookmarks] = useState(false);
     const [bookmarks, setBookmarks] = useState([]);
 
