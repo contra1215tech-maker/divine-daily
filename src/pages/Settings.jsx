@@ -11,11 +11,7 @@ import {
 import AnimatedButton from '@/components/ui/AnimatedButton';
 import { cn } from "@/lib/utils";
 
-const bibleVersions = [
-  { id: 'BSB', name: 'BSB', desc: 'Berean Study Bible' },
-  { id: 'WEB', name: 'WEB', desc: 'World English Bible' },
-  { id: 'NET', name: 'NET', desc: 'New English Translation' },
-];
+// Removed - will be fetched from API
 
 const themes = [
   {
@@ -54,6 +50,7 @@ export default function Settings() {
   const [loading, setLoading] = useState(true);
   const [showBiblePicker, setShowBiblePicker] = useState(false);
   const [showThemePicker, setShowThemePicker] = useState(false);
+  const [bibleVersions, setBibleVersions] = useState([]);
 
   useEffect(() => {
     const loadUser = async () => {
@@ -66,6 +63,13 @@ export default function Settings() {
       setLoading(false);
     };
     loadUser();
+
+    // Fetch Bible versions from YouVersion
+    base44.functions.invoke('getYouVersionBibles', { language: 'en' })
+      .then(response => {
+        setBibleVersions(response.data.bibles || []);
+      })
+      .catch(console.error);
   }, []);
 
   const updateUserMutation = useMutation({
@@ -76,7 +80,10 @@ export default function Settings() {
   });
 
   const handleBibleVersionChange = async (version) => {
-    await updateUserMutation.mutateAsync({ preferred_bible_version: version });
+    await updateUserMutation.mutateAsync({ 
+      bible_version: version.id,
+      bible_version_name: version.abbreviation || version.local_title
+    });
     setShowBiblePicker(false);
   };
 
@@ -170,7 +177,7 @@ export default function Settings() {
           <div className="flex items-center gap-3">
             <div className="text-left">
               <p className="font-medium theme-text-primary">Bible Version</p>
-              <p className="text-sm theme-text-secondary">{user?.preferred_bible_version || 'BSB'}</p>
+              <p className="text-sm theme-text-secondary">{user?.bible_version_name || 'Not set'}</p>
             </div>
           </div>
           <ChevronRight className="w-5 h-5 theme-text-secondary" />
@@ -328,27 +335,41 @@ export default function Settings() {
             <div className="w-12 h-1 rounded-full mx-auto mb-4" style={{ backgroundColor: 'var(--border-color)' }} />
             <h3 className="text-lg font-bold theme-text-primary mb-4">Choose Bible Version</h3>
             <div className="space-y-2">
-              {bibleVersions.map((version) => (
-                <button
-                  key={version.id}
-                  onClick={() => handleBibleVersionChange(version.id)}
-                  className={cn(
-                    "w-full p-4 rounded-2xl border-2 text-left transition-all flex items-center justify-between theme-card",
-                    user?.preferred_bible_version === version.id
-                      ? "border-sky-400"
-                      : ""
-                  )}
-                  style={{ borderColor: user?.preferred_bible_version === version.id ? '#0ea5e9' : 'var(--border-color)' }}
-                >
-                  <div>
-                    <span className="font-semibold theme-text-primary">{version.name}</span>
-                    <span className="theme-text-secondary text-sm ml-2">{version.desc}</span>
+              {bibleVersions.length === 0 ? (
+                <div className="text-center py-8 theme-text-secondary">
+                  <div className="flex gap-2 justify-center">
+                    <div className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '0ms' }} />
+                    <div className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '150ms' }} />
+                    <div className="w-2 h-2 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '300ms' }} />
                   </div>
-                  {user?.preferred_bible_version === version.id && (
-                    <Check className="w-5 h-5 text-sky-500" />
-                  )}
-                </button>
-              ))}
+                </div>
+              ) : (
+                bibleVersions.map((version) => (
+                  <button
+                    key={version.id}
+                    onClick={() => handleBibleVersionChange(version)}
+                    className={cn(
+                      "w-full p-4 rounded-2xl border-2 text-left transition-all flex items-center justify-between theme-card",
+                      user?.bible_version === version.id
+                        ? "border-sky-400"
+                        : ""
+                    )}
+                    style={{ borderColor: user?.bible_version === version.id ? '#0ea5e9' : 'var(--border-color)' }}
+                  >
+                    <div>
+                      <span className="font-semibold theme-text-primary">
+                        {version.local_title || version.title}
+                      </span>
+                      <span className="theme-text-secondary text-sm ml-2">
+                        {version.abbreviation}
+                      </span>
+                    </div>
+                    {user?.bible_version === version.id && (
+                      <Check className="w-5 h-5 text-sky-500" />
+                    )}
+                  </button>
+                ))
+              )}
             </div>
           </motion.div>
         </motion.div>
