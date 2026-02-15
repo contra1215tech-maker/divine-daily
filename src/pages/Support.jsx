@@ -96,7 +96,7 @@ export default function Support() {
           const userData = await base44.auth.me();
           setUser(userData);
           
-          alert(`Thank you for your ${tier.label} monthly support! 🙏`);
+          toast.success(`Thank you for your ${tier.label} monthly support! 🙏`);
         }
       } catch (error) {
         console.error('Error processing purchase:', error);
