@@ -100,7 +100,7 @@ export default function Support() {
         }
       } catch (error) {
         console.error('Error processing purchase:', error);
-        alert('Purchase completed but there was an error saving it. Please contact support.');
+        toast.error('Purchase completed but there was an error saving it. Please contact support.');
       }
       
       setIsPurchasing(false);
