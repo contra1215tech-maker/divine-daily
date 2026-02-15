@@ -139,7 +139,7 @@ export default function Support() {
         const userData = await base44.auth.me();
         setUser(userData);
         
-        alert('Subscription cancelled successfully.');
+        toast.success('Subscription cancelled successfully.');
       } catch (error) {
         console.error('Error cancelling subscription:', error);
         alert('There was an error cancelling your subscription. Please try again.');
