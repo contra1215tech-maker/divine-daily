@@ -116,7 +116,7 @@ export default function Support() {
       }
       
       setIsPurchasing(false);
-      alert('Purchase could not be completed. Please try again.');
+      toast.error('Purchase could not be completed. Please try again.');
     };
 
     // Set up callback for cancellation complete
