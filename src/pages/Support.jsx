@@ -142,7 +142,7 @@ export default function Support() {
         toast.success('Subscription cancelled successfully.');
       } catch (error) {
         console.error('Error cancelling subscription:', error);
-        alert('There was an error cancelling your subscription. Please try again.');
+        toast.error('There was an error cancelling your subscription. Please try again.');
       }
     };
 
