@@ -26,33 +26,51 @@ export default function BibleReader() {
     const [bookmarks, setBookmarks] = useState([]);
 
     useEffect(() => {
-        base44.auth.me().then(async (userData) => {
-            console.log('User data loaded:', userData);
-            setUser(userData);
+        const loadUserData = async () => {
+            try {
+                const userData = await base44.auth.me();
+                console.log('User data loaded:', userData);
+                setUser(userData);
 
-            // Use user's selected Bible version or default to BSB
-            const translation = userData.bible_version || 'BSB';
-            console.log('Setting translation to:', translation);
-            setTranslationId(translation);
-            
-            // Load saved reading position if no URL params
-            const urlParams = new URLSearchParams(window.location.search);
-            const hasUrlParams = urlParams.get('book_id');
-            
-            if (!hasUrlParams && userData.reading_position && userData.reading_position.book_id) {
-                const { book_id, book_name, chapter, numberOfChapters } = userData.reading_position;
-                setSelectedBook({ id: book_id, name: book_name, numberOfChapters });
-                setSelectedChapter(chapter);
-                setShowBookSelector(false);
+                // Use user's selected Bible version or default to BSB
+                const translation = userData.bible_version || 'BSB';
+                console.log('Setting translation to:', translation);
+                setTranslationId(translation);
+                
+                // Load saved reading position if no URL params
+                const urlParams = new URLSearchParams(window.location.search);
+                const hasUrlParams = urlParams.get('book_id');
+                
+                if (!hasUrlParams && userData.reading_position && userData.reading_position.book_id) {
+                    const { book_id, book_name, chapter, numberOfChapters } = userData.reading_position;
+                    setSelectedBook({ id: book_id, name: book_name, numberOfChapters });
+                    setSelectedChapter(chapter);
+                    setShowBookSelector(false);
+                }
+            } catch (e) {
+                console.error('Auth error:', e);
             }
-        }).catch((e) => {
-            console.error('Auth error:', e);
-        });
+        };
+
+        const loadBookmarks = async () => {
+            try {
+                const bookmarksData = await base44.entities.Bookmark.list();
+                setBookmarks(bookmarksData);
+            } catch (e) {
+                console.error('Bookmarks error:', e);
+            }
+        };
+
+        loadUserData();
+        loadBookmarks();
+
+        // Reload user data when window regains focus (e.g., navigating back from Settings)
+        const handleFocus = () => {
+            loadUserData();
+        };
         
-        // Load bookmarks
-        base44.entities.Bookmark.list().then(setBookmarks).catch((e) => {
-            console.error('Bookmarks error:', e);
-        });
+        window.addEventListener('focus', handleFocus);
+        return () => window.removeEventListener('focus', handleFocus);
     }, []);
 
     // Separate effect to handle URL params navigation from favorites
