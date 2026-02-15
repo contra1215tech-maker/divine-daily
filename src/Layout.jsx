@@ -63,7 +63,7 @@ const getSearchImageUrl = (theme) => {
     return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/971026b6d_Screenshot2026-02-04at95411AM.png';
   }
   if (theme === 'still_waters') {
-    return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/14117ac46_Screenshot2026-02-15at35617PM.png';
+    return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/ca0adcb0b_Screenshot2026-02-04at100101AM.png';
   }
   if (theme === 'eternal_hope') {
     return 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697fc0c062ab93dbdcdf4611/4ae2668de_Screenshot2026-02-04at101412AM.png';
