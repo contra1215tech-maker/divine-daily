@@ -26,7 +26,9 @@ Deno.serve(async (req) => {
         );
 
         if (!response.ok) {
-            throw new Error(`YouVersion API error: ${response.status}`);
+            const errorText = await response.text();
+            console.error('YouVersion API error:', response.status, errorText);
+            throw new Error(`YouVersion API error: ${response.status} - ${errorText}`);
         }
 
         const data = await response.json();
