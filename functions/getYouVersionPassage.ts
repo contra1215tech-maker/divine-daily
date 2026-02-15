@@ -9,7 +9,7 @@ Deno.serve(async (req) => {
             return Response.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const { bible_id, passage_id, format = 'text' } = await req.json();
+        const { bible_id, passage_id, format = 'json' } = await req.json();
 
         if (!bible_id || !passage_id) {
             return Response.json({ 
