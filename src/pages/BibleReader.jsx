@@ -108,8 +108,12 @@ export default function BibleReader() {
         enabled: !!translationId,
     });
 
-    // Map to books array if available
-    const books = booksData?.books || [];
+    // Map to books array with proper structure
+    const books = (booksData?.books || []).map(book => ({
+        id: book.id,
+        name: book.title,
+        numberOfChapters: book.chapters?.length || 0
+    }));
     
     useEffect(() => {
         console.log('booksData updated:', booksData);
