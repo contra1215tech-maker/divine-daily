@@ -700,7 +700,7 @@ export default function BibleReader() {
                                                 <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '300ms' }} />
                                             </div>
                                         </div>
-                                    ) : chapterData?.chapter?.content ? (
+                                    ) : chapterData?.content ? (
                                         <div className="px-4 py-6">
                                             <div className="space-y-4">
                                                 {chapterData.content
@@ -763,16 +763,16 @@ export default function BibleReader() {
                                         <div className="space-y-4">
                                             {/* User Comments */}
                                             {userComments && userComments.length > 0 && (
-                                                <div className="rounded-3xl p-6 mx-4 theme-card">
-                                                    <h3 className="text-sm font-bold theme-text-primary mb-4 flex items-center gap-2">
-                                                        <MessageCircle className="w-4 h-4" />
-                                                        My Comments
-                                                    </h3>
-                                                    <div className="space-y-4">
-                                                        {userComments.map((comment) => {
-                                                            const verse = chapterData?.chapter?.content?.find(
-                                                                v => v.type === 'verse' && v.number === comment.verse_number
-                                                            );
+                                            <div className="rounded-3xl p-6 mx-4 theme-card">
+                                            <h3 className="text-sm font-bold theme-text-primary mb-4 flex items-center gap-2">
+                                            <MessageCircle className="w-4 h-4" />
+                                            My Comments
+                                            </h3>
+                                            <div className="space-y-4">
+                                            {userComments.map((comment) => {
+                                            const verse = chapterData?.content?.find(
+                                                v => v.type === 'verse' && v.number === comment.verse_number
+                                            );
                                                             const verseText = verse ? (
                                                                 Array.isArray(verse.content) 
                                                                     ? verse.content.map(item => 
