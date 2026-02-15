@@ -127,14 +127,18 @@ export default function VerseRenderer({
                                                     <button
                                                         key={color.id}
                                                         onClick={() => handleHighlight(verse.number, color.id)}
-                                                        className="w-6 h-6 rounded-full border-2 border-slate-300"
-                                                        style={{ backgroundColor: color.color }}
+                                                        className="w-8 h-8 rounded-full border-2 transition-all"
+                                                        style={{ 
+                                                            backgroundColor: color.color,
+                                                            borderColor: highlight === color.id ? '#1e293b' : 'rgba(148, 163, 184, 0.3)',
+                                                            boxShadow: highlight === color.id ? '0 0 0 2px rgba(30, 41, 59, 0.15)' : 'none'
+                                                        }}
                                                     />
                                                 ))}
                                                 {highlight && (
                                                     <button
                                                         onClick={() => handleHighlight(verse.number, null)}
-                                                        className="w-6 h-6 rounded-full border-2 border-slate-300 bg-white flex items-center justify-center"
+                                                        className="w-8 h-8 rounded-full border-2 border-slate-300 bg-white flex items-center justify-center hover:bg-slate-50"
                                                     >
                                                         <X className="w-3 h-3" />
                                                     </button>
