@@ -47,7 +47,6 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
-import BibleReader from './pages/BibleReader';
 import CaptureMoment from './pages/CaptureMoment';
 import HeartCheck from './pages/HeartCheck';
 import Home from './pages/Home';
@@ -60,11 +59,11 @@ import Search from './pages/Search';
 import Settings from './pages/Settings';
 import Support from './pages/Support';
 import Terms from './pages/Terms';
+import BibleReader from './pages/BibleReader';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
-    "BibleReader": BibleReader,
     "CaptureMoment": CaptureMoment,
     "HeartCheck": HeartCheck,
     "Home": Home,
@@ -77,6 +76,7 @@ export const PAGES = {
     "Settings": Settings,
     "Support": Support,
     "Terms": Terms,
+    "BibleReader": BibleReader,
 }
 
 export const pagesConfig = {

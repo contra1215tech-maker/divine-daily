@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import BookSelector from '../components/bible/BookSelector';
 import ChapterSelector from '../components/bible/ChapterSelector';
+import VerseRenderer from '../components/bible/VerseRenderer';
 import { cn } from "@/lib/utils";
 
 export default function BibleReader() {
@@ -707,28 +708,23 @@ export default function BibleReader() {
                                             </div>
                                         </div>
                                     ) : chapterData?.content ? (
-                                        <div className="px-4 py-6">
-                                            <div 
-                                                className="text-slate-800 leading-relaxed"
-                                                dangerouslySetInnerHTML={{ __html: chapterData.content }}
-                                                style={{
-                                                    '--verse-number-color': '#0ea5e9'
-                                                }}
-                                            />
-                                            <style>{`
-                                                .yv-vlbl {
-                                                    color: var(--verse-number-color);
-                                                    font-weight: 700;
-                                                    font-size: 0.875rem;
-                                                    margin-right: 0.5rem;
-                                                    vertical-align: super;
-                                                    font-size: 0.75rem;
-                                                }
-                                                .yv-v {
-                                                    display: none;
-                                                }
-                                            `}</style>
-                                        </div>
+                                        <VerseRenderer
+                                            htmlContent={chapterData.content}
+                                            highlights={verseHighlights}
+                                            comments={verseComments}
+                                            onHighlight={(verseNum, color) => {
+                                                setVerseHighlights(prev => ({
+                                                    ...prev,
+                                                    [verseNum]: color
+                                                }));
+                                            }}
+                                            onComment={(verseNum, comment) => {
+                                                setVerseComments(prev => ({
+                                                    ...prev,
+                                                    [verseNum]: comment
+                                                }));
+                                            }}
+                                        />
                                     ) : chapterData?.passage?.content ? (
                                         <div className="px-4 py-6">
                                             <div className="space-y-4">
