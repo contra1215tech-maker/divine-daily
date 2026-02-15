@@ -124,13 +124,12 @@ export default function VerseRenderer({
                                             <span className="text-sm font-medium text-slate-700">Highlight:</span>
                                             <div className="flex gap-1">
                                                 {HIGHLIGHT_COLORS.map(color => (
-                                                    <button
+                                                    <div
                                                         key={color.id}
                                                         onClick={() => handleHighlight(verse.number, color.id)}
-                                                        className="w-8 h-8 rounded-full border-2 transition-all"
+                                                        className="w-8 h-8 rounded-full border-2 transition-all cursor-pointer"
                                                         style={{ 
-                                                            backgroundColor: `${color.color} !important`,
-                                                            backgroundImage: 'none !important',
+                                                            backgroundColor: color.color,
                                                             borderColor: highlight === color.id ? '#1e293b' : 'rgba(148, 163, 184, 0.3)',
                                                             boxShadow: highlight === color.id ? '0 0 0 2px rgba(30, 41, 59, 0.15)' : 'none'
                                                         }}
