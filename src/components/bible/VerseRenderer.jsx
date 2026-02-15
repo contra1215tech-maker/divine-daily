@@ -4,10 +4,10 @@ import { Highlighter, MessageSquare, X } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
 const HIGHLIGHT_COLORS = [
-    { id: 'yellow', name: 'Yellow', color: 'rgb(254, 240, 138)' },
-    { id: 'green', name: 'Green', color: 'rgb(187, 247, 208)' },
-    { id: 'blue', name: 'Blue', color: 'rgb(191, 219, 254)' },
-    { id: 'pink', name: 'Pink', color: 'rgb(251, 207, 232)' },
+    { id: 'yellow', name: 'Yellow', color: 'rgb(253, 224, 71)' },
+    { id: 'green', name: 'Green', color: 'rgb(134, 239, 172)' },
+    { id: 'blue', name: 'Blue', color: 'rgb(147, 197, 253)' },
+    { id: 'pink', name: 'Pink', color: 'rgb(244, 114, 182)' },
 ];
 
 export default function VerseRenderer({ 
