@@ -67,7 +67,10 @@ export default function Settings() {
     // Fetch Bible versions from YouVersion
     base44.functions.invoke('getYouVersionBibles', { language: 'en' })
       .then(response => {
-        setBibleVersions(response.data.bibles || []);
+        const filteredVersions = (response.data.bibles || []).filter(
+          bible => !bible.local_title?.includes('Orthodox Jewish') && !bible.title?.includes('Orthodox Jewish')
+        );
+        setBibleVersions(filteredVersions);
       })
       .catch(console.error);
   }, []);
