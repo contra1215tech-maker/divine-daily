@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 
 export default function BibleReader() {
     const [user, setUser] = useState(null);
-    const [translationId, setTranslationId] = useState('BSB');
+    const [translationId, setTranslationId] = useState(12); // Default to ASV (id: 12)
     const [selectedBook, setSelectedBook] = useState(null);
     const [selectedChapter, setSelectedChapter] = useState(1);
     const [showBookSelector, setShowBookSelector] = useState(true);
@@ -32,8 +32,8 @@ export default function BibleReader() {
                 console.log('User data loaded:', userData);
                 setUser(userData);
 
-                // Use user's selected Bible version or default to BSB
-                const translation = userData.bible_version || 'BSB';
+                // Use user's selected Bible version or default to ASV (id: 12)
+                const translation = userData.bible_version || 12;
                 console.log('Setting translation to:', translation);
                 setTranslationId(translation);
                 

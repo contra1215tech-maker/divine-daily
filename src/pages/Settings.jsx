@@ -75,7 +75,7 @@ export default function Settings() {
           'The Text-Critical English New Testament'
         ];
         const filteredVersions = (response.data.bibles || []).filter(bible => {
-          const title = bible.local_title || bible.title || '';
+          const title = bible.localized_title || bible.title || '';
           return !excludedTitles.some(excluded => title.includes(excluded));
         });
         setBibleVersions(filteredVersions);
@@ -91,11 +91,11 @@ export default function Settings() {
   });
 
   const handleBibleVersionChange = async (version) => {
-    await updateUserMutation.mutateAsync({ 
-      bible_version: version.id,
-      bible_version_name: version.abbreviation || version.local_title
-    });
-    setShowBiblePicker(false);
+      await updateUserMutation.mutateAsync({ 
+          bible_version: version.id,
+          bible_version_name: version.abbreviation || version.localized_abbreviation || version.localized_title
+      });
+      setShowBiblePicker(false);
   };
 
 
@@ -369,10 +369,10 @@ export default function Settings() {
                   >
                     <div>
                       <span className="font-semibold theme-text-primary">
-                        {version.local_title || version.title}
+                        {version.localized_title || version.title}
                       </span>
                       <span className="theme-text-secondary text-sm ml-2">
-                        {version.abbreviation}
+                        {version.localized_abbreviation || version.abbreviation}
                       </span>
                     </div>
                     {user?.bible_version === version.id && (
