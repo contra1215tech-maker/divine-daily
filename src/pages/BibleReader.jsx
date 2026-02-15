@@ -701,6 +701,12 @@ export default function BibleReader() {
                                                 <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '300ms' }} />
                                             </div>
                                         </div>
+                                    ) : chapterData?.content ? (
+                                        <div className="px-4 py-6">
+                                            <p className="text-slate-800 leading-relaxed text-lg whitespace-pre-line">
+                                                {chapterData.content}
+                                            </p>
+                                        </div>
                                     ) : chapterData?.passage?.content ? (
                                         <div className="px-4 py-6">
                                             <div className="space-y-4">
