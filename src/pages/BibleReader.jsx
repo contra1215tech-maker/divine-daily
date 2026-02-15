@@ -128,7 +128,8 @@ export default function BibleReader() {
         queryFn: async () => {
             const response = await base44.functions.invoke('getYouVersionPassage', {
                 bible_id: translationId,
-                passage_id: `${selectedBook.id}.${selectedChapter}`
+                passage_id: `${selectedBook.id}.${selectedChapter}`,
+                format: 'html'
             });
             console.log('Chapter data response:', response.data);
             return response.data;
@@ -707,9 +708,26 @@ export default function BibleReader() {
                                         </div>
                                     ) : chapterData?.content ? (
                                         <div className="px-4 py-6">
-                                            <p className="text-slate-800 leading-relaxed text-lg whitespace-pre-line">
-                                                {chapterData.content}
-                                            </p>
+                                            <div 
+                                                className="text-slate-800 leading-relaxed"
+                                                dangerouslySetInnerHTML={{ __html: chapterData.content }}
+                                                style={{
+                                                    '--verse-number-color': '#0ea5e9'
+                                                }}
+                                            />
+                                            <style>{`
+                                                .yv-vlbl {
+                                                    color: var(--verse-number-color);
+                                                    font-weight: 700;
+                                                    font-size: 0.875rem;
+                                                    margin-right: 0.5rem;
+                                                    vertical-align: super;
+                                                    font-size: 0.75rem;
+                                                }
+                                                .yv-v {
+                                                    display: none;
+                                                }
+                                            `}</style>
                                         </div>
                                     ) : chapterData?.passage?.content ? (
                                         <div className="px-4 py-6">
