@@ -29,9 +29,9 @@ export default function BibleReader() {
         base44.auth.me().then(async (userData) => {
             console.log('User data loaded:', userData);
             setUser(userData);
-            
-            // Set translation ID - only use BSB (ESV API is unavailable)
-            const translation = 'BSB';
+
+            // Use user's selected Bible version or default to BSB
+            const translation = userData.bible_version || 'BSB';
             console.log('Setting translation to:', translation);
             setTranslationId(translation);
             
@@ -81,8 +81,8 @@ export default function BibleReader() {
     const { data: booksData, isLoading: booksLoading, error: booksError } = useQuery({
         queryKey: ['bible-books', translationId],
         queryFn: async () => {
-            const response = await base44.functions.invoke('getBibleBooks', { 
-                translation_id: translationId 
+            const response = await base44.functions.invoke('getYouVersionBooks', { 
+                bible_id: translationId 
             });
             console.log('Books response:', response.data);
             return response.data;
@@ -104,10 +104,9 @@ export default function BibleReader() {
     const { data: chapterData, isLoading: chapterLoading } = useQuery({
         queryKey: ['bible-chapter', translationId, selectedBook?.id, selectedChapter],
         queryFn: async () => {
-            const response = await base44.functions.invoke('getBibleChapter', {
-                translation_id: translationId,
-                book_id: selectedBook.id,
-                chapter: selectedChapter
+            const response = await base44.functions.invoke('getYouVersionPassage', {
+                bible_id: translationId,
+                passage_id: `${selectedBook.id}.${selectedChapter}`
             });
             return response.data;
         },
@@ -686,9 +685,9 @@ export default function BibleReader() {
                                     ) : chapterData?.chapter?.content ? (
                                         <div className="px-4 py-6">
                                             <div className="space-y-4">
-                                                {chapterData.chapter.content
-                                                    .filter(item => item.type === 'verse')
-                                                    .map((verse) => {
+                                                {chapterData.content
+                                                    ?.filter(item => item.type === 'verse')
+                                                    ?.map((verse) => {
                                                         const verseKey = `${selectedBook.id}-${selectedChapter}-${verse.number}`;
                                                         const highlightColor = verseHighlights[verseKey];
                                                         const isSelected = selectedVerse?.key === verseKey;
