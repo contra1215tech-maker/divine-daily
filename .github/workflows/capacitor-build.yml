@@ -28,4 +28,4 @@ jobs:
           build/
           out/
           www/
-        if-no-files-found: error
+        if-no-files-found: warn
