@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { base44 } from '@/api/base44Client';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { ArrowLeft, Calendar, BookOpen, Tag, Heart, Trash2, Folder } from 'lucide-react';
+import { ArrowLeft, Calendar, BookOpen, Tag, Heart, Trash2, Folder, ChevronDown } from 'lucide-react';
 import { format } from 'date-fns';
 import { moods } from '../components/ui/MoodSelector';
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,6 +25,7 @@ export default function JournalEntryDetail() {
   const urlParams = new URLSearchParams(window.location.search);
   const entryId = urlParams.get('id');
   const [folders, setFolders] = useState([]);
+  const [showFolderDrawer, setShowFolderDrawer] = useState(false);
 
   useEffect(() => {
     base44.entities.JournalFolder.list('name').then(setFolders).catch(console.error);
@@ -140,19 +142,43 @@ export default function JournalEntryDetail() {
               <Folder className="w-4 h-4 theme-text-secondary" />
               <label className="text-sm font-medium theme-text-primary">Folder</label>
             </div>
-            <select
-              value={entry.folder_id || ''}
-              onChange={(e) => updateFolderMutation.mutate(e.target.value || null)}
-              className="w-full p-2 rounded-xl theme-card theme-text-primary border text-sm"
+            <button
+              onClick={() => setShowFolderDrawer(true)}
+              className="w-full p-3 rounded-xl theme-card theme-text-primary border text-sm flex items-center justify-between"
               style={{ borderColor: 'var(--border-color)', backgroundColor: 'var(--card-bg)' }}
             >
-              <option value="">Unfiled</option>
-              {folders.map((folder) => (
-                <option key={folder.id} value={folder.id}>
-                  {folder.name}
-                </option>
-              ))}
-            </select>
+              <span>{entry.folder_id ? folders.find(f => f.id === entry.folder_id)?.name : 'Unfiled'}</span>
+              <ChevronDown className="w-4 h-4 theme-text-secondary" />
+            </button>
+            <Drawer open={showFolderDrawer} onOpenChange={setShowFolderDrawer}>
+              <DrawerContent style={{ backgroundColor: 'var(--bg-primary)' }}>
+                <DrawerHeader>
+                  <DrawerTitle className="theme-text-primary">Move to Folder</DrawerTitle>
+                </DrawerHeader>
+                <div className="px-4 pb-8 space-y-2">
+                  {[{ id: null, name: 'Unfiled' }, ...folders].map((folder) => (
+                    <button
+                      key={folder.id ?? 'unfiled'}
+                      onClick={() => { updateFolderMutation.mutate(folder.id); setShowFolderDrawer(false); }}
+                      className="w-full p-4 rounded-2xl theme-card flex items-center justify-between active:opacity-70 transition-opacity"
+                      style={{
+                        borderWidth: (entry.folder_id ?? null) === folder.id ? 2 : 1,
+                        borderStyle: 'solid',
+                        borderColor: (entry.folder_id ?? null) === folder.id ? 'var(--text-primary)' : 'var(--border-color)',
+                      }}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Folder className="w-4 h-4 theme-text-secondary" />
+                        <span className="font-medium theme-text-primary">{folder.name}</span>
+                      </div>
+                      {(entry.folder_id ?? null) === folder.id && (
+                        <span className="text-xs theme-text-secondary">✓</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </DrawerContent>
+            </Drawer>
           </motion.div>
         )}
 

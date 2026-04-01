@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
 import { BookOpen, Camera, Settings, Book, Search } from 'lucide-react';
@@ -83,6 +83,8 @@ const getNavItems = (theme) => [
 ];
 
 export default function Layout({ children, currentPageName }) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [user, setUser] = React.useState(null);
 
   React.useEffect(() => {
@@ -280,6 +282,12 @@ export default function Layout({ children, currentPageName }) {
                 <Link
                   key={item.id}
                   to={createPageUrl(item.id)}
+                  onClick={(e) => {
+                    if (isActive) {
+                      e.preventDefault();
+                      navigate(createPageUrl(item.id), { replace: true });
+                    }
+                  }}
                   className="flex flex-col items-center py-1 px-1 rounded-xl transition-all"
                 >
                   <div className={cn(

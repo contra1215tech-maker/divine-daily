@@ -4,13 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
 import { createPageUrl } from '@/utils';
-import { ArrowLeft, Sparkles, Tag, X } from 'lucide-react';
+import { ArrowLeft, Sparkles, Tag, X, ChevronDown, Folder } from 'lucide-react';
 import AnimatedButton from '@/components/ui/AnimatedButton';
 import PhotoCapture from '@/components/capture/PhotoCapture';
 import VerseCard from '@/components/ui/VerseCard';
 import Celebration from '@/components/ui/Celebration';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
 
 const suggestedTags = ['Creation', 'Grace', 'Provision', 'Peace', 'Love', 'Joy', 'Guidance', 'Community'];
 
@@ -29,6 +30,7 @@ export default function CaptureMoment() {
   const [saving, setSaving] = useState(false);
   const [selectedFolder, setSelectedFolder] = useState(null);
   const [folders, setFolders] = useState([]);
+  const [showFolderDrawer, setShowFolderDrawer] = useState(false);
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(console.error);
@@ -199,19 +201,46 @@ export default function CaptureMoment() {
             <label className="text-sm font-medium theme-text-secondary">
               Save to folder (optional)
             </label>
-            <select
-              value={selectedFolder || ''}
-              onChange={(e) => setSelectedFolder(e.target.value || null)}
-              className="w-full p-3 rounded-xl theme-card theme-text-primary border"
+            <button
+              onClick={() => setShowFolderDrawer(true)}
+              className="w-full p-3 rounded-xl theme-card theme-text-primary border flex items-center justify-between"
               style={{ borderColor: 'var(--border-color)', backgroundColor: 'var(--card-bg)' }}
             >
-              <option value="">Unfiled</option>
-              {folders.map((folder) => (
-                <option key={folder.id} value={folder.id}>
-                  {folder.name}
-                </option>
-              ))}
-            </select>
+              <div className="flex items-center gap-2">
+                <Folder className="w-4 h-4 theme-text-secondary" />
+                <span>{selectedFolder ? folders.find(f => f.id === selectedFolder)?.name : 'Unfiled'}</span>
+              </div>
+              <ChevronDown className="w-4 h-4 theme-text-secondary" />
+            </button>
+            <Drawer open={showFolderDrawer} onOpenChange={setShowFolderDrawer}>
+              <DrawerContent style={{ backgroundColor: 'var(--bg-primary)' }}>
+                <DrawerHeader>
+                  <DrawerTitle className="theme-text-primary">Save to Folder</DrawerTitle>
+                </DrawerHeader>
+                <div className="px-4 pb-8 space-y-2">
+                  {[{ id: null, name: 'Unfiled' }, ...folders].map((folder) => (
+                    <button
+                      key={folder.id ?? 'unfiled'}
+                      onClick={() => { setSelectedFolder(folder.id); setShowFolderDrawer(false); }}
+                      className="w-full p-4 rounded-2xl theme-card flex items-center justify-between active:opacity-70 transition-opacity"
+                      style={{
+                        borderWidth: selectedFolder === folder.id ? 2 : 1,
+                        borderStyle: 'solid',
+                        borderColor: selectedFolder === folder.id ? 'var(--text-primary)' : 'var(--border-color)',
+                      }}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Folder className="w-4 h-4 theme-text-secondary" />
+                        <span className="font-medium theme-text-primary">{folder.name}</span>
+                      </div>
+                      {selectedFolder === folder.id && (
+                        <span className="text-xs theme-text-secondary">✓</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </DrawerContent>
+            </Drawer>
           </div>
         )}
 
