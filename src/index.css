@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── iOS/Android native-feel globals ── */
+html, body {
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Safe area env() variables exposed as CSS vars */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+/* Prevent text selection on interactive elements */
+button, a, nav, [role="button"] {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

@@ -89,7 +89,9 @@ export default function Layout({ children, currentPageName }) {
     base44.auth.me().then(setUser).catch(() => {});
   }, []);
 
-  const theme = user?.theme || 'morning_dew';
+  // Auto-match system dark/light preference if user hasn't explicitly set a theme
+  const systemPrefersDark = typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = user?.theme || (systemPrefersDark ? 'dark_mode' : 'morning_dew');
   const navItems = getNavItems(theme);
 
   const themeStyles = {
@@ -184,7 +186,8 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <div className="min-h-screen max-w-md mx-auto" style={{ 
-      background: `linear-gradient(to bottom, ${currentTheme['--bg-gradient-from']}, ${currentTheme['--bg-gradient-to']})` 
+      background: `linear-gradient(to bottom, ${currentTheme['--bg-gradient-from']}, ${currentTheme['--bg-gradient-to']})`,
+      paddingTop: 'env(safe-area-inset-top, 0px)',
     }}>
       <style>{`
             @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
@@ -251,7 +254,7 @@ export default function Layout({ children, currentPageName }) {
       ` : ''}
       `}</style>
 
-      <div className="pb-24">
+      <div style={{ paddingBottom: 'calc(5rem + env(safe-area-inset-bottom, 0px))' }}>
         {children}
       </div>
 
@@ -260,11 +263,12 @@ export default function Layout({ children, currentPageName }) {
         <motion.nav
           initial={{ y: 100 }}
           animate={{ y: 0 }}
-          className="fixed bottom-2 left-3 right-3 z-40 max-w-md mx-auto backdrop-blur-xl rounded-3xl border"
+          className="fixed bottom-0 left-0 right-0 z-40 max-w-md mx-auto backdrop-blur-xl border-t select-none"
           style={{ 
             backgroundColor: currentTheme['--nav-bg'],
             borderColor: currentTheme['--border-color'],
-            boxShadow: currentTheme['--shadow-lg']
+            boxShadow: currentTheme['--shadow-lg'],
+            paddingBottom: 'env(safe-area-inset-bottom, 0px)',
           }}
         >
           <div className="flex items-center justify-around py-1">

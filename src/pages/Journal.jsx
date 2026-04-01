@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
@@ -34,6 +34,34 @@ export default function Journal() {
     const [newFolderName, setNewFolderName] = useState('');
     const [user, setUser] = useState(null);
     const queryClient = useQueryClient();
+
+    // Pull-to-refresh state
+    const [pullY, setPullY] = useState(0);
+    const [isRefreshing, setIsRefreshing] = useState(false);
+    const touchStartY = useRef(0);
+    const PULL_THRESHOLD = 72;
+
+    const handleTouchStart = useCallback((e) => {
+      if (window.scrollY === 0) touchStartY.current = e.touches[0].clientY;
+    }, []);
+
+    const handleTouchMove = useCallback((e) => {
+      if (window.scrollY > 0) return;
+      const delta = e.touches[0].clientY - touchStartY.current;
+      if (delta > 0) setPullY(Math.min(delta * 0.4, PULL_THRESHOLD));
+    }, []);
+
+    const handleTouchEnd = useCallback(async () => {
+      if (pullY >= PULL_THRESHOLD) {
+        setIsRefreshing(true);
+        await Promise.all([
+          queryClient.invalidateQueries({ queryKey: ['journal-entries'] }),
+          queryClient.invalidateQueries({ queryKey: ['journal-folders'] }),
+        ]);
+        setIsRefreshing(false);
+      }
+      setPullY(0);
+    }, [pullY, queryClient]);
 
     useEffect(() => {
         base44.auth.me().then(setUser).catch(console.error);
@@ -123,7 +151,32 @@ export default function Journal() {
   const unfiledCount = entries.filter(e => !e.folder_id).length;
 
   return (
-      <div className="min-h-screen" style={{ background: 'transparent' }}>
+      <div
+        className="min-h-screen"
+        style={{ background: 'transparent' }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        {/* Pull-to-refresh indicator */}
+        <AnimatePresence>
+          {(pullY > 0 || isRefreshing) && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex items-center justify-center py-2"
+              style={{ height: isRefreshing ? 44 : pullY }}
+            >
+              <motion.div
+                animate={isRefreshing ? { rotate: 360 } : { rotate: pullY * 3 }}
+                transition={isRefreshing ? { duration: 0.8, repeat: Infinity, ease: 'linear' } : {}}
+                className="w-6 h-6 border-2 rounded-full border-t-transparent"
+                style={{ borderColor: 'var(--text-secondary)' }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       {/* Header */}
       <div className="backdrop-blur-lg" style={{ 
         backgroundColor: 'var(--nav-bg)',
