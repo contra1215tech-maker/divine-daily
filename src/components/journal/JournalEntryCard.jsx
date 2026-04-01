@@ -14,20 +14,19 @@ export default function JournalEntryCard({ entry, onClick, showFavorite, onFavor
 
   return (
     <motion.div
-      whileHover={{ scale: 1.01, y: -2 }}
-      whileTap={{ scale: 0.99 }}
+      whileTap={{ scale: 0.98 }}
       onClick={onClick}
-      className="group relative overflow-hidden rounded-3xl cursor-pointer theme-card shadow-sm hover:shadow-md transition-shadow"
+      className="relative overflow-hidden rounded-3xl cursor-pointer theme-card shadow-sm active:shadow-sm transition-shadow"
     >
       {/* Favorite Button */}
       {showFavorite && onFavoriteToggle && (
         <button
           onClick={onFavoriteToggle}
-          className="absolute top-3 right-3 p-1.5 rounded-full hover:bg-black/5 transition-colors z-10"
+          className="absolute top-2 right-2 w-11 h-11 rounded-full flex items-center justify-center transition-colors z-10 active:bg-black/10"
         >
           <Star 
             className={cn(
-              "w-4 h-4",
+              "w-5 h-5",
               entry.is_favorite ? "fill-amber-500 text-amber-500" : "text-slate-400"
             )}
           />
@@ -76,8 +75,8 @@ export default function JournalEntryCard({ entry, onClick, showFavorite, onFavor
         </div>
 
         {/* Arrow indicator */}
-        <div className="pr-3 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
-          <ChevronRight className="w-4 h-4 theme-text-secondary" />
+        <div className="pr-3 flex-shrink-0">
+          <ChevronRight className="w-4 h-4 theme-text-secondary opacity-40" />
         </div>
       </div>
     </motion.div>

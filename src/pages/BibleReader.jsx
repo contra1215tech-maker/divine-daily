@@ -580,7 +580,7 @@ export default function BibleReader() {
                                                             ) : '';
 
                                                             return (
-                                                                <div key={comment.id} className="space-y-2 pb-4 border-b last:border-b-0 relative group" style={{ borderColor: 'var(--border-color)' }}>
+                                                                <div key={comment.id} className="space-y-2 pb-4 border-b last:border-b-0 relative" style={{ borderColor: 'var(--border-color)' }}>
                                                                     <span className="text-sm font-bold text-sky-600">
                                                                         Verse {comment.verse_number}
                                                                     </span>
@@ -594,10 +594,10 @@ export default function BibleReader() {
                                                                     </p>
                                                                     <button
                                                                         onClick={() => handleDeleteComment(comment.id)}
-                                                                        className="absolute top-0 right-0 p-1 rounded opacity-0 group-hover:opacity-60 hover:opacity-100 transition-opacity"
+                                                                        className="absolute top-0 right-0 w-9 h-9 flex items-center justify-center rounded opacity-60 active:opacity-100"
                                                                         style={{ color: 'var(--text-light)' }}
                                                                     >
-                                                                        <X className="w-3 h-3" />
+                                                                        <X className="w-4 h-4" />
                                                                     </button>
                                                                 </div>
                                                             );

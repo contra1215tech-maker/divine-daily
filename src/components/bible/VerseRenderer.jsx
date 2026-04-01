@@ -127,10 +127,10 @@ export default function VerseRenderer({
                                             <span className="text-sm font-medium theme-text-primary">Highlight:</span>
                                             <div className="flex gap-1">
                                                 {HIGHLIGHT_COLORS.map(color => (
-                                                    <div
+                                                    <button
                                                         key={color.id}
                                                         onClick={() => handleHighlight(verse.number, color.id)}
-                                                        className="w-8 h-8 rounded-full border-2 transition-all cursor-pointer"
+                                                        className="w-11 h-11 rounded-full border-2 active:opacity-70 cursor-pointer"
                                                         style={{ 
                                                             backgroundColor: color.color,
                                                             borderColor: highlight === color.id ? 'var(--text-primary)' : 'var(--border-color)',
@@ -141,12 +141,12 @@ export default function VerseRenderer({
                                                 {highlight && (
                                                     <button
                                                         onClick={() => handleHighlight(verse.number, null)}
-                                                        className="w-8 h-8 rounded-full border-2 flex items-center justify-center theme-card"
+                                                        className="w-11 h-11 rounded-full border-2 flex items-center justify-center theme-card"
                                                         style={{
                                                             borderColor: 'var(--border-color)'
                                                         }}
                                                     >
-                                                        <X className="w-3 h-3 theme-text-secondary" />
+                                                        <X className="w-4 h-4 theme-text-secondary" />
                                                     </button>
                                                 )}
                                             </div>

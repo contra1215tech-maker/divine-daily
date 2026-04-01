@@ -106,10 +106,9 @@ export default function PhotoCapture({ onPhotoCapture, photo, onRemove }) {
               className="w-full h-full object-cover"
             />
             <motion.button
-              whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={onRemove}
-              className="absolute top-3 right-3 p-2 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors"
+              className="absolute top-3 right-3 w-11 h-11 rounded-full bg-black/50 text-white flex items-center justify-center active:bg-black/70 transition-colors"
             >
               <X className="w-5 h-5" />
             </motion.button>
@@ -121,7 +120,7 @@ export default function PhotoCapture({ onPhotoCapture, photo, onRemove }) {
           <button
             onClick={handleCameraCapture}
             disabled={uploading}
-            className="w-full py-2 px-4 rounded-xl border theme-text-secondary text-sm flex items-center justify-center gap-2 transition-opacity hover:opacity-70"
+            className="w-full min-h-[44px] px-4 rounded-xl border theme-text-secondary text-sm flex items-center justify-center gap-2 active:opacity-70 transition-opacity"
             style={{ 
               borderColor: 'var(--border-color)',
               backgroundColor: 'transparent'

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
+import { useOptimisticMutation } from '@/hooks/useOptimisticMutation';
 import { format, startOfWeek, endOfWeek, isWithinInterval, subWeeks } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
@@ -32,10 +33,20 @@ export default function Journal() {
     const [showCreateFolder, setShowCreateFolder] = useState(false);
     const [newFolderName, setNewFolderName] = useState('');
     const [user, setUser] = useState(null);
+    const queryClient = useQueryClient();
 
     useEffect(() => {
         base44.auth.me().then(setUser).catch(console.error);
     }, []);
+
+    const toggleFavoriteMutation = useOptimisticMutation({
+      queryKey: ['journal-entries'],
+      action: 'update',
+      mutationFn: ({ id, is_favorite }) =>
+        base44.entities.JournalEntry.update(id, { is_favorite }),
+      optimisticData: ({ id, is_favorite }, oldData) =>
+        oldData.map((e) => (e.id === id ? { ...e, is_favorite } : e)),
+    });
 
   const { data: entries = [], isLoading, refetch } = useQuery({
     queryKey: ['journal-entries'],
@@ -105,6 +116,10 @@ export default function Journal() {
     }
   };
 
+  const handleFavoriteToggle = (entry) => {
+    toggleFavoriteMutation.mutate({ id: entry.id, is_favorite: !entry.is_favorite });
+  };
+
   const unfiledCount = entries.filter(e => !e.folder_id).length;
 
   return (
@@ -119,9 +134,9 @@ export default function Journal() {
             <h1 className="text-xl font-bold theme-text-primary">Journal</h1>
             <button
               onClick={() => setShowCreateFolder(true)}
-              className="p-2 rounded-xl theme-card hover:shadow-md transition-all"
+              className="w-11 h-11 rounded-xl theme-card flex items-center justify-center active:opacity-70 transition-all"
             >
-              <Plus className="w-4 h-4 theme-text-primary" />
+              <Plus className="w-5 h-5 theme-text-primary" />
             </button>
           </div>
 
@@ -129,11 +144,11 @@ export default function Journal() {
           <div className="relative mb-2">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <Input
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search..."
-              className="pl-9 h-9 text-sm rounded-xl theme-card"
-              style={{ borderColor: 'var(--border-color)' }}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search..."
+            className="pl-9 h-11 text-sm rounded-xl theme-card"
+            style={{ borderColor: 'var(--border-color)' }}
             />
           </div>
 
@@ -184,7 +199,7 @@ export default function Journal() {
                       e.stopPropagation();
                       handleDeleteFolder(folder.id);
                     }}
-                    className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                    className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-red-500 text-white flex items-center justify-center"
                   >
                     <Trash2 className="w-3 h-3" />
                   </button>
@@ -230,23 +245,24 @@ export default function Journal() {
              <div className="grid grid-cols-2 gap-3">
                {pictureEntries.map((entry) => (
                  <motion.button
-                   key={entry.id}
-                   initial={{ opacity: 0, scale: 0.9 }}
-                   animate={{ opacity: 1, scale: 1 }}
-                   onClick={() => navigate(createPageUrl('JournalEntryDetail') + `?id=${entry.id}`)}
-                   className="relative overflow-hidden rounded-2xl aspect-square group"
-                 >
-                   <img 
-                     src={entry.photo_url} 
-                     alt="Moment" 
-                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                   />
-                   <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                     <p className="text-white text-xs text-center px-2 line-clamp-2">
-                       {entry.reflection?.substring(0, 30)}...
-                     </p>
-                   </div>
-                 </motion.button>
+                    key={entry.id}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => navigate(createPageUrl('JournalEntryDetail') + `?id=${entry.id}`)}
+                    className="relative overflow-hidden rounded-2xl aspect-square"
+                  >
+                    <img 
+                      src={entry.photo_url} 
+                      alt="Moment" 
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-2">
+                      <p className="text-white text-xs text-center line-clamp-2">
+                        {entry.reflection?.substring(0, 30)}
+                      </p>
+                    </div>
+                  </motion.button>
                ))}
              </div>
            ) : (
@@ -269,13 +285,7 @@ export default function Journal() {
                    entry={entry}
                    onClick={() => navigate(createPageUrl('JournalEntryDetail') + `?id=${entry.id}`)}
                    showFavorite={true}
-                   onFavoriteToggle={async (e) => {
-                     e.stopPropagation();
-                     await base44.entities.JournalEntry.update(entry.id, {
-                       is_favorite: !entry.is_favorite
-                     });
-                     refetch();
-                   }}
+                   onFavoriteToggle={(e) => { e.stopPropagation(); handleFavoriteToggle(entry); }}
                  />
                ))}
              </div>
@@ -307,13 +317,7 @@ export default function Journal() {
                       entry={entry}
                       onClick={() => navigate(createPageUrl('JournalEntryDetail') + `?id=${entry.id}`)}
                       showFavorite={true}
-                      onFavoriteToggle={async (e) => {
-                        e.stopPropagation();
-                        await base44.entities.JournalEntry.update(entry.id, {
-                          is_favorite: !entry.is_favorite
-                        });
-                        refetch();
-                      }}
+                      onFavoriteToggle={(e) => { e.stopPropagation(); handleFavoriteToggle(entry); }}
                     />
                   ))}
                 </div>

@@ -34,7 +34,7 @@ export default function BookSelector({ books, onSelectBook, onChapterSelect }) {
                 <motion.button
                     whileTap={{ scale: 0.98 }}
                     onClick={() => handleBookClick(book)}
-                    className="w-full flex items-center justify-between p-3 transition-opacity hover:opacity-70"
+                    className="w-full flex items-center justify-between px-3 transition-opacity active:opacity-70 min-h-[44px]"
                     style={{ background: 'transparent' }}
                 >
                     <div className="flex items-center gap-2">
@@ -67,7 +67,7 @@ export default function BookSelector({ books, onSelectBook, onChapterSelect }) {
                                             key={chapter}
                                             whileTap={{ scale: 0.9 }}
                                             onClick={() => handleChapterClick(book, chapter)}
-                                            className="aspect-square rounded-lg text-sm font-medium theme-text-primary transition-opacity hover:opacity-70 theme-card"
+                                            className="min-h-[44px] rounded-lg text-sm font-medium theme-text-primary active:opacity-70 theme-card flex items-center justify-center"
                                         >
                                             {chapter}
                                         </motion.button>
