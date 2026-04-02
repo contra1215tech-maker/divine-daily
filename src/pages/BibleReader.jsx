@@ -9,6 +9,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import BookSelector from '../components/bible/BookSelector';
 import ChapterSelector from '../components/bible/ChapterSelector';
 import VerseRenderer from '../components/bible/VerseRenderer';
+import AuthPromptModal from '../components/ui/AuthPromptModal';
 import { cn } from "@/lib/utils";
 
 export default function BibleReader() {
@@ -23,6 +24,7 @@ export default function BibleReader() {
     const [verseComments, setVerseComments] = useState({});
     const [showBookmarks, setShowBookmarks] = useState(false);
     const [bookmarks, setBookmarks] = useState([]);
+    const [showAuthPrompt, setShowAuthPrompt] = useState(false);
 
     useEffect(() => {
         const loadUserData = async () => {
@@ -183,7 +185,7 @@ export default function BibleReader() {
     };
 
     const saveReadingPosition = async (book, chapter) => {
-        if (!book || !chapter) return;
+        if (!book || !chapter || !user) return;
         await base44.auth.updateMe({
             reading_position: {
                 book_id: book.id,
@@ -240,6 +242,7 @@ export default function BibleReader() {
     };
 
     const handleAddBookmark = async () => {
+        if (!user) { setShowAuthPrompt(true); return; }
         const existing = bookmarks.find(b => 
             b.book_id === selectedBook.id && b.chapter === selectedChapter
         );
@@ -272,20 +275,11 @@ export default function BibleReader() {
         saveReadingPosition({ id: bookmark.book_id, name: bookmark.book_name }, bookmark.chapter);
     };
 
-    if (!user) {
-        return (
-            <div className="min-h-screen flex items-center justify-center" style={{ background: 'transparent' }}>
-                <div className="flex gap-2">
-                    <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '0ms' }} />
-                    <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '150ms' }} />
-                    <div className="w-3 h-3 rounded-full animate-bounce" style={{ backgroundColor: 'var(--text-primary)', animationDelay: '300ms' }} />
-                </div>
-            </div>
-        );
-    }
+    // No user gate — unauthenticated users can browse freely
 
     return (
         <div className="min-h-screen" style={{ background: 'transparent' }}>
+            <AuthPromptModal isOpen={showAuthPrompt} onClose={() => setShowAuthPrompt(false)} />
             {/* Bookmarks Dropdown - Outside of blurred header */}
             <AnimatePresence>
                 {showBookmarks && selectedBook && !showBookSelector && (
@@ -531,6 +525,7 @@ export default function BibleReader() {
                                                 }));
                                             }}
                                             onComment={async (verseNum, comment) => {
+                                                if (!user) { setShowAuthPrompt(true); return; }
                                                 // Save comment to database
                                                 await base44.entities.VerseComment.create({
                                                     book_id: selectedBook.id,
