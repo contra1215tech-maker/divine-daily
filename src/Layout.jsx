@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { motion } from 'framer-motion';
 import { BookOpen, Camera, Settings, Book, Search } from 'lucide-react';
+import AuthPromptModal from '@/components/ui/AuthPromptModal';
 import { cn } from "@/lib/utils";
 import { base44 } from '@/api/base44Client';
 
@@ -86,6 +87,7 @@ export default function Layout({ children, currentPageName }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [user, setUser] = React.useState(null);
+  const [showAuthPrompt, setShowAuthPrompt] = React.useState(false);
 
   React.useEffect(() => {
     base44.auth.me().then(setUser).catch(() => {});
@@ -186,6 +188,8 @@ export default function Layout({ children, currentPageName }) {
   const hideNav = !currentPageName || 
     currentPageName === 'HeartCheck';
 
+  const protectedPages = ['Journal', 'CaptureMoment'];
+
   return (
     <div className="min-h-screen max-w-md mx-auto" style={{ 
       background: `linear-gradient(to bottom, ${currentTheme['--bg-gradient-from']}, ${currentTheme['--bg-gradient-to']})`,
@@ -260,6 +264,8 @@ export default function Layout({ children, currentPageName }) {
         {children}
       </div>
 
+      <AuthPromptModal isOpen={showAuthPrompt} onClose={() => setShowAuthPrompt(false)} />
+
       {/* Bottom Navigation */}
       {!hideNav && (
         <motion.nav
@@ -283,6 +289,11 @@ export default function Layout({ children, currentPageName }) {
                   key={item.id}
                   to={createPageUrl(item.id)}
                   onClick={(e) => {
+                    if (!user && protectedPages.includes(item.id)) {
+                      e.preventDefault();
+                      setShowAuthPrompt(true);
+                      return;
+                    }
                     if (isActive) {
                       e.preventDefault();
                       navigate(createPageUrl(item.id), { replace: true });

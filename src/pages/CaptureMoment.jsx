@@ -9,6 +9,7 @@ import AnimatedButton from '@/components/ui/AnimatedButton';
 import PhotoCapture from '@/components/capture/PhotoCapture';
 import VerseCard from '@/components/ui/VerseCard';
 import Celebration from '@/components/ui/Celebration';
+import AuthPromptModal from '@/components/ui/AuthPromptModal';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
@@ -31,6 +32,7 @@ export default function CaptureMoment() {
   const [selectedFolder, setSelectedFolder] = useState(null);
   const [folders, setFolders] = useState([]);
   const [showFolderDrawer, setShowFolderDrawer] = useState(false);
+  const [showAuthPrompt, setShowAuthPrompt] = useState(false);
 
   useEffect(() => {
     base44.auth.me().then(setUser).catch(console.error);
@@ -119,6 +121,7 @@ export default function CaptureMoment() {
   };
 
   const handleSave = async () => {
+    if (!user) { setShowAuthPrompt(true); return; }
     if (!reflection && !photo) return;
     
     setSaving(true);
@@ -142,6 +145,7 @@ export default function CaptureMoment() {
 
   return (
     <div className="min-h-screen" style={{ background: 'transparent' }}>
+    <AuthPromptModal isOpen={showAuthPrompt} onClose={() => setShowAuthPrompt(false)} />
     <Celebration type="confetti" show={showCelebration} onComplete={handleCelebrationComplete} />
 
     <div className="px-6 pt-6 pb-32 space-y-6">
